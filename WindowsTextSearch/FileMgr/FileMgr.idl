@@ -1,0 +1,97 @@
+///////////////////////////////////////////////////////////////////////
+//  FileMgr.idl  - Accepts path and filter patterns for file mngmt   //
+//  ver 1.0                                                          //
+//                                                                   //
+//  Language:     C++, COM/IDL                                       //
+//  Platform:     Dell Inspiron 5520, Windows 10 Professional        //
+//  Application:  Destributed Objects (CSE 775) Project #1           //
+//  Author:       Ammar Salman, Syracuse University                  //
+//                (313) 788-4694, hoplite.90@hotmail.com             //
+///////////////////////////////////////////////////////////////////////
+/*
+Component Operations:
+=====================
+Provides an interface that accepts working path and searches for all
+files under that path (optionally including sub-directories) that match
+the specified filter patterns. It also accepts TextSearch instance to
+check the gathered files for containing specified search string
+
+*/
+///////////////////////////////////////////////////////////////////////
+//  Build Process                                                    //
+///////////////////////////////////////////////////////////////////////
+//  Required files:                                                  //
+//    FileMgr_i.c, FileMgr_i.h, FileMgr.idl, FileManager.h,          //
+//    FileManager.cpp, Resource.h, FileMgr.def, xdlldata.c,          //
+//    dllmain.cpp, stdafx.h, stdafx.cpp                              //
+//    FileSystem.h, FileSystem.cpp                                   //
+//  Note:                                                            //
+//    all of these are provided by ATL.                              //
+//    The developer modifies FileMgr.idl, FileManager.cpp,           //
+//    and FileManager.h                                              //
+//    The FileSystem package was provided by the professor as help   //
+//                                                                   //
+//  Build process:                                                   //
+//    - right click on FileMgr.idl and compile                       //
+//    - right click on FileMgr and rebuild                           //
+///////////////////////////////////////////////////////////////////////
+/// 
+///////////////////////////////////////////////////////////////////////
+///////////// !!!!!!!!!!!!! IMPORTANT NOTE !!!!!!!!!!!!! //////////////
+///////////////////////////////////////////////////////////////////////
+/// MIDI compiler replaces the FileMgr_i.h file which includes the  ///
+/// correct TextSearchCom_i.h. When it does that, the included file ///
+/// does not exist in the way specified. You will have to manually  ///
+/// fix the line from:                                              ///
+/// #include "TextSearchCom.h"                                      ///
+/// to:                                                             ///
+/// #include "..\TextSearchCom\TextSearchCom_i.h"                   ///
+///////////////////////////////////////////////////////////////////////
+/*
+Maintenance History:
+====================
+ver 1.0 : 19 Mar 2017
+- first release
+
+*/
+// This file will be processed by the MIDL tool to
+// produce the type library (FileMgr.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "..\TextSearchCom\TextSearchCom.idl";
+
+[
+	object,
+	uuid(0739D73B-8DD9-41C8-BBF0-98CDA0B35909),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IFileManager : IDispatch{
+	[id(1), helpstring("Takes working path directory, filter patterns, and boolean indicating whether or not to include sub-directories")] 
+		HRESULT SetWorkingDirectory([in] BSTR wPath, [in] BSTR Pattern, [in] VARIANT_BOOL incSubDirs);
+	[id(2), helpstring("Gets file from the obtained file list")] HRESULT GetFile([out] BSTR* file);
+	[id(3), helpstring("Returns status indicating whether or not all file list was returned")] HRESULT good([out, retval] VARIANT_BOOL* isGood);
+	[id(4), helpstring("Sets the TextSearch member to externally created TextSearch instnace")] HRESULT ConfigureSearcher([in] IDispatch* txtSrch);
+	[id(5), helpstring("Specifies the search string to look for inside the files")] HRESULT SetSearchString([in] BSTR sString);
+	[id(6), helpstring("Sends all files for the TextSearch instance to process")] HRESULT PerformOperations();
+	[id(7), helpstring("Sends quit message to TextSearch instance")] HRESULT TerminateSearcher();
+	[id(8), helpstring("Clears file list, patterns list, working path, search string and TextSearch instance reference")] HRESULT Clear();
+};
+[
+	uuid(E46C0BCF-0F4E-4B42-9A7A-E3C066648026),
+	version(1.0),
+]
+library FileMgrLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(13001C38-74C3-46BF-BA6E-D07037B5A1CD)		
+	]
+	coclass FileManager
+	{
+		[default] interface IFileManager;
+	};
+};
+

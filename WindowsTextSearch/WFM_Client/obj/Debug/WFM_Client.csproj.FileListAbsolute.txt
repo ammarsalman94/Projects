@@ -1,0 +1,9 @@
+C:\Users\hopli\Documents\Visual Studio 2015\Projects\WTS_Client\WFM_Client\bin\Debug\WFM_Client.exe.config
+C:\Users\hopli\Documents\Visual Studio 2015\Projects\WTS_Client\WFM_Client\obj\Debug\Interop.FileMgrLib.dll
+C:\Users\hopli\Documents\Visual Studio 2015\Projects\WTS_Client\WFM_Client\obj\Debug\WFM_Client.csproj.ResolveComReference.cache
+C:\Users\hopli\Documents\Visual Studio 2015\Projects\WTS_Client\WFM_Client\bin\Debug\WFM_Client.exe
+C:\Users\hopli\Documents\Visual Studio 2015\Projects\WTS_Client\WFM_Client\bin\Debug\WFM_Client.pdb
+C:\Users\hopli\Documents\Visual Studio 2015\Projects\WTS_Client\WFM_Client\obj\Debug\WFM_Client.csprojResolveAssemblyReference.cache
+C:\Users\hopli\Documents\Visual Studio 2015\Projects\WTS_Client\WFM_Client\obj\Debug\WFM_Client.exe
+C:\Users\hopli\Documents\Visual Studio 2015\Projects\WTS_Client\WFM_Client\obj\Debug\WFM_Client.pdb
+C:\Users\hopli\Documents\Visual Studio 2015\Projects\WTS_Client\WFM_Client\obj\Debug\Interop.TextSearchComLib.dll

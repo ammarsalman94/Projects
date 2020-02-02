@@ -1,0 +1,79 @@
+///////////////////////////////////////////////////////////////////////
+//  TextSearchCom.idl  - Accepts files and search patterns to check  //
+//  ver 1.0                                                          //
+//                                                                   //
+//  Language:     C++, COM/IDL                                       //
+//  Platform:     Dell Inspiron 5520, Windows 10 Professional        //
+//  Application:  Destributed Objects (CSE 775) Project #1           //
+//  Author:       Ammar Salman, Syracuse University                  //
+//                (313) 788-4694, hoplite.90@hotmail.com             //
+///////////////////////////////////////////////////////////////////////
+/*
+Component Operations:
+=====================
+Provides an interface that accepts files and search patterns. Each file
+is checked to see whether or not it contained the search pattern speci-
+fied. The results are pushed into an outgoing queue.
+
+*/
+///////////////////////////////////////////////////////////////////////
+//  Build Process                                                    //
+///////////////////////////////////////////////////////////////////////
+//  Required files:                                                  //
+//    TextSearchCom_i.c, TextSearchCom_i.h, TextSearchCom.idl        //
+//    TextSearch.h, TextSearch.cpp, TextSearchCom.h,                 //
+//    TextSearchCom.cpp, Resource.h, TextSearchCom.def, xdlldata.c,  //
+//    dllmain.cpp, stdafx.h, stdafx.cpp                              //
+//    Cpp11-BlockingQueue.h, Cpp11-BlockingQueue.cpp                 //
+//  Note:                                                            //
+//    all of these are provided by ATL.                              //
+//    The developer modifies TextSearchCom.idl, TextSearchCom.cpp,   //
+//    and TextSearchCom.h                                            //
+//    The BlockingQueue files are provided by the professor as help  //
+//                                                                   //
+//  Build process:                                                   //
+//    - right click on TextSearchCom.idl and compile                 //
+//    - right click on TextSearchCom and rebuild                     //
+///////////////////////////////////////////////////////////////////////
+/*
+Maintenance History:
+====================
+ver 1.0 : 19 Mar 2017
+- first release
+
+*/
+
+// This file will be processed by the MIDL tool to
+// produce the type library (TextSearchCom.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(C9C24B66-FF85-4E8B-A73F-56180FD41D89),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface ITextSearch : IDispatch{
+	[id(1), helpstring("Puts file and search string pattern in the queue")] HRESULT PutFile([in] BSTR fPath, [in] BSTR toSearch);
+	[id(2), helpstring("Gets file check result from the queue")] HRESULT GetResult([out] BSTR* fPath,[out] BSTR* toSearch, [out] VARIANT_BOOL* contains);
+};
+[
+	uuid(5E027AC7-482F-4719-8D9E-3CBC9829304E),
+	version(1.0),
+]
+library TextSearchComLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(6A89E26B-9032-4A7B-A815-0F92CD601E5F)		
+	]
+	coclass TextSearch
+	{
+		[default] interface ITextSearch;
+	};
+};
+
+import "shobjidl.idl";
