@@ -1,0 +1,110 @@
+
+
+ Running ./textsearchclient 
+
+ Usage: --path /path/to/dir --search "example search" [--patterns "*.*" -subs]
+  --path:     specifies working directory path (must be set)
+  --search:   specifies string to search - (must be set)
+  --patterns: specifies file extension patterns (default: *.*)
+  -subs:      if specified the program includes sub-directories
+
+
+ Running ./textsearchclient --path ./test --search ammar --patterns "*.h *.txt"
+
+  Starting Text Search Client
+ =============================
+
+  Loaded pthread library successfully
+  Loaded TextSearch library successfully
+  Acquired ITextSearch create function successfully
+  Created TextSearch instance successfully
+
+  Loaded FileManager library successfully
+  Acquired FileManager create function successfully
+  Created FileManager instance successfully
+  Passed TextSearch instance to FileManager instance successfully
+
+  Started Results Receiver Thread 
+ =================================
+  Searched for: 'ammar' -- Found: true -- File: ./test/ammar (copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/ammar (4th copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/ammar.txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/ammar (3rd copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/ammar (6th copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/ammar (5th copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/ammar (another copy).txt
+
+  Received quit message. Terminating receiver thread.. 
+
+
+
+ Running ./textsearchclient --path ./test --search ammar --patterns "*.txt" -subs 
+
+  Starting Text Search Client
+ =============================
+
+  Loaded pthread library successfully
+  Loaded TextSearch library successfully
+  Acquired ITextSearch create function successfully
+  Created TextSearch instance successfully
+
+  Loaded FileManager library successfully
+  Acquired FileManager create function successfully
+  Created FileManager instance successfully
+  Passed TextSearch instance to FileManager instance successfully
+
+  Started Results Receiver Thread 
+ =================================
+  Searched for: 'ammar' -- Found: true -- File: ./test/ammar (copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/ammar (4th copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/ammar.txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/ammar (3rd copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/ammar (6th copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/ammar (5th copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/ammar (another copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/sub-directory/ammar (copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/sub-directory/ammar (4th copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/sub-directory/ammar.txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/sub-directory/ammar (3rd copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/sub-directory/ammar (6th copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/sub-directory/ammar (5th copy).txt
+  Searched for: 'ammar' -- Found: true -- File: ./test/sub-directory/ammar (another copy).txt
+
+  Received quit message. Terminating receiver thread.. 
+
+
+
+ Running ./textsearchclient --path ./test --search nothing --patterns "*.txt" -subs 
+
+  Starting Text Search Client
+ =============================
+
+  Loaded pthread library successfully
+  Loaded TextSearch library successfully
+  Acquired ITextSearch create function successfully
+  Created TextSearch instance successfully
+
+  Loaded FileManager library successfully
+  Acquired FileManager create function successfully
+  Created FileManager instance successfully
+  Passed TextSearch instance to FileManager instance successfully
+
+  Started Results Receiver Thread 
+ =================================
+  Searched for: 'nothing' -- Found: false -- File: ./test/ammar (copy).txt
+  Searched for: 'nothing' -- Found: false -- File: ./test/ammar (4th copy).txt
+  Searched for: 'nothing' -- Found: false -- File: ./test/ammar.txt
+  Searched for: 'nothing' -- Found: false -- File: ./test/ammar (3rd copy).txt
+  Searched for: 'nothing' -- Found: false -- File: ./test/ammar (6th copy).txt
+  Searched for: 'nothing' -- Found: false -- File: ./test/ammar (5th copy).txt
+  Searched for: 'nothing' -- Found: false -- File: ./test/ammar (another copy).txt
+  Searched for: 'nothing' -- Found: false -- File: ./test/sub-directory/ammar (copy).txt
+  Searched for: 'nothing' -- Found: false -- File: ./test/sub-directory/ammar (4th copy).txt
+  Searched for: 'nothing' -- Found: false -- File: ./test/sub-directory/ammar.txt
+  Searched for: 'nothing' -- Found: false -- File: ./test/sub-directory/ammar (3rd copy).txt
+  Searched for: 'nothing' -- Found: false -- File: ./test/sub-directory/ammar (6th copy).txt
+  Searched for: 'nothing' -- Found: false -- File: ./test/sub-directory/ammar (5th copy).txt
+  Searched for: 'nothing' -- Found: false -- File: ./test/sub-directory/ammar (another copy).txt
+
+  Received quit message. Terminating receiver thread.. 
+
