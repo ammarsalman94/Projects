@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="DependencyAnalysis">
+      <UniqueIdentifier>{047fc1bc-fb37-4d05-8c5c-ceeaa3b871da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CodeAnalyzer">
+      <UniqueIdentifier>{50e1f91f-9063-4344-b505-c5ea3d7b82c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SharedProjects">
+      <UniqueIdentifier>{5d99b83a-f09d-4cb4-b7ab-de1a0692f041}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NoSqlDb">
+      <UniqueIdentifier>{b35824bd-de49-4f1b-b198-f326d80cf204}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Publisher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\Logger\Logger.h">
+      <Filter>SharedProjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\FileSystem\FileSystem.h">
+      <Filter>SharedProjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\Tokenizer\Tokenizer.h">
+      <Filter>SharedProjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\Utilities\Utilities.h">
+      <Filter>SharedProjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\Cpp11-BlockingQueue\Cpp11-BlockingQueue.h">
+      <Filter>SharedProjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DependencyAnalysis\DependencyAnalyzer.h">
+      <Filter>DependencyAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StrongComponents\StrongComponent.h">
+      <Filter>DependencyAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TypeTable\TypeTable.h">
+      <Filter>DependencyAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\NoSQLDB\NoSqlDb\Element.h">
+      <Filter>NoSqlDb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\NoSQLDB\NoSqlDb\NoSqlDb.h">
+      <Filter>NoSqlDb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\NoSQLDB\RegularExpression\RegularExpression.h">
+      <Filter>NoSqlDb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CodeAnalyzer\AbstractSyntaxTree\AbstrSynTree.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CodeAnalyzer\Analyzer\Executive.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CodeAnalyzer\FileMgr\FileMgr.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CodeAnalyzer\GrammarHelpers\GrammarHelpers.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CodeAnalyzer\Parser\ActionsAndRules.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CodeAnalyzer\Parser\ConfigureParser.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CodeAnalyzer\Parser\Parser.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CodeAnalyzer\ScopeStack\ScopeStack.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CodeAnalyzer\SemiExp\itokcollection.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CodeAnalyzer\SemiExp\SemiExp.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Publisher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SharedProjects\Logger\Logger.cpp">
+      <Filter>SharedProjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SharedProjects\FileSystem\FileSystem.cpp">
+      <Filter>SharedProjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SharedProjects\Tokenizer\Tokenizer.cpp">
+      <Filter>SharedProjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SharedProjects\Utilities\Utilities.cpp">
+      <Filter>SharedProjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SharedProjects\Cpp11-BlockingQueue\Cpp11-BlockingQueue.cpp">
+      <Filter>SharedProjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DependencyAnalysis\DependencyAnalyzer.cpp">
+      <Filter>DependencyAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StrongComponents\StrongComponent.cpp">
+      <Filter>DependencyAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TypeTable\TypeTable.cpp">
+      <Filter>DependencyAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SharedProjects\NoSQLDB\RegularExpression\RegularExpression.cpp">
+      <Filter>NoSqlDb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CodeAnalyzer\AbstractSyntaxTree\AbstrSynTree.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CodeAnalyzer\Analyzer\Executive.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CodeAnalyzer\FileMgr\FileMgr.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CodeAnalyzer\GrammarHelpers\GrammarHelpers.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CodeAnalyzer\Parser\ActionsAndRules.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CodeAnalyzer\Parser\ConfigureParser.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CodeAnalyzer\Parser\Parser.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CodeAnalyzer\ScopeStack\ScopeStack.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CodeAnalyzer\SemiExp\SemiExp.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\dark.css">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\light.css">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\mainpage.css">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\scripts.js">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

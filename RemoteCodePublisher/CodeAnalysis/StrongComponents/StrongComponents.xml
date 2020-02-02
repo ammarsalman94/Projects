@@ -1,0 +1,15 @@
+<Database>
+<Element>
+	<Key>component1</Key>
+	<Name>Strong Component #1</Name>
+	<Category>Strong Component</Category>
+	<Description>Children are the component vertices. Data is the size</Description>
+	<TimeDate>2017/06/03  04:20:56</TimeDate>
+	<Children>
+		<Child>pack2</Child>
+		<Child>pack1</Child>
+	</Children>
+	<Data>2
+	</Data>
+</Element>
+</Database>

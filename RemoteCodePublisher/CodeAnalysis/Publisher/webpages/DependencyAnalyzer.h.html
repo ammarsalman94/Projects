@@ -1,0 +1,102 @@
+<html>
+  <head>
+     <link rel="stylesheet" type="text/css" href="resources/light.css"/>
+     <script src="resources/scripts.js"></script>
+     <button class="Fixed" onclick="toggleStyle(this)">Dark Theme</button>
+  </head>
+  <body>
+   <h3>DependencyAnalyzer.h</h3>
+   <hr/>
+   <div class = "indent">
+     <h4>Dependencies:</h4>
+     <div><a href="DependencyAnalyzer.cpp.html">DependencyAnalyzer.cpp</a></div>
+     <div><a href="NoSqlDb.h.html">NoSqlDb.h</a></div>
+     <div><a href="TypeTable.h.html">TypeTable.h</a></div>
+   </div>
+   <hr/>
+<pre><span class="number">  1       </span><span class="directive">#pragma</span> once
+<span class="number">  2       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  3       </span><span class="comment">// DependencyAnalyzer.h - Dependency Analyzer package              //</span>
+<span class="number">  4       </span><span class="comment">// Ver 1.0                                                         //</span>
+<span class="number">  5       </span><span class="comment">// Application: Project #2 - Dependency Analysis - CSE-687         //</span>
+<span class="number">  6       </span><span class="comment">// Platform:    Dell Inspiron 5520, Win 10, Visual Studio 2015     //</span>
+<span class="number">  7       </span><span class="comment">// Author:      Ammar Salman, EECS, Syracuse University            //</span>
+<span class="number">  8       </span><span class="comment">//              (313) 788-4694  hoplite.90@hotmail.com             //</span>
+<span class="number">  9       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  10    </span><span class="minmax" onclick="toggleminmax(this, 'sp9')" onmouseover="highlight('sp9')" onmouseout="removeHighlight('sp9')">-</span><span id="sp9"><span class="comment">/*
+<span class="number">  11      </span>* Package Operations:
+<span class="number">  12      </span>* -------------------
+<span class="number">  13      </span>* This package is analyzes dependencies based on the extracted types
+<span class="number">  14      </span>* held in the TypeTable. The process is simple and easy. It takes a
+<span class="number">  15      </span>* lot of time to process.
+<span class="number">  16      </span>*
+<span class="number">  17      </span>* Public Interface:
+<span class="number">  18      </span>* DependencyAnalyzer da;
+<span class="number">  19      </span>* da.Analyze(argc, argv);
+<span class="number">  20      </span>* cout &lt&lt da.ShowDependencies();
+<span class="number">  21      </span>* auto db = da.getDb();
+<span class="number">  22      </span>* auto tt = da.getTT();
+<span class="number">  23      </span>*
+<span class="number">  24      </span>*
+<span class="number">  25      </span>* Required Files:
+<span class="number">  26      </span>* ---------------
+<span class="number">  27      </span>*   - DependencyAnalyzer.h, TypeTable.h, NoSqlDb.h
+<span class="number">  28      </span>*
+<span class="number">  29      </span>* Build Process:
+<span class="number">  30      </span>* --------------
+<span class="number">  31      </span>*   devenv DependencyAnalysis.sln /debug rebuild
+<span class="number">  32      </span>*
+<span class="number">  33      </span>* Maintenance History:
+<span class="number">  34      </span>* --------------------
+<span class="number">  35      </span>* Ver 1.0 : 6 March 2017
+<span class="number">  36      </span>* - first release
+<span class="number">  37      </span>*
+<span class="number">  38      </span>*/</span></span>
+<span class="number">  39      </span>
+<span class="number">  40      </span><span class="directive">#include</span> <span class="str">&ltunordered_map&gt</span>
+<span class="number">  41      </span><span class="directive">#include</span> <span class="str">&ltvector&gt</span>
+<span class="number">  42      </span><span class="directive">#include</span> <span class="str">&ltset&gt</span>
+<span class="number">  43      </span><span class="directive">#include</span> <span class="str">&ltstring&gt</span>
+<span class="number">  44      </span>
+<span class="number">  45      </span><span class="directive">#include</span> <span class="str">"TypeTable.h"</span>
+<span class="number">  46      </span><span class="directive">#include</span> <span class="str">"NoSqlDb.h"</span>
+<span class="number">  47      </span>
+<span class="number">  48    </span><span class="minmax" onclick="toggleminmax(this, 'sp47')" onmouseover="highlight('sp47')" onmouseout="removeHighlight('sp47')">-</span><span class="key">namespace</span> DependencyAnalysis <span id="sp47">{
+<span class="number">  49      </span>	<span class="key">using</span> <span class="key">namespace</span> std;
+<span class="number">  50      </span>	<span class="key">using</span> <span class="key">namespace</span> Databases;
+<span class="number">  51      </span>
+<span class="number">  52      </span>
+<span class="number">  53    </span><span class="minmax" onclick="toggleminmax(this, 'sp52')" onmouseover="highlight('sp52')" onmouseout="removeHighlight('sp52')">-</span>	<span class="key">class</span> DependencyAnalyzer <span id="sp52">{
+<span class="number">  54      </span>	<span class="key">public</span>:
+<span class="number">  55      </span>		DependencyAnalyzer();
+<span class="number">  56      </span>		~DependencyAnalyzer();
+<span class="number">  57      </span>		<span class="key">void</span> Analyze(<span class="key">int</span> argc, <span class="key">char</span> ** argv);
+<span class="number">  58      </span>		string ShowDependencies();
+<span class="number">  59    </span><span class="minmax" onclick="toggleminmax(this, 'sp58')" onmouseover="highlight('sp58')" onmouseout="removeHighlight('sp58')">-</span>		const TypeTable& getTT() const <span id="sp58">{ <span class="key">return</span> typeTable; }</span>
+<span class="number">  60    </span><span class="minmax" onclick="toggleminmax(this, 'sp59')" onmouseover="highlight('sp59')" onmouseout="removeHighlight('sp59')">-</span>		NoSQLDB&ltstring&gt getDb() <span id="sp59">{ <span class="key">return</span> dependencyDB; }</span>
+<span class="number">  61      </span>
+<span class="number">  62      </span>	<span class="key">private</span>:
+<span class="number">  63      </span>		TypeTable typeTable;
+<span class="number">  64      </span>		NoSQLDB&ltstring&gt dependencyDB;
+<span class="number">  65      </span>		unordered_map&ltstring, vector&ltTypeValue&gt&gt definedTypes;
+<span class="number">  66      </span>		unordered_map&ltstring, set&ltstring&gt&gt usedTypes;
+<span class="number">  67      </span>		unordered_map&ltstring, vector&ltstring&gt&gt includedLibs;
+<span class="number">  68      </span>
+<span class="number">  69      </span>		<span class="key">void</span> processHeaderSrouceDeps(string fName);
+<span class="number">  70      </span>		<span class="key">void</span> processUsedTypeDeps(string fName);
+<span class="number">  71      </span>		<span class="key">void</span> AddFilesToDB();
+<span class="number">  72      </span>	}</span>;
+<span class="number">  73      </span>
+<span class="number">  74      </span>	<span class="key">template</span>&lt<span class="key">typename</span> T&gt
+<span class="number">  75    </span><span class="minmax" onclick="toggleminmax(this, 'sp74')" onmouseover="highlight('sp74')" onmouseout="removeHighlight('sp74')">-</span>	const <span class="key">bool</span> vectorContains(vector&ltT&gt& vec, T value) <span id="sp74">{
+<span class="number">  76    </span><span class="minmax" onclick="toggleminmax(this, 'sp75')" onmouseover="highlight('sp75')" onmouseout="removeHighlight('sp75')">-</span>		<span class="key">for</span> (<span class="key">auto</span> val : vec) <span id="sp75">{
+<span class="number">  77      </span>			<span class="key">if</span> (val == value) <span class="key">return</span> <span class="key">true</span>;
+<span class="number">  78      </span>		}</span>
+<span class="number">  79      </span>		<span class="key">return</span> <span class="key">false</span>;
+<span class="number">  80      </span>	}</span>
+<span class="number">  81      </span>
+<span class="number">  82      </span>}</span>
+
+</pre>
+  </body>
+</html>

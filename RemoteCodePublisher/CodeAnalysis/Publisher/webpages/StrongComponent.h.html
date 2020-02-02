@@ -1,0 +1,267 @@
+<html>
+  <head>
+     <link rel="stylesheet" type="text/css" href="resources/light.css"/>
+     <script src="resources/scripts.js"></script>
+     <button class="Fixed" onclick="toggleStyle(this)">Dark Theme</button>
+  </head>
+  <body>
+   <h3>StrongComponent.h</h3>
+   <hr/>
+   <div class = "indent">
+     <h4>Dependencies:</h4>
+     <div><a href="Element.h.html">Element.h</a></div>
+     <div><a href="NoSqlDb.h.html">NoSqlDb.h</a></div>
+   </div>
+   <hr/>
+<pre><span class="number">  1       </span><span class="directive">#pragma</span> once
+<span class="number">  2       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  3       </span><span class="comment">// StrongComponent.h - Strong component analyzer                   //</span>
+<span class="number">  4       </span><span class="comment">// Ver 1.0                                                         //</span>
+<span class="number">  5       </span><span class="comment">// Application: Project #2 - Dependency Analysis - CSE-687         //</span>
+<span class="number">  6       </span><span class="comment">// Platform:    Dell Inspiron 5520, Win 10, Visual Studio 2015     //</span>
+<span class="number">  7       </span><span class="comment">// Author:      Ammar Salman, EECS, Syracuse University            //</span>
+<span class="number">  8       </span><span class="comment">//              (313) 788-4694  hoplite.90@hotmail.com             //</span>
+<span class="number">  9       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  10    </span><span class="minmax" onclick="toggleminmax(this, 'sp9')" onmouseover="highlight('sp9')" onmouseout="removeHighlight('sp9')">-</span><span id="sp9"><span class="comment">/*
+<span class="number">  11      </span>* Package Operations:
+<span class="number">  12      </span>* -------------------
+<span class="number">  13      </span>* This package is Strong Components analyzer based on NoSQLDB records
+<span class="number">  14      </span>* When the TypeAnalysis/DependencyAnalysis finish their work, they 
+<span class="number">  15      </span>* will produce a NoSQLDB to record the dependencies. Using this
+<span class="number">  16      </span>* package it is very easy to find all strong components.
+<span class="number">  17      </span>*
+<span class="number">  18      </span>* Public Interface:
+<span class="number">  19      </span>* Vertix *v;
+<span class="number">  20      </span>* string n = v-&gtname();
+<span class="number">  21      </span>* auto conns = v-&gtconnections();
+<span class="number">  22      </span>*
+<span class="number">  23      </span>* StrongComponent sc;
+<span class="number">  24      </span>* sc.processNoSqlDb(db);
+<span class="number">  25      </span>* sc.extractStrongComponents();
+<span class="number">  26      </span>* sc.StrongestComponent_El();
+<span class="number">  27      </span>* sc.StrongestComponents_NoSQLDB();
+<span class="number">  28      </span>*
+<span class="number">  29      </span>* Required Files:
+<span class="number">  30      </span>* ---------------
+<span class="number">  31      </span>*   - StrongComponent.h, NoSqlDb.h
+<span class="number">  32      </span>*
+<span class="number">  33      </span>* Build Process:
+<span class="number">  34      </span>* --------------
+<span class="number">  35      </span>*   devenv DependencyAnalysis.sln /debug rebuild
+<span class="number">  36      </span>*
+<span class="number">  37      </span>* Maintenance History:
+<span class="number">  38      </span>* --------------------
+<span class="number">  39      </span>* Ver 1.0 : 4 March 2017
+<span class="number">  40      </span>* - first release
+<span class="number">  41      </span>*
+<span class="number">  42      </span>*/</span></span>
+<span class="number">  43      </span>
+<span class="number">  44      </span>
+<span class="number">  45      </span><span class="directive">#include</span> <span class="str">&ltset&gt</span>
+<span class="number">  46      </span><span class="directive">#include</span> <span class="str">&ltvector&gt</span>
+<span class="number">  47      </span><span class="directive">#include</span> <span class="str">&ltstring&gt</span>
+<span class="number">  48      </span><span class="directive">#include</span> <span class="str">&ltunordered_map&gt</span>
+<span class="number">  49      </span><span class="directive">#include</span> <span class="str">&ltstack&gt</span>
+<span class="number">  50      </span><span class="directive">#include</span> <span class="str">&ltexception&gt</span>
+<span class="number">  51      </span>
+<span class="number">  52      </span><span class="directive">#include</span> <span class="str">"Element.h"</span>
+<span class="number">  53      </span><span class="directive">#include</span> <span class="str">"NoSqlDb.h"</span>
+<span class="number">  54      </span>
+<span class="number">  55      </span>
+<span class="number">  56    </span><span class="minmax" onclick="toggleminmax(this, 'sp55')" onmouseover="highlight('sp55')" onmouseout="removeHighlight('sp55')">-</span><span class="key">namespace</span> Utilities <span id="sp55">{
+<span class="number">  57      </span>	<span class="key">using</span> <span class="key">namespace</span> std;
+<span class="number">  58      </span>	<span class="key">using</span> <span class="key">namespace</span> Databases;
+<span class="number">  59      </span>
+<span class="number">  60    </span><span class="minmax" onclick="toggleminmax(this, 'sp59')" onmouseover="highlight('sp59')" onmouseout="removeHighlight('sp59')">-</span>	<span id="sp59"><span class="comment">/* 
+<span class="number">  61      </span>	 * Vertix class, provides information needed for processing
+<span class="number">  62      </span>	 * this class takes information from the NoSQLDB and stores
+<span class="number">  63      </span>	 * it for later usage. Each Vertix represents one NoSQLDB
+<span class="number">  64      </span>	 * Element.
+<span class="number">  65      </span>	 */</span></span>
+<span class="number">  66    </span><span class="minmax" onclick="toggleminmax(this, 'sp65')" onmouseover="highlight('sp65')" onmouseout="removeHighlight('sp65')">-</span>	<span class="key">class</span> Vertix <span id="sp65">{
+<span class="number">  67      </span>		string name_;
+<span class="number">  68      </span>		<span class="comment">// index is set to -1 to have a value representing "undefined"</span>
+<span class="number">  69      </span>		<span class="comment">// .. according to the Tarjan's algorithm it needs to know it</span>
+<span class="number">  70      </span>		<span class="key">int</span> index = -1;
+<span class="number">  71      </span>		<span class="key">int</span> lowlink;
+<span class="number">  72      </span>		<span class="key">bool</span> onStack;
+<span class="number">  73      </span>		<span class="comment">// connections are basically the edges for each vertix</span>
+<span class="number">  74      </span>		set&ltstring&gt connections_;
+<span class="number">  75      </span>
+<span class="number">  76      </span>		<span class="comment">// these functions take vector&ltstring&gt which is the </span>
+<span class="number">  77      </span>		<span class="comment">// normal output of my NoSQLDB keys list</span>
+<span class="number">  78      </span>		<span class="key">void</span> addConnections(vector&ltstring&gt& conns);
+<span class="number">  79      </span>		<span class="key">void</span> removeConnections(vector&ltstring&gt& conns);
+<span class="number">  80      </span>
+<span class="number">  81      </span>		<span class="comment">// give only StrongComponent full access</span>
+<span class="number">  82      </span>		<span class="key">friend</span> <span class="key">class</span> StrongComponent;
+<span class="number">  83      </span>	<span class="key">public</span>:
+<span class="number">  84      </span>		<span class="comment">// expose data as constants to keep them encapsulated well</span>
+<span class="number">  85    </span><span class="minmax" onclick="toggleminmax(this, 'sp84')" onmouseover="highlight('sp84')" onmouseout="removeHighlight('sp84')">-</span>		const set&ltstring&gt& connections() const <span id="sp84">{ <span class="key">return</span> connections_; }</span>
+<span class="number">  86    </span><span class="minmax" onclick="toggleminmax(this, 'sp85')" onmouseover="highlight('sp85')" onmouseout="removeHighlight('sp85')">-</span>		const string& name() const <span id="sp85">{ <span class="key">return</span> name_; }</span>
+<span class="number">  87      </span>	}</span>;
+<span class="number">  88      </span>
+<span class="number">  89      </span>	<span class="comment">// -----&lt Add Connections function &gt---------------------------------------</span>
+<span class="number">  90    </span><span class="minmax" onclick="toggleminmax(this, 'sp89')" onmouseover="highlight('sp89')" onmouseout="removeHighlight('sp89')">-</span>	<span id="sp89"><span class="comment">/* takes vector&ltstring&gt of keys and adds them to the set of edges*/</span></span>
+<span class="number">  91    </span><span class="minmax" onclick="toggleminmax(this, 'sp90')" onmouseover="highlight('sp90')" onmouseout="removeHighlight('sp90')">-</span>	<span class="key">inline</span> <span class="key">void</span> Vertix::addConnections(vector&ltstring&gt& conns) <span id="sp90">{
+<span class="number">  92      </span>		<span class="comment">// set automatically gaurantees no duplicates</span>
+<span class="number">  93      </span>		connections_.insert(conns.begin(), conns.end());
+<span class="number">  94      </span>	}</span>
+<span class="number">  95      </span>
+<span class="number">  96      </span>	<span class="comment">// -----&lt Remove Connections function &gt------------------------------------</span>
+<span class="number">  97    </span><span class="minmax" onclick="toggleminmax(this, 'sp96')" onmouseover="highlight('sp96')" onmouseout="removeHighlight('sp96')">-</span>	<span id="sp96"><span class="comment">/* takes vector&ltstring&gt keys (representing edges) and deletes what found*/</span></span>
+<span class="number">  98    </span><span class="minmax" onclick="toggleminmax(this, 'sp97')" onmouseover="highlight('sp97')" onmouseout="removeHighlight('sp97')">-</span>	<span class="key">inline</span> <span class="key">void</span> Vertix::removeConnections(vector&ltstring&gt& conns) <span id="sp97">{
+<span class="number">  99    </span><span class="minmax" onclick="toggleminmax(this, 'sp98')" onmouseover="highlight('sp98')" onmouseout="removeHighlight('sp98')">-</span>		<span class="key">for</span> (<span class="key">auto</span> it = connections_.begin(); it != connections_.end(); ++it) <span id="sp98">{
+<span class="number">  100     </span>			<span class="key">for</span> (<span class="key">auto</span> val : conns)
+<span class="number">  101   </span><span class="minmax" onclick="toggleminmax(this, 'sp100')" onmouseover="highlight('sp100')" onmouseout="removeHighlight('sp100')">-</span>				<span class="key">if</span> ((*it) == val) <span id="sp100">{
+<span class="number">  102     </span>					connections_.erase(it);
+<span class="number">  103     </span>					--it;
+<span class="number">  104     </span>					<span class="comment">// set holds distinct values, no need to continue once found</span>
+<span class="number">  105     </span>					<span class="key">break</span>;
+<span class="number">  106     </span>				}</span>
+<span class="number">  107     </span>		}</span>
+<span class="number">  108     </span>	}</span>
+<span class="number">  109     </span>
+<span class="number">  110     </span>
+<span class="number">  111   </span><span class="minmax" onclick="toggleminmax(this, 'sp110')" onmouseover="highlight('sp110')" onmouseout="removeHighlight('sp110')">-</span>	<span id="sp110"><span class="comment">/*
+<span class="number">  112     </span>	 * implementation of Tarjan's algorithm on NoSQLDB objects
+<span class="number">  113     </span>	 * the design of the database allows for easy representation
+<span class="number">  114     </span>	 * of graphs using it. Each key is a Vertix. Each child is
+<span class="number">  115     </span>	 * an Edge. This way we have all our needed &lt V, E &gt
+<span class="number">  116     </span>	 */</span></span>
+<span class="number">  117   </span><span class="minmax" onclick="toggleminmax(this, 'sp116')" onmouseover="highlight('sp116')" onmouseout="removeHighlight('sp116')">-</span>	<span class="key">class</span> StrongComponent <span id="sp116">{
+<span class="number">  118     </span>	<span class="key">public</span>:
+<span class="number">  119     </span>		<span class="comment">// constructor</span>
+<span class="number">  120   </span><span class="minmax" onclick="toggleminmax(this, 'sp119')" onmouseover="highlight('sp119')" onmouseout="removeHighlight('sp119')">-</span>		StrongComponent() <span id="sp119">{}</span>
+<span class="number">  121     </span>		<span class="comment">// DO NOT ALLOW COPY CONSTRUCTION</span>
+<span class="number">  122     </span>		StrongComponent(const StrongComponent& whatever) = <span class="key">delete</span>;
+<span class="number">  123     </span>		~StrongComponent();
+<span class="number">  124     </span>		<span class="key">template</span>&lt<span class="key">typename</span> T&gt <span class="key">void</span> processNoSqlDb(NoSQLDB&ltT&gt& db);
+<span class="number">  125     </span>		<span class="key">void</span> extractStrongComponents();
+<span class="number">  126     </span>
+<span class="number">  127   </span><span class="minmax" onclick="toggleminmax(this, 'sp126')" onmouseover="highlight('sp126')" onmouseout="removeHighlight('sp126')">-</span>		Element&lt<span class="key">int</span>&gt StrongestComponent_El() <span id="sp126">{ <span class="key">return</span> StrongComponents.GetElement(scKey);}</span>
+<span class="number">  128   </span><span class="minmax" onclick="toggleminmax(this, 'sp127')" onmouseover="highlight('sp127')" onmouseout="removeHighlight('sp127')">-</span>		NoSQLDB&lt<span class="key">int</span>&gt StrongestComponents_NOSQLDB() <span id="sp127">{ <span class="key">return</span> StrongComponents; }</span>
+<span class="number">  129     </span>
+<span class="number">  130     </span>	<span class="key">private</span>:
+<span class="number">  131     </span>		<span class="key">void</span> strongConnect(Vertix* v);
+<span class="number">  132     </span>		unordered_map&ltstring, Vertix*&gt graph;
+<span class="number">  133     </span>		NoSQLDB&lt<span class="key">int</span>&gt StrongComponents;
+<span class="number">  134     </span>		stack&ltVertix*&gt Stack;
+<span class="number">  135     </span>		size_t index;
+<span class="number">  136     </span>		size_t scIndex;
+<span class="number">  137     </span>		string scKey;
+<span class="number">  138     </span>		size_t scCount;
+<span class="number">  139     </span>	}</span>;
+<span class="number">  140     </span>
+<span class="number">  141     </span>	<span class="comment">// -----&lt destructor &gt---------------------------------------------------</span>
+<span class="number">  142   </span><span class="minmax" onclick="toggleminmax(this, 'sp141')" onmouseover="highlight('sp141')" onmouseout="removeHighlight('sp141')">-</span>	<span class="key">inline</span> StrongComponent::~StrongComponent() <span id="sp141">{
+<span class="number">  143     </span>		<span class="key">for</span> (<span class="key">auto</span> it = graph.begin(); it != graph.end(); ++it)
+<span class="number">  144     </span>			<span class="key">delete</span> it-&gtsecond;
+<span class="number">  145   </span><span class="minmax" onclick="toggleminmax(this, 'sp144')" onmouseover="highlight('sp144')" onmouseout="removeHighlight('sp144')">-</span>		<span id="sp144"><span class="comment">/* no need to delete anything else as the strongComponents and stack
+<span class="number">  146     </span>		 * will only hold pointers that were defined and put inside the graph*/</span></span>
+<span class="number">  147     </span>	}</span>
+<span class="number">  148     </span>
+<span class="number">  149     </span>	<span class="comment">// -----&lt process NoSQLDB function &gt-------------------------------------</span>
+<span class="number">  150   </span><span class="minmax" onclick="toggleminmax(this, 'sp149')" onmouseover="highlight('sp149')" onmouseout="removeHighlight('sp149')">-</span>	<span id="sp149"><span class="comment">/* takes NoSQLDB from any type since we only care about keys/children */</span></span>
+<span class="number">  151     </span>	<span class="key">template</span>&lt<span class="key">typename</span> T&gt
+<span class="number">  152   </span><span class="minmax" onclick="toggleminmax(this, 'sp151')" onmouseover="highlight('sp151')" onmouseout="removeHighlight('sp151')">-</span>	<span class="key">inline</span> <span class="key">void</span> StrongComponent::processNoSqlDb(NoSQLDB&ltT&gt& db) <span id="sp151">{
+<span class="number">  153     </span>		vector&ltstring&gt keys = db.GetAllKeys();
+<span class="number">  154   </span><span class="minmax" onclick="toggleminmax(this, 'sp153')" onmouseover="highlight('sp153')" onmouseout="removeHighlight('sp153')">-</span>		<span class="key">for</span> (<span class="key">auto</span> key : keys) <span id="sp153">{
+<span class="number">  155     </span>			Vertix * vertix = <span class="key">new</span> Vertix();
+<span class="number">  156     </span>			vertix-&gtname_ = key;
+<span class="number">  157     </span>			vertix-&gtaddConnections(db.GetChildren(key));
+<span class="number">  158     </span>			graph[key] = vertix;
+<span class="number">  159     </span>		}</span>
+<span class="number">  160     </span>	}</span>
+<span class="number">  161     </span>
+<span class="number">  162     </span>	<span class="comment">// -----&lt Extract Strong Components function &gt----------------------------</span>
+<span class="number">  163   </span><span class="minmax" onclick="toggleminmax(this, 'sp162')" onmouseover="highlight('sp162')" onmouseout="removeHighlight('sp162')">-</span>	<span id="sp162"><span class="comment">/* iterates through the set and calls strong connect recursive function*/</span></span>
+<span class="number">  164   </span><span class="minmax" onclick="toggleminmax(this, 'sp163')" onmouseover="highlight('sp163')" onmouseout="removeHighlight('sp163')">-</span>	<span class="key">inline</span> <span class="key">void</span> StrongComponent::extractStrongComponents() <span id="sp163">{
+<span class="number">  165     </span>		scCount = 0;
+<span class="number">  166     </span>		index = 0;
+<span class="number">  167   </span><span class="minmax" onclick="toggleminmax(this, 'sp166')" onmouseover="highlight('sp166')" onmouseout="removeHighlight('sp166')">-</span>		<span class="key">for</span> (<span class="key">auto</span> it = graph.begin(); it != graph.end(); ++it) <span id="sp166">{
+<span class="number">  168     </span>			<span class="comment">// -1 means undefined</span>
+<span class="number">  169     </span>			<span class="key">if</span> (it-&gtsecond-&gtindex == -1) strongConnect(it-&gtsecond);
+<span class="number">  170     </span>		}</span>
+<span class="number">  171     </span>
+<span class="number">  172     </span>		<span class="comment">// analysis is done by now</span>
+<span class="number">  173     </span>		<span class="comment">// this is to find the largest strong component so we could return it</span>
+<span class="number">  174     </span>		<span class="key">int</span> max = 0;
+<span class="number">  175   </span><span class="minmax" onclick="toggleminmax(this, 'sp174')" onmouseover="highlight('sp174')" onmouseout="removeHighlight('sp174')">-</span>		<span id="sp174"><span class="comment">/*size_t size = strongComponents.size();
+<span class="number">  176     </span>		for (size_t i = 0; i &lt size; ++i)
+<span class="number">  177     </span>			if (max &lt strongComponents[i].size()) {
+<span class="number">  178     </span>				max = strongComponents[i].size();
+<span class="number">  179     </span>				scIndex = i;
+<span class="number">  180     </span>			}*/</span></span>
+<span class="number">  181     </span>		max = 0;
+<span class="number">  182   </span><span class="minmax" onclick="toggleminmax(this, 'sp181')" onmouseover="highlight('sp181')" onmouseout="removeHighlight('sp181')">-</span>		<span class="key">for</span> (<span class="key">auto</span> key : StrongComponents.GetAllKeys()) <span id="sp181">{
+<span class="number">  183   </span><span class="minmax" onclick="toggleminmax(this, 'sp182')" onmouseover="highlight('sp182')" onmouseout="removeHighlight('sp182')">-</span>			<span class="key">if</span> (max &lt StrongComponents.GetElement(key).GetData()) <span id="sp182">{
+<span class="number">  184     </span>				max = StrongComponents.GetElement(key).GetData();
+<span class="number">  185     </span>				scKey = key;
+<span class="number">  186     </span>			}</span>
+<span class="number">  187     </span>		}</span>
+<span class="number">  188     </span>	}</span>
+<span class="number">  189     </span>
+<span class="number">  190     </span>
+<span class="number">  191     </span>	<span class="comment">// -----&lt Strong Connect function &gt-------------------------------------</span>
+<span class="number">  192   </span><span class="minmax" onclick="toggleminmax(this, 'sp191')" onmouseover="highlight('sp191')" onmouseout="removeHighlight('sp191')">-</span>	<span id="sp191"><span class="comment">/* accepts vertix pointer and works recursivly. It behaves exactly
+<span class="number">  193     </span>	 * as described in Tarjan's Wikipedia page */</span></span>
+<span class="number">  194   </span><span class="minmax" onclick="toggleminmax(this, 'sp193')" onmouseover="highlight('sp193')" onmouseout="removeHighlight('sp193')">-</span>	<span class="key">inline</span> <span class="key">void</span> StrongComponent::strongConnect(Vertix * v) <span id="sp193">{
+<span class="number">  195     </span>		v-&gtindex = <span class="key">static_cast</span>&lt<span class="key">int</span>&gt(index);
+<span class="number">  196     </span>		v-&gtlowlink = <span class="key">static_cast</span>&lt<span class="key">int</span>&gt(index);
+<span class="number">  197     </span>		++index;
+<span class="number">  198     </span>		Stack.push(v);
+<span class="number">  199     </span>		v-&gtonStack = <span class="key">true</span>;
+<span class="number">  200     </span>		Vertix * w;
+<span class="number">  201     </span>		<span class="comment">// go through v's edges</span>
+<span class="number">  202   </span><span class="minmax" onclick="toggleminmax(this, 'sp201')" onmouseover="highlight('sp201')" onmouseout="removeHighlight('sp201')">-</span>		<span class="key">for</span> (<span class="key">auto</span> edge : v-&gtconnections()) <span id="sp201">{
+<span class="number">  203     </span>			<span class="key">if</span> (graph.find(edge) == graph.end())
+<span class="number">  204     </span>				<span class="key">continue</span>;
+<span class="number">  205     </span>			<span class="comment">// or //throw InvalidEdgeFound();</span>
+<span class="number">  206     </span>			w = graph[edge];
+<span class="number">  207   </span><span class="minmax" onclick="toggleminmax(this, 'sp206')" onmouseover="highlight('sp206')" onmouseout="removeHighlight('sp206')">-</span>			<span class="key">if</span> (w-&gtindex == -1) <span id="sp206">{
+<span class="number">  208     </span>				strongConnect(w);
+<span class="number">  209     </span>				v-&gtlowlink = min(v-&gtlowlink, w-&gtlowlink);
+<span class="number">  210     </span>			}</span>
+<span class="number">  211     </span>			<span class="key">else</span> <span class="key">if</span> (w-&gtonStack)
+<span class="number">  212     </span>				v-&gtlowlink = min(v-&gtlowlink, w-&gtindex);
+<span class="number">  213     </span>		}</span>
+<span class="number">  214     </span>		<span class="comment">// check to store strong component</span>
+<span class="number">  215   </span><span class="minmax" onclick="toggleminmax(this, 'sp214')" onmouseover="highlight('sp214')" onmouseout="removeHighlight('sp214')">-</span>		<span class="key">if</span> (v-&gtlowlink == v-&gtindex) <span id="sp214">{
+<span class="number">  216     </span>			<span class="comment">//vector&ltVertix*&gt strongComponentEntry;</span>
+<span class="number">  217     </span>			Element&lt<span class="key">int</span>&gt strongComponentElement;
+<span class="number">  218     </span>			strongComponentElement.SetKey(<span class="str">"component"</span> + to_string(++scCount));
+<span class="number">  219     </span>			strongComponentElement.SetName(<span class="str">"Strong Component #"</span> + to_string(scCount));
+<span class="number">  220     </span>			strongComponentElement.SetCategory(<span class="str">"Strong Component"</span>);
+<span class="number">  221     </span>			strongComponentElement.SetDescription(<span class="str">"Children are the component vertices. Data is the size"</span>);
+<span class="number">  222     </span>			<span class="key">int</span> scSize = 0;
+<span class="number">  223   </span><span class="minmax" onclick="toggleminmax(this, 'sp222')" onmouseover="highlight('sp222')" onmouseout="removeHighlight('sp222')">-</span>			<span class="key">do</span> <span id="sp222">{
+<span class="number">  224     </span>				scSize++;
+<span class="number">  225     </span>				w = Stack.top();
+<span class="number">  226     </span>				Stack.pop();
+<span class="number">  227     </span>				w-&gtonStack = <span class="key">false</span>;
+<span class="number">  228     </span>
+<span class="number">  229     </span>				strongComponentElement.AddChild(w-&gtname_);
+<span class="number">  230     </span>			}</span> <span class="key">while</span> (w != v);
+<span class="number">  231     </span>			strongComponentElement.SetData(scSize);
+<span class="number">  232     </span>
+<span class="number">  233     </span>			<span class="comment">// add strong components to their containers </span>
+<span class="number">  234     </span>			StrongComponents.AddEntry(strongComponentElement.GetKey(), strongComponentElement);
+<span class="number">  235     </span>		}</span>
+<span class="number">  236     </span>	}</span>
+<span class="number">  237     </span>
+<span class="number">  238     </span>
+<span class="number">  239     </span>	<span class="comment">// this exception is optional. I can through an exception if a </span>
+<span class="number">  240     </span>	<span class="comment">// child relation key from the database did not exist in the db</span>
+<span class="number">  241     </span>	<span class="comment">// i elected not to use it and ignore the special case</span>
+<span class="number">  242     </span>	<span class="comment">// but i will keep it for now</span>
+<span class="number">  243   </span><span class="minmax" onclick="toggleminmax(this, 'sp242')" onmouseover="highlight('sp242')" onmouseout="removeHighlight('sp242')">-</span>	<span class="key">class</span> InvalidEdgeFound : <span class="key">public</span> exception <span id="sp242">{
+<span class="number">  244   </span><span class="minmax" onclick="toggleminmax(this, 'sp243')" onmouseover="highlight('sp243')" onmouseout="removeHighlight('sp243')">-</span>		<span class="key">virtual</span> const <span class="key">char</span>* what() <span class="key">throw</span>() <span id="sp243">{
+<span class="number">  245     </span>			<span class="key">return</span> <span class="str">"One of the vertices has an edge to non-existant verix"</span>;
+<span class="number">  246     </span>		}</span>
+<span class="number">  247     </span>	}</span>;
+<span class="number">  248     </span>}</span>
+
+</pre>
+  </body>
+</html>

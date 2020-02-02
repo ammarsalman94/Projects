@@ -1,0 +1,27 @@
+h1{
+	font-size: 150%;
+}
+
+body{
+	font-family: TimesNewRoman;
+	font-weight: bold;
+	font-size: 130%;
+	background: #fff3cf;
+	background: linear-gradient(to right, #fce6a4, #fee392, #fce6a4, #fee392, #fce6a4);
+}
+a, a.link, a.visited, a.active{
+	color: blue;
+}
+table, th, td{
+	border: 1px solid black;
+	text-align: center;
+}
+table{
+	width: 100%;
+	font-family: TimesNewRoman;
+	font-size: 100%;
+	font-weight: bold;
+}
+th{
+	font-size: 110%;
+}

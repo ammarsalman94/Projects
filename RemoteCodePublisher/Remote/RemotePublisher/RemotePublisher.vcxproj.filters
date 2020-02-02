@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Sockets">
+      <UniqueIdentifier>{da58e4c8-46c3-4196-8533-687604f82af4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SharedProjects">
+      <UniqueIdentifier>{5dc3f6a7-b01d-465e-b7f2-3c274fcb0f56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CodeAnalyzer">
+      <UniqueIdentifier>{2592e8aa-552c-42c7-998b-7fc8ed74f72f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DependencyAnalysis">
+      <UniqueIdentifier>{c920cbe9-5324-49dc-9aa0-80c1f44d5841}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RemotePublisher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SocketHelper\Receiver\Receiver.h">
+      <Filter>Sockets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SocketHelper\Sender\Sender.h">
+      <Filter>Sockets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SocketHelper\Sockets\Sockets.h">
+      <Filter>Sockets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SocketHelper\WindowsHelpers\WindowsHelpers.h">
+      <Filter>Sockets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\HttpMessage\HttpMessage.h">
+      <Filter>Sockets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\Task\Task.h">
+      <Filter>Sockets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\ThreadPool\ThreadPool.h">
+      <Filter>Sockets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\Logger\Logger.h">
+      <Filter>SharedProjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\FileSystem\FileSystem.h">
+      <Filter>SharedProjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\Utilities\Utilities.h">
+      <Filter>SharedProjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\Cpp11-BlockingQueue\Cpp11-BlockingQueue.h">
+      <Filter>SharedProjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\AbstractSyntaxTree\AbstrSynTree.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\Analyzer\Executive.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\FileMgr\FileMgr.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\GrammarHelpers\GrammarHelpers.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\Parser\ActionsAndRules.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\Parser\ConfigureParser.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\Parser\Parser.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\ScopeStack\ScopeStack.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\SemiExp\itokcollection.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\SemiExp\SemiExp.h">
+      <Filter>CodeAnalyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CodeAnalysis\DependencyAnalysis\DependencyAnalyzer.h">
+      <Filter>DependencyAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CodeAnalysis\StrongComponents\StrongComponent.h">
+      <Filter>DependencyAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CodeAnalysis\TypeTable\TypeTable.h">
+      <Filter>DependencyAnalysis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CodeAnalysis\Publisher\Publisher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SharedProjects\Tokenizer\Tokenizer.h">
+      <Filter>SharedProjects</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="RemotePublisher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SocketHelper\Receiver\Receiver.cpp">
+      <Filter>Sockets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SocketHelper\Sender\Sender.cpp">
+      <Filter>Sockets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SocketHelper\Sockets\Sockets.cpp">
+      <Filter>Sockets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SocketHelper\WindowsHelpers\WindowsHelpers.cpp">
+      <Filter>Sockets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SharedProjects\HttpMessage\HttpMessage.cpp">
+      <Filter>Sockets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SharedProjects\Task\Task.cpp">
+      <Filter>Sockets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SharedProjects\ThreadPool\ThreadPool.cpp">
+      <Filter>Sockets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SharedProjects\Logger\Logger.cpp">
+      <Filter>SharedProjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SharedProjects\FileSystem\FileSystem.cpp">
+      <Filter>SharedProjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SharedProjects\Utilities\Utilities.cpp">
+      <Filter>SharedProjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SharedProjects\Cpp11-BlockingQueue\Cpp11-BlockingQueue.cpp">
+      <Filter>SharedProjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\AbstractSyntaxTree\AbstrSynTree.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\Analyzer\Executive.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\FileMgr\FileMgr.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\GrammarHelpers\GrammarHelpers.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\Parser\ActionsAndRules.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\Parser\ConfigureParser.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\Parser\Parser.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\ScopeStack\ScopeStack.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\SemiExp\SemiExp.cpp">
+      <Filter>CodeAnalyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CodeAnalysis\DependencyAnalysis\DependencyAnalyzer.cpp">
+      <Filter>DependencyAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CodeAnalysis\StrongComponents\StrongComponent.cpp">
+      <Filter>DependencyAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CodeAnalysis\TypeTable\TypeTable.cpp">
+      <Filter>DependencyAnalysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CodeAnalysis\Publisher\Publisher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SharedProjects\Tokenizer\Tokenizer.cpp">
+      <Filter>SharedProjects</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

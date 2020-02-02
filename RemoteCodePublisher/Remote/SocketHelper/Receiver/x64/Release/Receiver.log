@@ -1,0 +1,15 @@
+﻿  FileSystem.cpp
+  HttpMessage.cpp
+  Logger.cpp
+  Sockets.cpp
+..\SocketHelper\Sockets\Sockets.cpp(161): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+..\SocketHelper\Sockets\Sockets.cpp(180): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+..\SocketHelper\Sockets\Sockets.cpp(199): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+..\SocketHelper\Sockets\Sockets.cpp(240): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+..\SocketHelper\Sockets\Sockets.cpp(248): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+..\SocketHelper\Sockets\Sockets.cpp(267): warning C4267: 'argument': conversion from 'size_t' to 'DWORD', possible loss of data
+  Utilities.cpp
+  WindowsHelpers.cpp
+  Receiver.cpp
+MSVCRT.lib(exe_main.obj) : error LNK2001: unresolved external symbol main
+C:\Users\hopli\Documents\Visual Studio 2015\Projects\OOD\RemoteCodePublisher\x64\Release\Receiver.exe : fatal error LNK1120: 1 unresolved externals

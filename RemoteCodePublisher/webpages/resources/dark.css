@@ -1,0 +1,67 @@
+body { 
+	background-color: #181818; 
+	color: lightgray;
+	font-family: Consolas; 
+	font-weight: 400; 
+	font-size: 105% ;
+}
+
+pre{
+    -moz-tab-size: 2;
+    -o-tab-size:   2;
+	-webkit-tab-size: 2;
+	-khtml-tab-size: 2;
+	-ms-tab-size: 2;
+    tab-size:      2;
+	font-weight: 400; 
+	font-size: 105% ;
+	font-family: Consolas; 
+}
+
+a, a.link, a.visited, a.hover, a.active{
+	color: blue;
+}
+
+::selection{
+	background: rgb(100,100,200);
+}
+
+.key { color: rgb(80,160,255);}
+.str { color: rgb(214,157,133);}
+.comment { color: rgb(0, 205, 0);}
+.directive { color: grey;}
+.number {
+	color: DarkCyan;
+	background-color: #181818 !important;
+	-webkit-user-select: none; 
+    -moz-user-select: none; 
+    -khtml-user-select: none; 
+    -ms-user-select: none; 
+	
+}
+
+.minmax {
+    border:solid 1px;
+	color: lightgray;
+	margin-right: 1ch;
+	text-align: center;
+	display: inline-block;
+    cursor:pointer;
+	-webkit-user-select: none; 
+    -moz-user-select: none; 
+    -khtml-user-select: none; 
+    -ms-user-select: none; 
+}
+
+.Fixed{
+	font-family: Consolas; 
+	font-weight: 300; 
+	font-size: 150% ;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	-webkit-user-select: none; 
+    -moz-user-select: none; 
+    -khtml-user-select: none; 
+    -ms-user-select: none; 
+}

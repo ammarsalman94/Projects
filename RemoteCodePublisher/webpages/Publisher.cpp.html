@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<!------------------------------------------------------------------------
+  Publisher.cpp.html - Project 3 published file
+  Published: Sun Apr  2 17:36:03 2017
+
+  Ammar Salman, CSE687 - Object Oriented Design, Spring 2017
+ ------------------------------------------------------------------------->
+<html>
+  <head>
+     <link rel="stylesheet" type="text/css" href="resources/light.css"/>
+     <script src="resources/scripts.js"></script>
+     <button class="Fixed" onclick="toggleStyle(this)">Dark Theme</button>
+  </head>
+  <body>
+   <h3>Publisher.cpp</h3>
+   <hr/>
+   <div class = "indent">
+     <h4>Dependencies:</h4>
+     <div><a href="FileSystem.h.html">FileSystem.h</a></div>
+     <div><a href="NoSqlDb.h.html">NoSqlDb.h</a></div>
+     <div><a href="Publisher.h.html">Publisher.h</a></div>
+   </div>
+   <hr/>
+<pre><span class="number">  1       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  2       </span><span class="comment">// Publisher.cpp - Provides implementation for Publisher.h         //</span>
+<span class="number">  3       </span><span class="comment">// Ver 1.0                                                         //</span>
+<span class="number">  4       </span><span class="comment">// Application: Project #3 - Code Publisher - CSE-687              //</span>
+<span class="number">  5       </span><span class="comment">// Platform:    Dell Inspiron 5520, Win 10, Visual Studio 2015     //</span>
+<span class="number">  6       </span><span class="comment">// Author:      Ammar Salman, EECS, Syracuse University            //</span>
+<span class="number">  7       </span><span class="comment">//              (313) 788-4694  hoplite.90@hotmail.com             //</span>
+<span class="number">  8       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  9       </span>
+<span class="number">  10      </span><span class="directive">#include</span> <span class="str">"Publisher.h"</span>
+<span class="number">  11      </span><span class="directive">#include</span> <span class="str">"..\DependencyAnalysis\CodeAnalyzer\FileSystem\FileSystem.h"</span>
+<span class="number">  12      </span><span class="directive">#include</span> <span class="str">"..\DependencyAnalysis\DependencyAnalysis\DependencyAnalyzer.h"</span>
+<span class="number">  13      </span><span class="directive">#include</span> <span class="str">"..\DependencyAnalysis\NoSQLDB\NoSqlDb\NoSqlDb.h"</span>
+<span class="number">  14      </span>
+<span class="number">  15      </span><span class="directive">#include</span> <span class="str">&ltfstream&gt</span>
+<span class="number">  16      </span><span class="directive">#include</span> <span class="str">&ltsstream&gt</span>
+<span class="number">  17      </span><span class="directive">#include</span> <span class="str">&ltiostream&gt</span>
+<span class="number">  18      </span><span class="directive">#include</span> <span class="str">&ltregex&gt</span>
+<span class="number">  19      </span><span class="directive">#include</span> <span class="str">&ltiomanip&gt</span>
+<span class="number">  20      </span><span class="directive">#include</span> <span class="str">&ltvector&gt</span>
+<span class="number">  21      </span><span class="directive">#include</span> <span class="str">&ltWindows.h&gt</span>
+<span class="number">  22      </span>
+<span class="number">  23      </span>
+<span class="number">  24      </span><span class="key">using</span> <span class="key">namespace</span> std;
+<span class="number">  25      </span><span class="key">using</span> <span class="key">namespace</span> FileSystem;
+<span class="number">  26      </span>
+<span class="number">  27      </span>
+<span class="number">  28    </span><span class="minmax" onclick="toggleminmax(this, 'sp27')" onmouseover="highlight('sp27')" onmouseout="removeHighlight('sp27')">-</span><span class="key">namespace</span> CodePublisher <span id="sp27">{
+<span class="number">  29      </span>
+<span class="number">  30      </span>	<span class="comment">// -----&lt Constructors &gt-------------------------------------------------------------</span>
+<span class="number">  31    </span><span class="minmax" onclick="toggleminmax(this, 'sp30')" onmouseover="highlight('sp30')" onmouseout="removeHighlight('sp30')">-</span>	Publisher::Publisher() <span id="sp30">{
+<span class="number">  32      </span>		<span class="comment">// sets output directory to: {currentdirectory}\\webpages</span>
+<span class="number">  33      </span>		outputFolder = Directory::getCurrentDirectory()+<span class="str">"\\webpages\\"</span>;
+<span class="number">  34      </span>	}</span>
+<span class="number">  35      </span>
+<span class="number">  36    </span><span class="minmax" onclick="toggleminmax(this, 'sp35')" onmouseover="highlight('sp35')" onmouseout="removeHighlight('sp35')">-</span>	Publisher::~Publisher() <span id="sp35">{
+<span class="number">  37      </span>		<span class="comment">// no need to delete argv because main will delete it when main ends</span>
+<span class="number">  38      </span>	}</span>
+<span class="number">  39      </span>
+<span class="number">  40      </span>
+<span class="number">  41      </span>	<span class="comment">// -----&lt Processes Command Line Arguments &gt-----------------------------------------</span>
+<span class="number">  42    </span><span class="minmax" onclick="toggleminmax(this, 'sp41')" onmouseover="highlight('sp41')" onmouseout="removeHighlight('sp41')">-</span>	<span class="key">bool</span> Publisher::ProcessCommandLineArgs(<span class="key">int</span> argc, <span class="key">char</span> ** argv) <span id="sp41">{
+<span class="number">  43      </span>		<span class="key">if</span> (argc &lt 2) <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  44    </span><span class="minmax" onclick="toggleminmax(this, 'sp43')" onmouseover="highlight('sp43')" onmouseout="removeHighlight('sp43')">-</span>		<span class="key">try</span> <span id="sp43">{
+<span class="number">  45      </span>			<span class="comment">// save working directory</span>
+<span class="number">  46      </span>			string oldDir = Directory::getCurrentDirectory();
+<span class="number">  47      </span>			<span class="key">this</span>-&gtargc = argc;
+<span class="number">  48      </span>			<span class="key">this</span>-&gtargv = argv;
+<span class="number">  49      </span>			string wDir(argv[1]);
+<span class="number">  50      </span>			Directory::setCurrentDirectory(wDir);
+<span class="number">  51      </span>			wDir = Directory::getCurrentDirectory();
+<span class="number">  52      </span>			<span class="key">if</span> (!Directory::exists(wDir)) <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  53      </span>			<span class="key">bool</span> includeSubDirectories = <span class="key">false</span>;
+<span class="number">  54    </span><span class="minmax" onclick="toggleminmax(this, 'sp53')" onmouseover="highlight('sp53')" onmouseout="removeHighlight('sp53')">-</span>			<span class="key">for</span> (<span class="key">int</span> i = 2; i &lt argc; i++) <span id="sp53">{
+<span class="number">  55      </span>				string temp(argv[i]);
+<span class="number">  56    </span><span class="minmax" onclick="toggleminmax(this, 'sp55')" onmouseover="highlight('sp55')" onmouseout="removeHighlight('sp55')">-</span>				<span class="key">if</span> (temp == <span class="str">"-output"</span>) <span id="sp55">{
+<span class="number">  57      </span>					Directory::setCurrentDirectory(oldDir);
+<span class="number">  58      </span>					string temp(argv[i + 1]);
+<span class="number">  59      </span>					<span class="key">if</span> (!Directory::exists(temp)) 
+<span class="number">  60      </span>						Directory::create(temp);
+<span class="number">  61      </span>					Directory::setCurrentDirectory(temp);
+<span class="number">  62      </span>					outputFolder = Directory::getCurrentDirectory();
+<span class="number">  63      </span>				}</span>
+<span class="number">  64      </span>			}</span>
+<span class="number">  65      </span>			<span class="comment">// restore working directory</span>
+<span class="number">  66      </span>			Directory::setCurrentDirectory(oldDir);
+<span class="number">  67      </span>			<span class="key">return</span> <span class="key">true</span>;
+<span class="number">  68      </span>		}</span>
+<span class="number">  69    </span><span class="minmax" onclick="toggleminmax(this, 'sp68')" onmouseover="highlight('sp68')" onmouseout="removeHighlight('sp68')">-</span>		<span class="key">catch</span> (...) <span id="sp68">{
+<span class="number">  70      </span>			<span class="key">return</span> <span class="key">false</span>;
+<span class="number">  71      </span>		}</span>
+<span class="number">  72      </span>	}</span>
+<span class="number">  73      </span>
+<span class="number">  74      </span>	<span class="comment">// -----&lt Copies CSS and JS files to output directory resources &gt--------------------</span>
+<span class="number">  75    </span><span class="minmax" onclick="toggleminmax(this, 'sp74')" onmouseover="highlight('sp74')" onmouseout="removeHighlight('sp74')">-</span>	<span class="key">bool</span> Publisher::CopyStylesAndScripts() <span id="sp74">{
+<span class="number">  76      </span>		<span class="comment">// tells the caller whether or not all the files were copied successfully</span>
+<span class="number">  77      </span>		<span class="key">bool</span> toReturn = <span class="key">true</span>;
+<span class="number">  78      </span>
+<span class="number">  79      </span>		string resourcesPath = outputFolder + <span class="str">"\\resources"</span>;
+<span class="number">  80      </span>		<span class="key">if</span> (!Directory::exists(resourcesPath))
+<span class="number">  81      </span>			Directory::create(resourcesPath);
+<span class="number">  82      </span>
+<span class="number">  83    </span><span class="minmax" onclick="toggleminmax(this, 'sp82')" onmouseover="highlight('sp82')" onmouseout="removeHighlight('sp82')">-</span>		vector&ltstring&gt files<span id="sp82">{ <span class="str">"dark.css"</span>, <span class="str">"light.css"</span>, <span class="str">"mainpage.css"</span>, <span class="str">"scripts.js"</span> }</span>;
+<span class="number">  84      </span>
+<span class="number">  85      </span>		ifstream src;
+<span class="number">  86      </span>		ofstream dst;
+<span class="number">  87      </span>		
+<span class="number">  88      </span>		<span class="comment">// save current directory because it will change after copying the first file</span>
+<span class="number">  89      </span>		string oldDir = Directory::getCurrentDirectory();
+<span class="number">  90    </span><span class="minmax" onclick="toggleminmax(this, 'sp89')" onmouseover="highlight('sp89')" onmouseout="removeHighlight('sp89')">-</span>		<span class="key">for</span> (string file : files) <span id="sp89">{
+<span class="number">  91      </span>			<span class="comment">// set current directory to the stored one to ensure the copy works</span>
+<span class="number">  92      </span>			Directory::setCurrentDirectory(oldDir);
+<span class="number">  93      </span>			
+<span class="number">  94      </span>			<span class="comment">// try opening the file</span>
+<span class="number">  95      </span>			src.open(<span class="str">"resources\\"</span> + file, ios::binary);
+<span class="number">  96    </span><span class="minmax" onclick="toggleminmax(this, 'sp95')" onmouseover="highlight('sp95')" onmouseout="removeHighlight('sp95')">-</span>			<span class="key">if</span> (src.good()) <span id="sp95">{
+<span class="number">  97      </span>				<span class="comment">// open the destination file (or create it) and copy everything to it</span>
+<span class="number">  98      </span>				dst.open(resourcesPath + file, ios::binary);
+<span class="number">  99      </span>				dst &lt&lt src.rdbuf();
+<span class="number">  100     </span>			}</span>
+<span class="number">  101     </span>			<span class="comment">// if any of the files was missing this function will inform the caller</span>
+<span class="number">  102     </span>			<span class="key">else</span> 
+<span class="number">  103     </span>				toReturn = <span class="key">false</span>;
+<span class="number">  104     </span>		}</span>
+<span class="number">  105     </span>		<span class="key">return</span> toReturn;
+<span class="number">  106     </span>	}</span>
+<span class="number">  107     </span>
+<span class="number">  108     </span>	<span class="comment">// -----&lt Performs dependency analysis on the given files &gt--------------------------</span>
+<span class="number">  109   </span><span class="minmax" onclick="toggleminmax(this, 'sp108')" onmouseover="highlight('sp108')" onmouseout="removeHighlight('sp108')">-</span>	<span class="key">bool</span> Publisher::PerformDependencyAnalysis() <span id="sp108">{
+<span class="number">  110     </span>		<span class="key">if</span> (argc&lt2) <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  111     </span>		DependencyAnalysis::DependencyAnalyzer da;
+<span class="number">  112     </span>		da.Analyze(argc, argv);
+<span class="number">  113     </span>		db = da.getDb();
+<span class="number">  114     </span>		<span class="key">return</span> <span class="key">true</span>;
+<span class="number">  115     </span>	}</span>
+<span class="number">  116     </span>
+<span class="number">  117     </span>	<span class="comment">// -----&lt Sets inner db to output of external dep analyzer &gt-------------------------</span>
+<span class="number">  118   </span><span class="minmax" onclick="toggleminmax(this, 'sp117')" onmouseover="highlight('sp117')" onmouseout="removeHighlight('sp117')">-</span>	<span class="key">void</span> Publisher::SetAnalysisDB(Databases::NoSQLDB&ltstring&gt& database) <span id="sp117">{
+<span class="number">  119     </span>		db = database;
+<span class="number">  120     </span>	}</span>
+<span class="number">  121     </span>
+<span class="number">  122     </span>	<span class="comment">// -----&lt Processes the dep analysis results DB &gt------------------------------------</span>
+<span class="number">  123   </span><span class="minmax" onclick="toggleminmax(this, 'sp122')" onmouseover="highlight('sp122')" onmouseout="removeHighlight('sp122')">-</span>	<span class="key">void</span> Publisher::ProcessFiles() <span id="sp122">{
+<span class="number">  124   </span><span class="minmax" onclick="toggleminmax(this, 'sp123')" onmouseover="highlight('sp123')" onmouseout="removeHighlight('sp123')">-</span>		<span class="key">for</span> (string key : db.GetAllKeys()) <span id="sp123">{
+<span class="number">  125     </span>			<span class="key">if</span> (showProgress) cout &lt&lt <span class="str">"\n  Creating HTML for: "</span> &lt&lt key;
+<span class="number">  126     </span>			ConvertToHTML(key);
+<span class="number">  127     </span>		}</span>
+<span class="number">  128     </span>	}</span>
+<span class="number">  129     </span>
+<span class="number">  130     </span>
+<span class="number">  131     </span>	<span class="comment">// -----&lt Creates MainPage that displays all generated webpages &gt--------------------</span>
+<span class="number">  132   </span><span class="minmax" onclick="toggleminmax(this, 'sp131')" onmouseover="highlight('sp131')" onmouseout="removeHighlight('sp131')">-</span>	<span class="key">void</span> Publisher::CreateMainPage() <span id="sp131">{
+<span class="number">  133     </span>		ostringstream oss;
+<span class="number">  134     </span>		oss &lt&lt <span class="str">"&lthtml&gt\n\t&lthead&gt"</span>;
+<span class="number">  135     </span>		oss &lt&lt <span class="str">"\n\t\t&ltlink rel=\"stylesheet\" type=\"text/css\" href=\"resources/mainpage.css\"/&gt"</span>;
+<span class="number">  136     </span>		oss &lt&lt <span class="str">"\n\t&lt/head&gt"</span>;
+<span class="number">  137     </span>		oss &lt&lt <span class="str">"\n\t&ltbody&gt"</span>;
+<span class="number">  138     </span>		oss &lt&lt <span class="str">"\n\t\t&lth1&gtCode Publisher&lt/h1&gt"</span>;
+<span class="number">  139     </span>		oss &lt&lt <span class="str">"\n\t\t&lttable&gt"</span>;
+<span class="number">  140     </span>		oss &lt&lt <span class="str">"\n\t\t\t&lttr&gt"</span>;
+<span class="number">  141     </span>		oss &lt&lt <span class="str">"\n\t\t\t\t&ltth&gtSource File&lt/th&gt"</span>;
+<span class="number">  142     </span>		oss &lt&lt <span class="str">"\n\t\t\t\t&ltth&gtDepends On&lt/th&gt"</span>;
+<span class="number">  143     </span>		oss &lt&lt <span class="str">"\n\t\t\t&lt/tr&gt"</span>;
+<span class="number">  144   </span><span class="minmax" onclick="toggleminmax(this, 'sp143')" onmouseover="highlight('sp143')" onmouseout="removeHighlight('sp143')">-</span>		<span class="key">for</span> (string key : db.GetAllKeys()) <span id="sp143">{
+<span class="number">  145     </span>			oss &lt&lt <span class="str">"\n\t\t\t&lttr&gt"</span>;
+<span class="number">  146     </span>			oss &lt&lt <span class="str">"\n\t\t\t\t&lttd&gt&ltdiv&gt&lta href=\""</span> &lt&lt Path::getName(key) &lt&lt <span class="str">".html\"&gt"</span> &lt&lt Path::getName(key) &lt&lt <span class="str">"&lt/a&gt&lt/div&gt&lt/td&gt"</span>;
+<span class="number">  147     </span>			oss &lt&lt <span class="str">"\n\t\t\t\t&lttd&gt"</span>;
+<span class="number">  148   </span><span class="minmax" onclick="toggleminmax(this, 'sp147')" onmouseover="highlight('sp147')" onmouseout="removeHighlight('sp147')">-</span>			<span class="key">for</span> (string dep : db.GetChildren(key)) <span id="sp147">{
+<span class="number">  149     </span>				oss &lt&lt <span class="str">"\n\t\t\t\t\t&ltdiv&gt&lta href=\""</span> &lt&lt Path::getName(dep) &lt&lt <span class="str">".html\"&gt"</span> &lt&lt Path::getName(dep) &lt&lt <span class="str">"&lt/a&gt&lt/div&gt"</span>;
+<span class="number">  150     </span>			}</span>
+<span class="number">  151     </span>			oss &lt&lt <span class="str">"\n\t\t\t\t&lt/td&gt"</span>;
+<span class="number">  152     </span>			oss &lt&lt <span class="str">"\n\t\t\t&lt/tr&gt"</span>;
+<span class="number">  153     </span>		}</span>
+<span class="number">  154     </span>		ofstream out(outputFolder + <span class="str">"\\MainPage.html"</span>);
+<span class="number">  155     </span>		out &lt&lt oss.str();
+<span class="number">  156     </span>		out.close();
+<span class="number">  157     </span>	}</span>
+<span class="number">  158     </span>
+<span class="number">  159     </span>	<span class="comment">// -----&lt launches MainPage with default browser &gt-----------------------------------</span>
+<span class="number">  160   </span><span class="minmax" onclick="toggleminmax(this, 'sp159')" onmouseover="highlight('sp159')" onmouseout="removeHighlight('sp159')">-</span>	<span class="key">void</span> Publisher::OpenMainPage() <span id="sp159">{
+<span class="number">  161     </span>		string path = outputFolder + <span class="str">"\\MainPage.html"</span>;
+<span class="number">  162     </span>		wstring sPath(path.begin(), path.end());
+<span class="number">  163     </span>		ShellExecute(NULL, L<span class="str">"open"</span>, sPath.c_str(), NULL, NULL, SW_SHOWNORMAL);
+<span class="number">  164     </span>		
+<span class="number">  165     </span>		<span class="comment">//system(("start \"\" \"" + path + "\"").c_str());  // &lt--- this also works</span>
+<span class="number">  166     </span>	}</span>
+<span class="number">  167     </span>
+<span class="number">  168     </span>	<span class="comment">// -----&lt returns output directory &gt-------------------------------------------------</span>
+<span class="number">  169   </span><span class="minmax" onclick="toggleminmax(this, 'sp168')" onmouseover="highlight('sp168')" onmouseout="removeHighlight('sp168')">-</span>	const string & Publisher::OutputDirectory() const <span id="sp168">{
+<span class="number">  170     </span>		<span class="key">return</span> outputFolder;
+<span class="number">  171     </span>	}</span>
+<span class="number">  172     </span>
+<span class="number">  173     </span>	<span class="comment">// -----&lt set whether or not to print progress while processing ---------------------</span>
+<span class="number">  174   </span><span class="minmax" onclick="toggleminmax(this, 'sp173')" onmouseover="highlight('sp173')" onmouseout="removeHighlight('sp173')">-</span>	<span class="key">void</span> Publisher::PrintProgess(<span class="key">bool</span> print) <span id="sp173">{
+<span class="number">  175     </span>		showProgress = print;
+<span class="number">  176     </span>	}</span>
+<span class="number">  177     </span>
+<span class="number">  178     </span>
+<span class="number">  179     </span>	<span class="comment">// -----&lt Creates HTML file for a source file given its path &gt-----------------------</span>
+<span class="number">  180   </span><span class="minmax" onclick="toggleminmax(this, 'sp179')" onmouseover="highlight('sp179')" onmouseout="removeHighlight('sp179')">-</span>	<span class="key">void</span> Publisher::ConvertToHTML(std::string& FilePath) <span id="sp179">{
+<span class="number">  181     </span>		ostringstream oss, headings;
+<span class="number">  182     </span>		headings &lt&lt PrepareHeading(FilePath);
+<span class="number">  183     </span>		
+<span class="number">  184     </span>		ifstream in(FilePath);
+<span class="number">  185     </span>		<span class="comment">//configure tokenizer</span>
+<span class="number">  186     </span>		toker.returnComments(); 
+<span class="number">  187     </span>		toker.returnSpaces(<span class="key">true</span>);  <span class="comment">// this functionality was added to the original tokenizer</span>
+<span class="number">  188     </span>		toker.attach(&in);
+<span class="number">  189     </span>
+<span class="number">  190     </span>		<span class="comment">//skip first token (junk because of returnSpaces functionality)</span>
+<span class="number">  191     </span>		toker.getTok();
+<span class="number">  192     </span>
+<span class="number">  193     </span>		<span class="key">int</span> counter = 0;
+<span class="number">  194   </span><span class="minmax" onclick="toggleminmax(this, 'sp193')" onmouseover="highlight('sp193')" onmouseout="removeHighlight('sp193')">-</span>		<span class="key">while</span> (in.good()) <span id="sp193">{
+<span class="number">  195     </span>			string tok = toker.getTok();
+<span class="number">  196     </span>			ProcessToken(tok);
+<span class="number">  197     </span>			oss &lt&lt tok;
+<span class="number">  198     </span>		}</span>
+<span class="number">  199     </span>		headings &lt&lt FinalizeLines(oss.str(), counter);
+<span class="number">  200     </span>		headings &lt&lt <span class="str">"\n&lt/pre&gt\n  &lt/body&gt\n&lt/html&gt"</span>;
+<span class="number">  201     </span>		ofstream out((outputFolder+<span class="str">"\\"</span>+Path::getName(FilePath).append(<span class="str">".html"</span>)));
+<span class="number">  202     </span>		out &lt&lt headings.str();
+<span class="number">  203     </span>		out.close();
+<span class="number">  204     </span>	}</span>
+<span class="number">  205     </span>
+<span class="number">  206     </span>	<span class="comment">// -----&lt Processes token to add styles &gt----------------------------------------------</span>
+<span class="number">  207   </span><span class="minmax" onclick="toggleminmax(this, 'sp206')" onmouseover="highlight('sp206')" onmouseout="removeHighlight('sp206')">-</span>	<span class="key">void</span> Publisher::ProcessToken(string & tok) <span id="sp206">{
+<span class="number">  208     </span>		FilterHTMLChars(tok);
+<span class="number">  209     </span>		<span class="key">if</span> (contains(keyWords, tok)) tok = <span class="str">"&ltspan class=\"key\"&gt"</span> + tok + <span class="str">"&lt/span&gt"</span>;
+<span class="number">  210     </span>		<span class="key">if</span> (tok[0] == <span class="str">'\"'</span> || tok[0] == <span class="str">'\''</span>) tok = <span class="str">"&ltspan class=\"str\"&gt"</span> + tok + <span class="str">"&lt/span&gt"</span>;
+<span class="number">  211   </span><span class="minmax" onclick="toggleminmax(this, 'sp210')" onmouseover="highlight('sp210')" onmouseout="removeHighlight('sp210')">-</span>		<span class="key">if</span> (tok.size() &gt 2 && tok[0] == <span class="str">'/'</span> && (tok[1] == <span class="str">'/'</span> || tok[1] == <span class="str">'*'</span>)) <span id="sp210">{
+<span class="number">  212     </span>			<span class="key">if</span> (tok[1] == <span class="str">'*'</span>)
+<span class="number">  213     </span>				tok = <span class="str">"{MARKED}&ltspan class=\"comment\"&gt"</span> + tok + <span class="str">"&lt/span&gt&lt/span&gt"</span>;
+<span class="number">  214     </span>			<span class="key">else</span>
+<span class="number">  215     </span>				tok = <span class="str">"&ltspan class=\"comment\"&gt"</span> + tok + <span class="str">"&lt/span&gt"</span>;
+<span class="number">  216     </span>		}</span>
+<span class="number">  217   </span><span class="minmax" onclick="toggleminmax(this, 'sp216')" onmouseover="highlight('sp216')" onmouseout="removeHighlight('sp216')">-</span>		<span class="key">if</span> (tok == <span class="str">"#"</span>) <span id="sp216">{
+<span class="number">  218     </span>			tok += toker.getTok();
+<span class="number">  219     </span>			tok = <span class="str">"&ltspan class=\"directive\"&gt"</span> + tok + <span class="str">"&lt/span&gt"</span>;
+<span class="number">  220     </span>			tok += toker.getTok();
+<span class="number">  221     </span>			string included = toker.getTok();
+<span class="number">  222   </span><span class="minmax" onclick="toggleminmax(this, 'sp221')" onmouseover="highlight('sp221')" onmouseout="removeHighlight('sp221')">-</span>			<span class="key">if</span> (included == <span class="str">"&lt"</span>) <span id="sp221">{
+<span class="number">  223     </span>				FilterHTMLChars(included);
+<span class="number">  224     </span>				string last = toker.getTok();
+<span class="number">  225   </span><span class="minmax" onclick="toggleminmax(this, 'sp224')" onmouseover="highlight('sp224')" onmouseout="removeHighlight('sp224')">-</span>				<span class="key">while</span> (last != <span class="str">"&gt"</span>) <span id="sp224">{
+<span class="number">  226     </span>					included += last;
+<span class="number">  227     </span>					last = toker.getTok();
+<span class="number">  228     </span>				}</span>
+<span class="number">  229     </span>				FilterHTMLChars(last);
+<span class="number">  230     </span>				included += last;
+<span class="number">  231     </span>				tok += <span class="str">"&ltspan class=\"str\"&gt"</span> + included + <span class="str">"&lt/span&gt"</span>;
+<span class="number">  232     </span>			}</span>
+<span class="number">  233     </span>			<span class="key">else</span> <span class="key">if</span> (included[0] == <span class="str">'\"'</span>) tok += <span class="str">"&ltspan class=\"str\"&gt"</span> + included + <span class="str">"&lt/span&gt"</span>;
+<span class="number">  234     </span>			<span class="key">else</span> tok += included;
+<span class="number">  235     </span>		}</span>
+<span class="number">  236     </span>		<span class="key">if</span> (tok == <span class="str">"{"</span>)
+<span class="number">  237     </span>			tok = <span class="str">"{MARKED}"</span> + tok;
+<span class="number">  238     </span>		<span class="key">if</span> (tok == <span class="str">"}"</span>)
+<span class="number">  239     </span>			tok += <span class="str">"&lt/span&gt"</span>;
+<span class="number">  240     </span>	}</span>
+<span class="number">  241     </span>
+<span class="number">  242     </span>	<span class="comment">// -----&lt Prepares HTML elements before the source code &gt--------------------------------</span>
+<span class="number">  243   </span><span class="minmax" onclick="toggleminmax(this, 'sp242')" onmouseover="highlight('sp242')" onmouseout="removeHighlight('sp242')">-</span>	string Publisher::PrepareHeading(string& FilePath) <span id="sp242">{
+<span class="number">  244     </span>		ostringstream headings;
+<span class="number">  245     </span>		headings &lt&lt <span class="str">"&lthtml&gt"</span>;
+<span class="number">  246     </span>		headings &lt&lt <span class="str">"\n  &lthead&gt"</span>;
+<span class="number">  247     </span>		headings &lt&lt <span class="str">"\n     &ltlink rel=\"stylesheet\" type=\"text/css\" href=\"resources/light.css\"/&gt"</span>;
+<span class="number">  248     </span>		headings &lt&lt <span class="str">"\n     &ltscript src=\"resources/scripts.js\"&gt&lt/script&gt"</span>;
+<span class="number">  249     </span>		headings &lt&lt <span class="str">"\n     &ltbutton class=\"Fixed\" onclick=\"toggleStyle(this)\"&gtDark Theme&lt/button&gt"</span>;
+<span class="number">  250     </span>		headings &lt&lt <span class="str">"\n  &lt/head&gt"</span>;
+<span class="number">  251     </span>		headings &lt&lt <span class="str">"\n  &ltbody&gt"</span>;
+<span class="number">  252     </span>		headings &lt&lt <span class="str">"\n   &lth3&gt"</span> &lt&lt Path::getName(FilePath) &lt&lt <span class="str">"&lt/h3&gt"</span>;
+<span class="number">  253     </span>		headings &lt&lt <span class="str">"\n   &lthr/&gt"</span>;
+<span class="number">  254     </span>		headings &lt&lt <span class="str">"\n   &ltdiv class = \"indent\"&gt"</span>;
+<span class="number">  255     </span>		headings &lt&lt <span class="str">"\n     &lth4&gtDependencies:&lt/h4&gt"</span>;
+<span class="number">  256     </span>		<span class="key">for</span> (<span class="key">auto</span> dep : db.GetChildren(FilePath))
+<span class="number">  257     </span>			headings &lt&lt <span class="str">"\n     &ltdiv&gt&lta href=\""</span> &lt&lt Path::getName(dep) &lt&lt <span class="str">".html\"&gt"</span> &lt&lt Path::getName(dep) &lt&lt <span class="str">"&lt/a&gt&lt/div&gt"</span>;
+<span class="number">  258     </span>		headings &lt&lt <span class="str">"\n   &lt/div&gt"</span>;
+<span class="number">  259     </span>		headings &lt&lt <span class="str">"\n   &lthr/&gt"</span>;
+<span class="number">  260     </span>		headings &lt&lt <span class="str">"\n&ltpre&gt"</span>;
+<span class="number">  261     </span>		<span class="key">return</span> headings.str();
+<span class="number">  262     </span>	}</span>
+<span class="number">  263     </span>
+<span class="number">  264     </span>	
+<span class="number">  265     </span>	<span class="comment">// -----&lt Converts the chars '&lt' and '&gt' to their string representations &gt------------</span>
+<span class="number">  266   </span><span class="minmax" onclick="toggleminmax(this, 'sp265')" onmouseover="highlight('sp265')" onmouseout="removeHighlight('sp265')">-</span>	<span class="key">void</span> Publisher::FilterHTMLChars(string& tok) <span id="sp265">{
+<span class="number">  267     </span>		size_t index;
+<span class="number">  268   </span><span class="minmax" onclick="toggleminmax(this, 'sp267')" onmouseover="highlight('sp267')" onmouseout="removeHighlight('sp267')">-</span>		<span class="key">while</span> ((index = tok.find(<span class="str">'&lt'</span>)) != std::string::npos) <span id="sp267">{
+<span class="number">  269     </span>			tok.replace(index, 1, <span class="str">"&lt"</span>);
+<span class="number">  270     </span>		}</span>
+<span class="number">  271   </span><span class="minmax" onclick="toggleminmax(this, 'sp270')" onmouseover="highlight('sp270')" onmouseout="removeHighlight('sp270')">-</span>		<span class="key">while</span> ((index = tok.find(<span class="str">'&gt'</span>)) != std::string::npos) <span id="sp270">{
+<span class="number">  272     </span>			tok.replace(index, 1, <span class="str">"&gt"</span>);
+<span class="number">  273     </span>		}</span>
+<span class="number">  274     </span>	}</span>
+<span class="number">  275     </span>
+<span class="number">  276     </span>	<span class="comment">// -----&lt Adds numbering and min/max elements &gt--------------------------------------</span>
+<span class="number">  277   </span><span class="minmax" onclick="toggleminmax(this, 'sp276')" onmouseover="highlight('sp276')" onmouseout="removeHighlight('sp276')">-</span>	string Publisher::FinalizeLines(string& tok, <span class="key">int</span>& counter) <span id="sp276">{
+<span class="number">  278     </span>		istringstream iss(tok);
+<span class="number">  279     </span>		ostringstream oss;
+<span class="number">  280   </span><span class="minmax" onclick="toggleminmax(this, 'sp279')" onmouseover="highlight('sp279')" onmouseout="removeHighlight('sp279')">-</span>		<span class="key">while</span> (iss.good()) <span id="sp279">{
+<span class="number">  281     </span>			string temp;
+<span class="number">  282     </span>			getline(iss, temp);
+<span class="number">  283     </span>			size_t index = 0;
+<span class="number">  284     </span>			<span class="key">bool</span> isMarked = <span class="key">false</span>;
+<span class="number">  285   </span><span class="minmax" onclick="toggleminmax(this, 'sp284')" onmouseover="highlight('sp284')" onmouseout="removeHighlight('sp284')">-</span>			<span class="key">while</span> ((index = temp.find(<span class="str">"{MARKED}"</span>, index)) != string::npos) <span id="sp284">{
+<span class="number">  286   </span><span class="minmax" onclick="toggleminmax(this, 'sp285')" onmouseover="highlight('sp285')" onmouseout="removeHighlight('sp285')">-</span>				<span class="key">if</span> (index &gt 0 && temp[index - 1] == <span class="str">'\"'</span>) <span id="sp285">{
+<span class="number">  287     </span>					index++;
+<span class="number">  288     </span>					<span class="key">continue</span>;
+<span class="number">  289     </span>				}</span>
+<span class="number">  290     </span>				string replacement = <span class="str">"&ltspan id=\"sp"</span> + to_string(counter) + <span class="str">"\"&gt"</span>;
+<span class="number">  291     </span>				temp.replace(index, 8, replacement);
+<span class="number">  292     </span>				temp = <span class="str">"&ltspan class=\"minmax\" onclick=\"toggleminmax(this, 'sp"</span> + to_string(counter) + <span class="str">"')\""</span> +
+<span class="number">  293     </span>					<span class="str">" onmouseover=\"highlight('sp"</span> + to_string(counter) + <span class="str">"')\" onmouseout=\"removeHighlight('sp"</span> + 
+<span class="number">  294     </span>					to_string(counter) + <span class="str">"')\"&gt-&lt/span&gt"</span> + temp;
+<span class="number">  295     </span>				oss &lt&lt <span class="str">"&ltspan class=\"number\"&gt  "</span> &lt&lt setw(6) &lt&lt left &lt&lt ++counter &lt&lt <span class="str">"&lt/span&gt"</span> &lt&lt temp &lt&lt endl;
+<span class="number">  296     </span>				isMarked = <span class="key">true</span>;
+<span class="number">  297     </span>				index++;
+<span class="number">  298     </span>			}</span>
+<span class="number">  299     </span>			<span class="key">if</span> (!isMarked)
+<span class="number">  300     </span>				oss &lt&lt <span class="str">"&ltspan class=\"number\"&gt  "</span> &lt&lt setw(8) &lt&lt left &lt&lt ++counter &lt&lt <span class="str">"&lt/span&gt"</span> &lt&lt temp &lt&lt endl;
+<span class="number">  301     </span>		}</span>
+<span class="number">  302     </span>		<span class="key">return</span> oss.str();
+<span class="number">  303     </span>	}</span>
+<span class="number">  304     </span>
+<span class="number">  305     </span>}</span>
+<span class="number">  306     </span>
+<span class="number">  307     </span><span class="directive">#ifdef</span> TEST_PUBLISHER
+<span class="number">  308     </span>
+<span class="number">  309   </span><span class="minmax" onclick="toggleminmax(this, 'sp308')" onmouseover="highlight('sp308')" onmouseout="removeHighlight('sp308')">-</span><span class="key">int</span> main(<span class="key">int</span> argc, <span class="key">char</span>** argv) <span id="sp308">{
+<span class="number">  310   </span><span class="minmax" onclick="toggleminmax(this, 'sp309')" onmouseover="highlight('sp309')" onmouseout="removeHighlight('sp309')">-</span>	<span class="key">try</span> <span id="sp309">{
+<span class="number">  311     </span>		cout &lt&lt <span class="str">"\n                                Starting Code Publisher"</span>;
+<span class="number">  312     </span>		cout &lt&lt <span class="str">"\n ======================================================================================="</span>;
+<span class="number">  313     </span>		CodePublisher::Publisher p;
+<span class="number">  314     </span>
+<span class="number">  315   </span><span class="minmax" onclick="toggleminmax(this, 'sp314')" onmouseover="highlight('sp314')" onmouseout="removeHighlight('sp314')">-</span>		<span class="key">if</span> (!p.ProcessCommandLineArgs(argc, argv)) <span id="sp314">{
+<span class="number">  316     </span>			cout &lt&lt <span class="str">"\n\n  Wrong command line args passed .. terminating"</span>;
+<span class="number">  317     </span>			<span class="key">return</span> 1;
+<span class="number">  318     </span>		}</span>
+<span class="number">  319     </span>		cout &lt&lt <span class="str">"\n  Output directory: "</span> &lt&lt p.OutputDirectory();
+<span class="number">  320     </span>
+<span class="number">  321     </span>		cout &lt&lt <span class="str">"\n\n  Performing dependency analysis on the given files"</span>;
+<span class="number">  322   </span><span class="minmax" onclick="toggleminmax(this, 'sp321')" onmouseover="highlight('sp321')" onmouseout="removeHighlight('sp321')">-</span>		<span class="key">if</span> (!p.PerformDependencyAnalysis()) <span id="sp321">{
+<span class="number">  323     </span>			cout &lt&lt <span class="str">"\n\n  Failed to perform dependency analysis on the given files"</span>;
+<span class="number">  324     </span>			<span class="key">return</span> 1;
+<span class="number">  325     </span>		}</span>
+<span class="number">  326     </span>
+<span class="number">  327     </span>		cout &lt&lt <span class="str">"\n  Copying styles and scripts to the output directory"</span>;
+<span class="number">  328     </span>		<span class="key">if</span> (!p.CopyStylesAndScripts())
+<span class="number">  329     </span>			cout &lt&lt <span class="str">"\n  Some (or all) of the styles/scripts were not copied succesffuly\n"</span>;
+<span class="number">  330     </span>
+<span class="number">  331     </span>		cout &lt&lt <span class="str">"\n  Creating MainPage"</span>;
+<span class="number">  332     </span>		p.CreateMainPage();
+<span class="number">  333     </span>
+<span class="number">  334     </span>		cout &lt&lt <span class="str">"\n  Creating HTML files for the given source files"</span>;
+<span class="number">  335     </span>		p.PrintProgess();
+<span class="number">  336     </span>		p.ProcessFiles();
+<span class="number">  337     </span>
+<span class="number">  338     </span>		cout &lt&lt <span class="str">"\n\n  Opening the generated MainPage.html"</span>;
+<span class="number">  339     </span>		p.OpenMainPage();
+<span class="number">  340     </span>		cout &lt&lt <span class="str">"\n"</span>;
+<span class="number">  341     </span>	}</span>
+<span class="number">  342   </span><span class="minmax" onclick="toggleminmax(this, 'sp341')" onmouseover="highlight('sp341')" onmouseout="removeHighlight('sp341')">-</span>	<span class="key">catch</span> (...) <span id="sp341">{
+<span class="number">  343     </span>		cout &lt&lt <span class="str">"\n\n  Something went wrong ... terminating"</span>;
+<span class="number">  344     </span>		<span class="key">return</span> 1;
+<span class="number">  345     </span>	}</span>
+<span class="number">  346     </span>	<span class="key">return</span> 0;
+<span class="number">  347     </span>}</span>
+<span class="number">  348     </span>
+<span class="number">  349     </span><span class="directive">#endif</span>
+
+</pre>
+  </body>
+</html>

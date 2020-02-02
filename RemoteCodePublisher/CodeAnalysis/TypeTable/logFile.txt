@@ -1,0 +1,17 @@
+
+                                      CodeAnalysis - Version 1.4
+    ==============================================================================================
+     Sun Mar  5 20:37:09 2017
+     Path: "C:\Users\hopli\Documents\Visual Studio 2015\Projects\DependencyAnalysis\TypeTable"
+     Args: *.h, *.cpp, *.cs, /a, /r, /f
+                                                                               
+
+                          Functions Exceeding Metric Limits and Public Data
+    ==============================================================================================
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+
+
+
+    searched     6 dirs
+   processed     2 files

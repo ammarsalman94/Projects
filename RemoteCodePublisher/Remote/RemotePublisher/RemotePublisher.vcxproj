@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5E0DA425-7D0E-4273-B180-45A37B7AE0F3}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>RemotePublisher</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;TEST_REMOTEPUBLISHER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <ExceptionHandling>Async</ExceptionHandling>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\AbstractSyntaxTree\AbstrSynTree.h" />
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\Analyzer\Executive.h" />
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\FileMgr\FileMgr.h" />
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\GrammarHelpers\GrammarHelpers.h" />
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\Parser\ActionsAndRules.h" />
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\Parser\ConfigureParser.h" />
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\Parser\Parser.h" />
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\ScopeStack\ScopeStack.h" />
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\SemiExp\itokcollection.h" />
+    <ClInclude Include="..\..\CodeAnalysis\CodeAnalyzer\SemiExp\SemiExp.h" />
+    <ClInclude Include="..\..\CodeAnalysis\DependencyAnalysis\DependencyAnalyzer.h" />
+    <ClInclude Include="..\..\CodeAnalysis\Publisher\Publisher.h" />
+    <ClInclude Include="..\..\CodeAnalysis\StrongComponents\StrongComponent.h" />
+    <ClInclude Include="..\..\CodeAnalysis\TypeTable\TypeTable.h" />
+    <ClInclude Include="..\..\SharedProjects\Cpp11-BlockingQueue\Cpp11-BlockingQueue.h" />
+    <ClInclude Include="..\..\SharedProjects\FileSystem\FileSystem.h" />
+    <ClInclude Include="..\..\SharedProjects\HttpMessage\HttpMessage.h" />
+    <ClInclude Include="..\..\SharedProjects\Logger\Logger.h" />
+    <ClInclude Include="..\..\SharedProjects\Task\Task.h" />
+    <ClInclude Include="..\..\SharedProjects\ThreadPool\ThreadPool.h" />
+    <ClInclude Include="..\..\SharedProjects\Tokenizer\Tokenizer.h" />
+    <ClInclude Include="..\..\SharedProjects\Utilities\Utilities.h" />
+    <ClInclude Include="..\SocketHelper\Receiver\Receiver.h" />
+    <ClInclude Include="..\SocketHelper\Sender\Sender.h" />
+    <ClInclude Include="..\SocketHelper\Sockets\Sockets.h" />
+    <ClInclude Include="..\SocketHelper\WindowsHelpers\WindowsHelpers.h" />
+    <ClInclude Include="RemotePublisher.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\AbstractSyntaxTree\AbstrSynTree.cpp" />
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\Analyzer\Executive.cpp" />
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\FileMgr\FileMgr.cpp" />
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\GrammarHelpers\GrammarHelpers.cpp" />
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\Parser\ActionsAndRules.cpp" />
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\Parser\ConfigureParser.cpp" />
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\Parser\Parser.cpp" />
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\ScopeStack\ScopeStack.cpp" />
+    <ClCompile Include="..\..\CodeAnalysis\CodeAnalyzer\SemiExp\SemiExp.cpp" />
+    <ClCompile Include="..\..\CodeAnalysis\DependencyAnalysis\DependencyAnalyzer.cpp" />
+    <ClCompile Include="..\..\CodeAnalysis\Publisher\Publisher.cpp" />
+    <ClCompile Include="..\..\CodeAnalysis\StrongComponents\StrongComponent.cpp" />
+    <ClCompile Include="..\..\CodeAnalysis\TypeTable\TypeTable.cpp" />
+    <ClCompile Include="..\..\SharedProjects\Cpp11-BlockingQueue\Cpp11-BlockingQueue.cpp" />
+    <ClCompile Include="..\..\SharedProjects\FileSystem\FileSystem.cpp" />
+    <ClCompile Include="..\..\SharedProjects\HttpMessage\HttpMessage.cpp" />
+    <ClCompile Include="..\..\SharedProjects\Logger\Logger.cpp" />
+    <ClCompile Include="..\..\SharedProjects\Task\Task.cpp" />
+    <ClCompile Include="..\..\SharedProjects\ThreadPool\ThreadPool.cpp" />
+    <ClCompile Include="..\..\SharedProjects\Tokenizer\Tokenizer.cpp" />
+    <ClCompile Include="..\..\SharedProjects\Utilities\Utilities.cpp" />
+    <ClCompile Include="..\SocketHelper\Receiver\Receiver.cpp" />
+    <ClCompile Include="..\SocketHelper\Sender\Sender.cpp" />
+    <ClCompile Include="..\SocketHelper\Sockets\Sockets.cpp" />
+    <ClCompile Include="..\SocketHelper\WindowsHelpers\WindowsHelpers.cpp" />
+    <ClCompile Include="RemotePublisher.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

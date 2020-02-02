@@ -1,0 +1,28 @@
+<Database>
+<Element>
+	<Key>key1</Key>
+	<Name>element</Name>
+	<Category>C++</Category>
+	<Description>example element</Description>
+	<TimeDate>2017/18/02  22:57:37</TimeDate>
+	<Children>
+		<Child>key6</Child>
+		<Child>key3</Child>
+	</Children>
+	<Data>i love c++
+	</Data>
+</Element>
+<Element>
+	<Key>key2</Key>
+	<Name>element</Name>
+	<Category>C++</Category>
+	<Description>example element</Description>
+	<TimeDate>2017/18/02  22:57:39</TimeDate>
+	<Children>
+		<Child>key6</Child>
+		<Child>key3</Child>
+	</Children>
+	<Data>i love c++
+	</Data>
+</Element>
+</Database>

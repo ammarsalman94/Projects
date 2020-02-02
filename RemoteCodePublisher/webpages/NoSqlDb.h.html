@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<!------------------------------------------------------------------------
+  NoSqlDb.h.html - Project 3 published file
+  Published: Sun Apr  2 17:35:58 2017
+
+  Ammar Salman, CSE687 - Object Oriented Design, Spring 2017
+ ------------------------------------------------------------------------->
+<html>
+  <head>
+     <link rel="stylesheet" type="text/css" href="resources/light.css"/>
+     <script src="resources/scripts.js"></script>
+     <button class="Fixed" onclick="toggleStyle(this)">Dark Theme</button>
+  </head>
+  <body>
+   <h3>NoSqlDb.h</h3>
+   <hr/>
+   <div class = "indent">
+     <h4>Dependencies:</h4>
+     <div><a href="Element.h.html">Element.h</a></div>
+   </div>
+   <hr/>
+<pre><span class="number">  1       </span><span class="directive">#pragma</span> once
+<span class="number">  2       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  3       </span><span class="comment">// NoSqlDb.h - A non-relational database system based on templates //</span>
+<span class="number">  4       </span><span class="comment">// Ver 1.1                                                         //</span>
+<span class="number">  5       </span><span class="comment">// Application: Project #1 - No-SQL Database - CSE-687             //</span>
+<span class="number">  6       </span><span class="comment">// Platform:    Dell Inspiron 5520, Win 10, Visual Studio 2015     //</span>
+<span class="number">  7       </span><span class="comment">// Author:      Ammar Salman, EECS, Syracuse University            //</span>
+<span class="number">  8       </span><span class="comment">//              (313) 788-4694  hoplite.90@hotmail.com             //</span>
+<span class="number">  9       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  10    </span><span class="minmax" onclick="toggleminmax(this, 'sp9')" onmouseover="highlight('sp9')" onmouseout="removeHighlight('sp9')">-</span><span id="sp9"><span class="comment">/*
+<span class="number">  11      </span>* Package Operations:
+<span class="number">  12      </span>* -------------------
+<span class="number">  13      </span>* This package is a non-relational database system build as course
+<span class="number">  14      </span>* project for CSE-687 Object Oriented Design. The package uses 
+<span class="number">  15      </span>* unordered_map to hold key-value pairs. Both, key and value, are 
+<span class="number">  16      </span>* template types. The value is an Element template. 
+<span class="number">  17      </span>*
+<span class="number">  18      </span>* This package uses XmlDocument package provided by Dr. Fawcett.
+<span class="number">  19      </span>*
+<span class="number">  20      </span>* Required Files:
+<span class="number">  21      </span>* ---------------
+<span class="number">  22      </span>*   - NoSqlDb.h, Element.h, RegularExpression.h, XmlDocument.h
+<span class="number">  23      </span>*
+<span class="number">  24      </span>* Build Process:
+<span class="number">  25      </span>* --------------
+<span class="number">  26      </span>*   devenv NoSQLDB.sln /debug rebuild
+<span class="number">  27      </span>*
+<span class="number">  28      </span>* Maintenance History:
+<span class="number">  29      </span>* --------------------
+<span class="number">  30      </span>* ver 1.1 : 07 Mar 2017
+<span class="number">  31      </span>* - changed GetChildren() to return set&ltstring&gt instead of vector&ltstring&gt
+<span class="number">  32      </span>* Ver 1.0 : 31 Jan 2017
+<span class="number">  33      </span>* - first release
+<span class="number">  34      </span>* 
+<span class="number">  35      </span>*/</span></span>
+<span class="number">  36      </span>
+<span class="number">  37      </span><span class="comment">// external dependencies</span>
+<span class="number">  38      </span><span class="directive">#include</span> <span class="str">&ltstring&gt</span>
+<span class="number">  39      </span><span class="directive">#include</span> <span class="str">&ltvector&gt</span>
+<span class="number">  40      </span><span class="directive">#include</span> <span class="str">&ltiostream&gt</span>
+<span class="number">  41      </span><span class="directive">#include</span> <span class="str">&ltistream&gt</span>
+<span class="number">  42      </span><span class="directive">#include</span> <span class="str">&ltfstream&gt</span>
+<span class="number">  43      </span><span class="directive">#include</span> <span class="str">&ltunordered_map&gt</span>
+<span class="number">  44      </span><span class="directive">#include</span> <span class="str">&ltalgorithm&gt</span>
+<span class="number">  45      </span><span class="directive">#include</span> <span class="str">&ltset&gt</span>
+<span class="number">  46      </span><span class="directive">#include</span> <span class="str">&ltiterator&gt</span>
+<span class="number">  47      </span><span class="directive">#include</span> <span class="str">&ltthread&gt</span>
+<span class="number">  48      </span><span class="directive">#include</span> <span class="str">&ltWindows.h&gt</span>
+<span class="number">  49      </span><span class="directive">#include</span> <span class="str">&ltregex&gt</span>
+<span class="number">  50      </span><span class="directive">#include</span> <span class="str">&ltstdarg.h&gt</span>
+<span class="number">  51      </span>
+<span class="number">  52      </span><span class="comment">// my own classes</span>
+<span class="number">  53      </span><span class="directive">#include</span> <span class="str">"Element.h"</span>
+<span class="number">  54      </span><span class="directive">#include</span> <span class="str">"..\RegularExpression\RegularExpression.h"</span>
+<span class="number">  55      </span>
+<span class="number">  56      </span><span class="comment">// professor's classes</span>
+<span class="number">  57      </span><span class="directive">#include</span> <span class="str">"..\XmlDocument\XmlDocument\XmlDocument.h"</span>
+<span class="number">  58      </span><span class="directive">#include</span> <span class="str">"..\XmlDocument\XmlElement\XmlElement.h"</span>
+<span class="number">  59      </span><span class="directive">#include</span> <span class="str">"..\StrHelper.h"</span>
+<span class="number">  60      </span>
+<span class="number">  61      </span><span class="key">using</span> <span class="key">namespace</span> std;
+<span class="number">  62      </span><span class="key">using</span> <span class="key">namespace</span> XmlProcessing;
+<span class="number">  63      </span><span class="key">using</span> <span class="key">namespace</span> std::regex_constants;
+<span class="number">  64      </span>
+<span class="number">  65    </span><span class="minmax" onclick="toggleminmax(this, 'sp64')" onmouseover="highlight('sp64')" onmouseout="removeHighlight('sp64')">-</span><span class="key">namespace</span> Databases <span id="sp64">{
+<span class="number">  66    </span><span class="minmax" onclick="toggleminmax(this, 'sp65')" onmouseover="highlight('sp65')" onmouseout="removeHighlight('sp65')">-</span>	<span class="key">template</span> &lt<span class="key">typename</span> Type&gt <span class="key">class</span> NoSQLDB <span id="sp65">{
+<span class="number">  67      </span>	<span class="key">private</span>:
+<span class="number">  68      </span>		unordered_map&ltstring, Element&ltType&gt&gt DB;
+<span class="number">  69      </span>		<span class="key">short</span> Max_Allowed_Counts;
+<span class="number">  70      </span>		<span class="key">short</span> Counts = 0;
+<span class="number">  71      </span>		<span class="key">bool</span> AutoCountSave, AutoTimedSave;
+<span class="number">  72      </span>		thread TimerThread;
+<span class="number">  73      </span>		string DefaultPath;
+<span class="number">  74      </span>
+<span class="number">  75      </span>	<span class="key">public</span>:
+<span class="number">  76    </span><span class="minmax" onclick="toggleminmax(this, 'sp75')" onmouseover="highlight('sp75')" onmouseout="removeHighlight('sp75')">-</span>		<span class="key">enum</span> Query <span id="sp75">{ KeyPattern, Name, Category, StringData, TimeDate, Children }</span>;
+<span class="number">  77      </span>		NoSQLDB();
+<span class="number">  78      </span>		NoSQLDB(const NoSQLDB&ltType&gt& db);
+<span class="number">  79      </span>		NoSQLDB&ltType&gt& <span class="key">operator</span>=(NoSQLDB&ltType&gt& other);
+<span class="number">  80      </span>		~NoSQLDB();
+<span class="number">  81      </span>
+<span class="number">  82      </span>
+<span class="number">  83      </span>
+<span class="number">  84      </span>		<span class="comment">// -----&lt add/remove entries to/from database functions &gt----------------</span>
+<span class="number">  85      </span>		<span class="key">bool</span> AddEntry(const string Key, const Element&ltType&gt El);
+<span class="number">  86      </span>		<span class="key">bool</span> RemoveEntry(const string Key);
+<span class="number">  87      </span>		<span class="comment">// -----&lt add/remove entries to/from database functions &gt----------------</span>
+<span class="number">  88      </span>
+<span class="number">  89      </span>
+<span class="number">  90      </span>		<span class="comment">// -----&lt export/import database functions &gt-----------------------------</span>
+<span class="number">  91      </span>		<span class="key">void</span> StoreXML(string Filename);
+<span class="number">  92      </span>		<span class="key">void</span> ImportXML(string Filename);
+<span class="number">  93      </span>		string ToString();
+<span class="number">  94      </span>		<span class="comment">// -----&lt export/import database functions &gt-----------------------------</span>
+<span class="number">  95      </span>
+<span class="number">  96      </span>
+<span class="number">  97      </span>		<span class="comment">// -----&lt relationships, metadata and data editing functions &gt-----------</span>
+<span class="number">  98      </span>		<span class="key">bool</span> AddRelation(string Key, string ChildKey);
+<span class="number">  99      </span>		<span class="key">bool</span> RemoveRelation(string Key, string ChildKey);
+<span class="number">  100     </span>		<span class="key">bool</span> ChangeName(string Key, const string name);
+<span class="number">  101     </span>		<span class="key">bool</span> ChangeDescription(string Key, const string des);
+<span class="number">  102     </span>		<span class="key">bool</span> ChangeCategory(string Key, const string cat);
+<span class="number">  103     </span>		<span class="key">bool</span> ReplaceDataInstance(string Key, Type data);
+<span class="number">  104     </span>		<span class="comment">// -----&lt relationships, metadata and data editing functions &gt-----------</span>
+<span class="number">  105     </span>
+<span class="number">  106     </span>
+<span class="number">  107     </span>		<span class="comment">// -----&lt query functions &gt----------------------------------------------</span>
+<span class="number">  108     </span>		Element&ltType&gt GetElement(string Key);
+<span class="number">  109     </span>		vector&ltstring&gt GetAllKeys();
+<span class="number">  110     </span>		set&ltstring&gt GetChildren(string Key);
+<span class="number">  111     </span>		vector&ltstring&gt Keys_With_Pattern(string Pattern);
+<span class="number">  112     </span>		vector&ltstring&gt Keys_With_Name(string Name);
+<span class="number">  113     </span>		vector&ltstring&gt Keys_with_Category(string Category);
+<span class="number">  114     </span>		vector&ltstring&gt Keys_with_String_Data(string Data);
+<span class="number">  115     </span>		vector&ltstring&gt Keys_Within(string t1 = <span class="str">"now"</span>, string t2 = <span class="str">"now"</span>);
+<span class="number">  116     </span>
+<span class="number">  117     </span>		vector&ltstring&gt ExecuteQuery(string QueryText);
+<span class="number">  118     </span>		vector&ltstring&gt ExecuteQuery(Query qType, string argument, string optional = <span class="str">""</span>);
+<span class="number">  119     </span>		vector&ltstring&gt Query_and_Query(vector&ltstring&gt result1, vector&ltstring&gt result2);
+<span class="number">  120     </span>		vector&ltstring&gt Query_or_Query(vector&ltstring&gt result1, vector&ltstring&gt result2);
+<span class="number">  121     </span>		<span class="comment">// -----&lt query functions &gt----------------------------------------------</span>
+<span class="number">  122     </span>
+<span class="number">  123     </span>		<span class="key">void</span> SetTimedSave(<span class="key">short</span> Seconds, string Filename);
+<span class="number">  124   </span><span class="minmax" onclick="toggleminmax(this, 'sp123')" onmouseover="highlight('sp123')" onmouseout="removeHighlight('sp123')">-</span>		<span class="key">void</span> UnsetTimedSave() <span id="sp123">{ AutoTimedSave = <span class="key">false</span>; }</span>
+<span class="number">  125     </span>
+<span class="number">  126     </span>		<span class="key">void</span> SetWriteCounter(<span class="key">short</span> MaxCounts, string Filename);
+<span class="number">  127   </span><span class="minmax" onclick="toggleminmax(this, 'sp126')" onmouseover="highlight('sp126')" onmouseout="removeHighlight('sp126')">-</span>		<span class="key">void</span> UnsetWriteCounter() <span id="sp126">{ AutoCountSave = <span class="key">false</span>; }</span>
+<span class="number">  128     </span>
+<span class="number">  129     </span>	<span class="key">private</span>:
+<span class="number">  130     </span>		<span class="key">void</span> ExecuteSingleQueries(vector&ltstring&gt &operations,
+<span class="number">  131     </span>			vector&ltstring&gt &arguments, vector&ltvector&ltstring&gt&gt &resultsVectors);
+<span class="number">  132     </span>		<span class="key">void</span> ExecuteAddQuery(vector&ltstring&gt& operations, vector&ltstring&gt& arguments);
+<span class="number">  133     </span>		<span class="key">void</span> Apply_Priorities(vector&lt<span class="key">int</span>&gt &priorities, vector&ltvector&ltstring&gt&gt &resultsVectors);
+<span class="number">  134     </span>		<span class="key">void</span> TimedAutoSave(<span class="key">short</span> Seconds, string Filename);
+<span class="number">  135     </span>
+<span class="number">  136     </span>	}</span>;
+<span class="number">  137     </span>
+<span class="number">  138     </span>
+<span class="number">  139     </span>
+<span class="number">  140     </span>
+<span class="number">  141     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  142   </span><span class="minmax" onclick="toggleminmax(this, 'sp141')" onmouseover="highlight('sp141')" onmouseout="removeHighlight('sp141')">-</span>	<span class="key">inline</span> NoSQLDB&ltType&gt::NoSQLDB() <span id="sp141">{
+<span class="number">  143     </span>	}</span>
+<span class="number">  144     </span>
+<span class="number">  145     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  146   </span><span class="minmax" onclick="toggleminmax(this, 'sp145')" onmouseover="highlight('sp145')" onmouseout="removeHighlight('sp145')">-</span>	<span class="key">inline</span> NoSQLDB&ltType&gt::NoSQLDB(const NoSQLDB&ltType&gt & db) <span id="sp145">{
+<span class="number">  147   </span><span class="minmax" onclick="toggleminmax(this, 'sp146')" onmouseover="highlight('sp146')" onmouseout="removeHighlight('sp146')">-</span>		<span class="key">for</span> (<span class="key">auto</span> it : db.DB) <span id="sp146">{
+<span class="number">  148     </span>			AddEntry(it.first, it.second);
+<span class="number">  149     </span>		}</span>
+<span class="number">  150     </span>	}</span>
+<span class="number">  151     </span>
+<span class="number">  152     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  153   </span><span class="minmax" onclick="toggleminmax(this, 'sp152')" onmouseover="highlight('sp152')" onmouseout="removeHighlight('sp152')">-</span>	<span class="key">inline</span> NoSQLDB&ltType&gt& NoSQLDB&ltType&gt::<span class="key">operator</span>=(NoSQLDB&ltType&gt& other) <span id="sp152">{
+<span class="number">  154     </span>		DB = other.DB;
+<span class="number">  155     </span>		<span class="key">return</span> *<span class="key">this</span>;
+<span class="number">  156     </span>	}</span>
+<span class="number">  157     </span>
+<span class="number">  158     </span>
+<span class="number">  159     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  160   </span><span class="minmax" onclick="toggleminmax(this, 'sp159')" onmouseover="highlight('sp159')" onmouseout="removeHighlight('sp159')">-</span>	<span class="key">inline</span> NoSQLDB&ltType&gt::~NoSQLDB() <span id="sp159">{
+<span class="number">  161     </span>		AutoTimedSave = <span class="key">false</span>;
+<span class="number">  162     </span>		<span class="key">if</span> (TimerThread.joinable()) TimerThread.join();
+<span class="number">  163     </span>	}</span>
+<span class="number">  164     </span>
+<span class="number">  165     </span>
+<span class="number">  166     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  167     </span>	<span class="comment">/// Adds database record given key and element</span>
+<span class="number">  168     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  169     </span>	<span class="comment">/// &ltparam name="Key"&gtSpecifies new key&lt/param&gt</span>
+<span class="number">  170     </span>	<span class="comment">/// &ltparam name="El"&gtSpecifies the record element&lt/param&gt</span>
+<span class="number">  171     </span>	<span class="comment">/// &ltreturns&gtBoolean (true,false) indicating whether the operation is successful of not&lt/returns&gt</span>
+<span class="number">  172     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  173   </span><span class="minmax" onclick="toggleminmax(this, 'sp172')" onmouseover="highlight('sp172')" onmouseout="removeHighlight('sp172')">-</span>	<span class="key">inline</span> <span class="key">bool</span> NoSQLDB&ltType&gt::AddEntry(const string Key, const Element&ltType&gt El) <span id="sp172">{
+<span class="number">  174     </span>		<span class="key">if</span> (DB.find(Key) != DB.end())
+<span class="number">  175     </span>			<span class="key">return</span> <span class="key">false</span>;
+<span class="number">  176     </span>		DB[Key] = El;
+<span class="number">  177   </span><span class="minmax" onclick="toggleminmax(this, 'sp176')" onmouseover="highlight('sp176')" onmouseout="removeHighlight('sp176')">-</span>		<span class="key">if</span> (++Counts &gt= Max_Allowed_Counts && AutoCountSave) <span id="sp176">{
+<span class="number">  178     </span>			Counts = 0;
+<span class="number">  179     </span>			StoreXML(DefaultPath);
+<span class="number">  180     </span>		}</span>
+<span class="number">  181     </span>		<span class="key">return</span> <span class="key">true</span>;
+<span class="number">  182     </span>	}</span>
+<span class="number">  183     </span>
+<span class="number">  184     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  185     </span>	<span class="comment">/// Removes database record given its key</span>
+<span class="number">  186     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  187     </span>	<span class="comment">/// &ltparam name="Key"&gtSpecifies the element key to remove&lt/param&gt</span>
+<span class="number">  188     </span>	<span class="comment">/// &ltreturns&gtBoolean (true,false) indicating whether the operation is successful of not&lt/returns&gt</span>
+<span class="number">  189     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  190   </span><span class="minmax" onclick="toggleminmax(this, 'sp189')" onmouseover="highlight('sp189')" onmouseout="removeHighlight('sp189')">-</span>	<span class="key">inline</span> <span class="key">bool</span> NoSQLDB&ltType&gt::RemoveEntry(const string Key) <span id="sp189">{
+<span class="number">  191     </span>		<span class="key">if</span> (DB.find(Key) == DB.end())
+<span class="number">  192     </span>			<span class="key">return</span> <span class="key">false</span>;
+<span class="number">  193   </span><span class="minmax" onclick="toggleminmax(this, 'sp192')" onmouseover="highlight('sp192')" onmouseout="removeHighlight('sp192')">-</span>		<span class="key">for</span> (<span class="key">auto</span> it = DB.begin(); it != DB.end(); ++it) <span id="sp192">{
+<span class="number">  194     </span>			vector&ltstring&gt keys = GetChildren(it-&gtfirst);
+<span class="number">  195     </span>			<span class="key">int</span> size = keys.size();
+<span class="number">  196     </span>			<span class="key">for</span> (<span class="key">int</span> i = 0; i &lt size; i++)
+<span class="number">  197   </span><span class="minmax" onclick="toggleminmax(this, 'sp196')" onmouseover="highlight('sp196')" onmouseout="removeHighlight('sp196')">-</span>				<span class="key">if</span> (keys[i].compare(Key) == 0) <span id="sp196">{
+<span class="number">  198     </span>					keys.erase(keys.begin() + i);
+<span class="number">  199     </span>					size = keys.size();
+<span class="number">  200     </span>					i--;
+<span class="number">  201     </span>				}</span>
+<span class="number">  202     </span>
+<span class="number">  203     </span>		}</span>
+<span class="number">  204     </span>		DB.erase(Key);
+<span class="number">  205   </span><span class="minmax" onclick="toggleminmax(this, 'sp204')" onmouseover="highlight('sp204')" onmouseout="removeHighlight('sp204')">-</span>		<span class="key">if</span> (++Counts &gt= Max_Allowed_Counts && AutoCountSave) <span id="sp204">{
+<span class="number">  206     </span>			Counts = 0;
+<span class="number">  207     </span>			StoreXML(DefaultPath);
+<span class="number">  208     </span>		}</span>
+<span class="number">  209     </span>		<span class="key">return</span> <span class="key">true</span>;
+<span class="number">  210     </span>	}</span>
+<span class="number">  211     </span>
+<span class="number">  212     </span>
+<span class="number">  213     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  214     </span>	<span class="comment">/// Exports database to XML file</span>
+<span class="number">  215     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  216     </span>	<span class="comment">/// &ltparam name="Filename"&gtSpecifies filename/path of the XML file to export to&lt/param&gt</span>
+<span class="number">  217     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  218   </span><span class="minmax" onclick="toggleminmax(this, 'sp217')" onmouseover="highlight('sp217')" onmouseout="removeHighlight('sp217')">-</span>	<span class="key">inline</span> <span class="key">void</span> NoSQLDB&ltType&gt::StoreXML(string Filename) <span id="sp217">{
+<span class="number">  219     </span>		ostringstream oss;
+<span class="number">  220     </span>		oss &lt&lt <span class="str">"&ltDatabase&gt"</span>;
+<span class="number">  221   </span><span class="minmax" onclick="toggleminmax(this, 'sp220')" onmouseover="highlight('sp220')" onmouseout="removeHighlight('sp220')">-</span>		<span class="key">for</span> (<span class="key">auto</span> it = DB.begin(); it != DB.end(); ++it) <span id="sp220">{
+<span class="number">  222     </span>			oss &lt&lt it-&gtsecond.ToXMLString(it-&gtfirst);
+<span class="number">  223     </span>		}</span>
+<span class="number">  224     </span>		oss &lt&lt <span class="str">"\n&lt/Database&gt"</span>;
+<span class="number">  225     </span>		ofstream File(Filename);
+<span class="number">  226     </span>		File &lt&lt oss.str();
+<span class="number">  227     </span>		File.close();
+<span class="number">  228     </span>	}</span>
+<span class="number">  229     </span>
+<span class="number">  230     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  231     </span>	<span class="comment">/// Imports database from XML file.</span>
+<span class="number">  232     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  233     </span>	<span class="comment">/// &ltparam name="Filename"&gtSpecifies the filename/path of the XML&lt/param&gt</span>
+<span class="number">  234     </span>	<span class="comment">/// &ltreturns&gtNew database instance containing the imported elements&lt/returns&gt</span>
+<span class="number">  235     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  236   </span><span class="minmax" onclick="toggleminmax(this, 'sp235')" onmouseover="highlight('sp235')" onmouseout="removeHighlight('sp235')">-</span>	<span class="key">inline</span> <span class="key">void</span> NoSQLDB&ltType&gt::ImportXML(string Filename) <span id="sp235">{
+<span class="number">  237   </span><span class="minmax" onclick="toggleminmax(this, 'sp236')" onmouseover="highlight('sp236')" onmouseout="removeHighlight('sp236')">-</span>		<span class="key">try</span> <span id="sp236">{
+<span class="number">  238     </span>			XmlDocument xDoc(Filename, XmlDocument::file);
+<span class="number">  239     </span>			vector&ltXmlDocument::sPtr&gt elements = xDoc.descendents(<span class="str">"Element"</span>).select();
+<span class="number">  240     </span>			istringstream iss;
+<span class="number">  241   </span><span class="minmax" onclick="toggleminmax(this, 'sp240')" onmouseover="highlight('sp240')" onmouseout="removeHighlight('sp240')">-</span>			<span class="key">if</span> (elements.size() &gt 0) <span id="sp240">{
+<span class="number">  242     </span>				string temp; <span class="key">int</span> i = 0;
+<span class="number">  243   </span><span class="minmax" onclick="toggleminmax(this, 'sp242')" onmouseover="highlight('sp242')" onmouseout="removeHighlight('sp242')">-</span>				<span class="key">for</span> (<span class="key">auto</span> element : elements) <span id="sp242">{
+<span class="number">  244     </span>					Element&ltType&gt *el = <span class="key">new</span> Element&ltType&gt;
+<span class="number">  245     </span>					temp = trim(element-&gtchildren()[0]-&gtchildren()[0]-&gtvalue());
+<span class="number">  246     </span>					el-&gtSetKey(temp);
+<span class="number">  247     </span>					temp = trim(element-&gtchildren()[1]-&gtchildren()[0]-&gtvalue());
+<span class="number">  248     </span>					el-&gtSetName(temp);
+<span class="number">  249     </span>					temp = trim(element-&gtchildren()[2]-&gtchildren()[0]-&gtvalue());
+<span class="number">  250     </span>					el-&gtSetCategory(temp);
+<span class="number">  251     </span>					temp = trim(element-&gtchildren()[3]-&gtchildren()[0]-&gtvalue());
+<span class="number">  252     </span>					el-&gtSetDescription(temp);
+<span class="number">  253     </span>					temp = trim(element-&gtchildren()[4]-&gtchildren()[0]-&gtvalue());
+<span class="number">  254     </span>					el-&gtSetTimeDate(temp);
+<span class="number">  255     </span>
+<span class="number">  256     </span>					<span class="key">auto</span> children = element-&gtchildren()[5]-&gtchildren();
+<span class="number">  257     </span>					<span class="key">int</span> size = children.size();
+<span class="number">  258   </span><span class="minmax" onclick="toggleminmax(this, 'sp257')" onmouseover="highlight('sp257')" onmouseout="removeHighlight('sp257')">-</span>					<span class="key">for</span> (<span class="key">int</span> i = 0; i &lt size; i++) <span id="sp257">{
+<span class="number">  259     </span>						temp = trim(children[i]-&gtchildren()[0]-&gtvalue());
+<span class="number">  260     </span>						el-&gtAddChild(temp);
+<span class="number">  261     </span>					}</span>
+<span class="number">  262     </span>
+<span class="number">  263     </span>					temp = trim(element-&gtchildren()[6]-&gtchildren()[0]-&gtvalue());
+<span class="number">  264     </span>					iss.str(temp);
+<span class="number">  265     </span>					Type type;
+<span class="number">  266     </span>					iss &gt&gt type;
+<span class="number">  267     </span>					el-&gtSetData(type);
+<span class="number">  268     </span>
+<span class="number">  269     </span>					AddEntry(el-&gtGetKey(), *el);
+<span class="number">  270     </span>					iss.clear();
+<span class="number">  271     </span>				}</span>
+<span class="number">  272     </span>			}</span>
+<span class="number">  273     </span>		}</span>
+<span class="number">  274   </span><span class="minmax" onclick="toggleminmax(this, 'sp273')" onmouseover="highlight('sp273')" onmouseout="removeHighlight('sp273')">-</span>		<span class="key">catch</span> (...) <span id="sp273">{ cout &lt&lt <span class="str">"Unable to access file "</span> &lt&lt Filename; }</span>
+<span class="number">  275     </span>	}</span>
+<span class="number">  276     </span>
+<span class="number">  277     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  278   </span><span class="minmax" onclick="toggleminmax(this, 'sp277')" onmouseover="highlight('sp277')" onmouseout="removeHighlight('sp277')">-</span>	<span class="key">inline</span> string NoSQLDB&ltType&gt::ToString() <span id="sp277">{
+<span class="number">  279     </span>		ostringstream oss;
+<span class="number">  280     </span>		oss &lt&lt setw(11) &lt&lt <span class="str">"Database:"</span> &lt&lt endl;
+<span class="number">  281   </span><span class="minmax" onclick="toggleminmax(this, 'sp280')" onmouseover="highlight('sp280')" onmouseout="removeHighlight('sp280')">-</span>		<span class="key">for</span> (<span class="key">auto</span> it = DB.begin(); it != DB.end(); ++it) <span id="sp280">{
+<span class="number">  282     </span>			oss &lt&lt setw(11) &lt&lt <span class="str">"Record:"</span> &lt&lt endl &lt&lt it-&gtsecond.ToString() &lt&lt endl;
+<span class="number">  283     </span>		}</span>
+<span class="number">  284     </span>		<span class="key">return</span> oss.str();
+<span class="number">  285     </span>	}</span>
+<span class="number">  286     </span>
+<span class="number">  287     </span>
+<span class="number">  288     </span>
+<span class="number">  289     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  290     </span>	<span class="comment">// ---------------&lt Editing Functions Area &gt-------------------------------------------------------</span>
+<span class="number">  291     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  292     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  293     </span>	<span class="comment">/// Adds child relation between two keys</span>
+<span class="number">  294     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  295     </span>	<span class="comment">/// &ltparam name="Key"&gtSpecifies the parent element's key&lt/param&gt</span>
+<span class="number">  296     </span>	<span class="comment">/// &ltparam name="ChildKey"&gtSpecifies the child element's key&lt/param&gt</span>
+<span class="number">  297     </span>	<span class="comment">/// &ltreturns&gtBoolean (true, false) indicating whether the operation was successful or not&lt/returns&gt</span>
+<span class="number">  298     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  299   </span><span class="minmax" onclick="toggleminmax(this, 'sp298')" onmouseover="highlight('sp298')" onmouseout="removeHighlight('sp298')">-</span>	<span class="key">inline</span> <span class="key">bool</span> NoSQLDB&ltType&gt::AddRelation(string Key, string ChildKey) <span id="sp298">{
+<span class="number">  300     </span>		<span class="key">if</span> (DB.find(Key) == DB.end()) <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  301     </span>		DB[Key].AddChild(ChildKey);
+<span class="number">  302     </span>		<span class="key">return</span> <span class="key">true</span>;
+<span class="number">  303     </span>	}</span>
+<span class="number">  304     </span>
+<span class="number">  305     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  306     </span>	<span class="comment">/// Removes child relation between two keys</span>
+<span class="number">  307     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  308     </span>	<span class="comment">/// &ltparam name="Key"&gtSpecifies the parent element's key&lt/param&gt</span>
+<span class="number">  309     </span>	<span class="comment">/// &ltparam name="ChildKey"&gtSpecifies the child element's key&lt/param&gt</span>
+<span class="number">  310     </span>	<span class="comment">/// &ltreturns&gtBoolean (true, false) indicating whether the operation was successful or not&lt/returns&gt</span>
+<span class="number">  311     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  312   </span><span class="minmax" onclick="toggleminmax(this, 'sp311')" onmouseover="highlight('sp311')" onmouseout="removeHighlight('sp311')">-</span>	<span class="key">inline</span> <span class="key">bool</span> NoSQLDB&ltType&gt::RemoveRelation(string Key, string ChildKey) <span id="sp311">{
+<span class="number">  313     </span>		<span class="key">if</span> (DB.find(Key) == DB.end()) <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  314     </span>		<span class="key">return</span> DB[Key].RemoveChild(ChildKey);
+<span class="number">  315     </span>		<span class="key">return</span> <span class="key">true</span>;
+<span class="number">  316     </span>	}</span>
+<span class="number">  317     </span>
+<span class="number">  318     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  319     </span>	<span class="comment">/// Changes the name property of an element given its key</span>
+<span class="number">  320     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  321     </span>	<span class="comment">/// &ltparam name="Key"&gtSpecifies the element key to modify&lt/param&gt</span>
+<span class="number">  322     </span>	<span class="comment">/// &ltparam name="name"&gtSpecifies the new name property&lt/param&gt</span>
+<span class="number">  323     </span>	<span class="comment">/// &ltreturns&gtBoolean (true, false) indicating whether the operation was successful or not&lt/returns&gt</span>
+<span class="number">  324     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  325   </span><span class="minmax" onclick="toggleminmax(this, 'sp324')" onmouseover="highlight('sp324')" onmouseout="removeHighlight('sp324')">-</span>	<span class="key">inline</span> <span class="key">bool</span> NoSQLDB&ltType&gt::ChangeName(string Key, const string name) <span id="sp324">{
+<span class="number">  326     </span>		<span class="key">if</span> (DB.find(Key) == DB.end()) <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  327     </span>		DB[Key].SetName(name);
+<span class="number">  328     </span>		<span class="key">return</span> <span class="key">true</span>;
+<span class="number">  329     </span>	}</span>
+<span class="number">  330     </span>
+<span class="number">  331     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  332     </span>	<span class="comment">/// Changes the description property of an element given its key</span>
+<span class="number">  333     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  334     </span>	<span class="comment">/// &ltparam name="Key"&gtSpecifies the element key to modify&lt/param&gt</span>
+<span class="number">  335     </span>	<span class="comment">/// &ltparam name="des"&gtSpecifies the new description property&lt/param&gt</span>
+<span class="number">  336     </span>	<span class="comment">/// &ltreturns&gtBoolean (true, false) indicating whether the operation was successful or not&lt/returns&gt</span>
+<span class="number">  337     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  338   </span><span class="minmax" onclick="toggleminmax(this, 'sp337')" onmouseover="highlight('sp337')" onmouseout="removeHighlight('sp337')">-</span>	<span class="key">inline</span> <span class="key">bool</span> NoSQLDB&ltType&gt::ChangeDescription(string Key, const string des) <span id="sp337">{
+<span class="number">  339     </span>		<span class="key">if</span> (DB.find(Key) == DB.end()) <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  340     </span>		DB[Key].SetDescription(des);
+<span class="number">  341     </span>		<span class="key">return</span> <span class="key">true</span>;
+<span class="number">  342     </span>	}</span>
+<span class="number">  343     </span>
+<span class="number">  344     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  345     </span>	<span class="comment">/// Changes the category property of an element given its key</span>
+<span class="number">  346     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  347     </span>	<span class="comment">/// &ltparam name="Key"&gtSpecifies the element key to modify&lt/param&gt</span>
+<span class="number">  348     </span>	<span class="comment">/// &ltparam name="cat"&gtSpecifies the new category property&lt/param&gt</span>
+<span class="number">  349     </span>	<span class="comment">/// &ltreturns&gtBoolean (true, false) indicating whether the operation was successful or not&lt/returns&gt</span>
+<span class="number">  350     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  351   </span><span class="minmax" onclick="toggleminmax(this, 'sp350')" onmouseover="highlight('sp350')" onmouseout="removeHighlight('sp350')">-</span>	<span class="key">inline</span> <span class="key">bool</span> NoSQLDB&ltType&gt::ChangeCategory(string Key, const string cat) <span id="sp350">{
+<span class="number">  352     </span>		<span class="key">if</span> (DB.find(Key) == DB.end()) <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  353     </span>		DB[Key].SetCategory(cat);
+<span class="number">  354     </span>		<span class="key">return</span> <span class="key">true</span>;
+<span class="number">  355     </span>	}</span>
+<span class="number">  356     </span>
+<span class="number">  357     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  358     </span>	<span class="comment">/// Replaces data instance, with new instance, of an element given its key</span>
+<span class="number">  359     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  360     </span>	<span class="comment">/// &ltparam name="Key"&gtSpecifies the element key to modify&lt/param&gt</span>
+<span class="number">  361     </span>	<span class="comment">/// &ltparam name="data"&gtSpecifies the new data instance&lt/param&gt</span>
+<span class="number">  362     </span>	<span class="comment">/// &ltreturns&gtBoolean (true, false) indicating whether the operation was successful or not&lt/returns&gt</span>
+<span class="number">  363     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  364   </span><span class="minmax" onclick="toggleminmax(this, 'sp363')" onmouseover="highlight('sp363')" onmouseout="removeHighlight('sp363')">-</span>	<span class="key">inline</span> <span class="key">bool</span> NoSQLDB&ltType&gt::ReplaceDataInstance(string Key, Type data) <span id="sp363">{
+<span class="number">  365     </span>		<span class="key">if</span> (DB.find(Key) == DB.end()) <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  366     </span>		DB[Key].SetData(data);
+<span class="number">  367     </span>		<span class="key">return</span> <span class="key">true</span>;
+<span class="number">  368     </span>	}</span>
+<span class="number">  369     </span>
+<span class="number">  370     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  371     </span>	<span class="comment">// ---------------&lt Editing Functions Area &gt-------------------------------------------------------</span>
+<span class="number">  372     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  373     </span>
+<span class="number">  374     </span>
+<span class="number">  375     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  376     </span>	<span class="comment">// ---------------&lt Query Functions Area &gt---------------------------------------------------------</span>
+<span class="number">  377     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  378     </span>
+<span class="number">  379   </span><span class="minmax" onclick="toggleminmax(this, 'sp378')" onmouseover="highlight('sp378')" onmouseout="removeHighlight('sp378')">-</span>	<span class="key">class</span> InvalidQueryException : <span class="key">public</span> exception <span id="sp378">{
+<span class="number">  380     </span>		string details;
+<span class="number">  381     </span>	<span class="key">public</span>:
+<span class="number">  382   </span><span class="minmax" onclick="toggleminmax(this, 'sp381')" onmouseover="highlight('sp381')" onmouseout="removeHighlight('sp381')">-</span>		InvalidQueryException(<span class="key">char</span>* det) <span id="sp381">{ details = det; }</span>
+<span class="number">  383   </span><span class="minmax" onclick="toggleminmax(this, 'sp382')" onmouseover="highlight('sp382')" onmouseout="removeHighlight('sp382')">-</span>		<span class="key">virtual</span> const <span class="key">char</span>* what() <span class="key">throw</span>() <span id="sp382">{
+<span class="number">  384     </span>			string s = <span class="str">"Cannot process the specified query. Query text is invalid; "</span> + details;
+<span class="number">  385     </span>			<span class="key">return</span> s.c_str();
+<span class="number">  386     </span>		}</span>
+<span class="number">  387     </span>	}</span>;
+<span class="number">  388     </span>
+<span class="number">  389     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  390     </span>	<span class="comment">/// Executes a text query composed using regular expressions</span>
+<span class="number">  391     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  392     </span>	<span class="comment">/// &ltparam name="QueryText"&gtSpecifies the query text (in regular expressions)&lt/param&gt</span>
+<span class="number">  393     </span>	<span class="comment">/// &ltreturns&gtVector of keys satisfying the query condition(s)&lt/returns&gt</span>
+<span class="number">  394     </span>	<span class="comment">/// &ltexample&gtExecuteQuery("get name='ammar' or name='odai'")&lt/example&gt</span>
+<span class="number">  395     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  396   </span><span class="minmax" onclick="toggleminmax(this, 'sp395')" onmouseover="highlight('sp395')" onmouseout="removeHighlight('sp395')">-</span>	<span class="key">inline</span> vector&ltstring&gt NoSQLDB&ltType&gt::ExecuteQuery(string QueryText) <span id="sp395">{
+<span class="number">  397     </span>		RegularExpression RE(QueryText);
+<span class="number">  398     </span>		vector&ltstring&gt operations = RE.GetOperations();
+<span class="number">  399     </span>		vector&ltstring&gt arguments = RE.GetArguments();
+<span class="number">  400     </span>		vector&lt<span class="key">int</span>&gt priorities = RE.GetCompoundParameters();
+<span class="number">  401     </span>		string cmd = RE.GetCommand();
+<span class="number">  402     </span>
+<span class="number">  403     </span>		<span class="comment">// if command is add, just add the element and return empty vector</span>
+<span class="number">  404   </span><span class="minmax" onclick="toggleminmax(this, 'sp403')" onmouseover="highlight('sp403')" onmouseout="removeHighlight('sp403')">-</span>		<span class="key">if</span> (cmd.compare(<span class="str">"add"</span>) == 0) <span id="sp403">{
+<span class="number">  405     </span>			ExecuteAddQuery(operations, arguments);
+<span class="number">  406     </span>			<span class="key">return</span> vector&ltstring&gt();
+<span class="number">  407     </span>		}</span>
+<span class="number">  408     </span>
+<span class="number">  409     </span>		<span class="comment">// for compound queries this will manage each query and combine them to one result</span>
+<span class="number">  410     </span>		vector&ltvector&ltstring&gt&gt resultsVectors;
+<span class="number">  411     </span>
+<span class="number">  412     </span>		<span class="comment">//process each single query and add its results to the resultsVector</span>
+<span class="number">  413     </span>		ExecuteSingleQueries(operations, arguments, resultsVectors);
+<span class="number">  414     </span>
+<span class="number">  415     </span>		<span class="comment">// apply priorities in their order: parentheses, AND, OR</span>
+<span class="number">  416     </span>		Apply_Priorities(priorities, resultsVectors);
+<span class="number">  417     </span>
+<span class="number">  418   </span><span class="minmax" onclick="toggleminmax(this, 'sp417')" onmouseover="highlight('sp417')" onmouseout="removeHighlight('sp417')">-</span>		<span class="key">if</span> (RE.GetCommand().compare(<span class="str">"delete"</span>) == 0) <span id="sp417">{
+<span class="number">  419     </span>			<span class="key">int</span> size = resultsVectors[0].size();
+<span class="number">  420     </span>			<span class="key">for</span> (<span class="key">int</span> i = 0; i &lt size; i++) RemoveEntry(resultsVectors[0][i]);
+<span class="number">  421     </span>		}</span>
+<span class="number">  422     </span>
+<span class="number">  423     </span>		<span class="comment">// results vectors will only have 1 vector which holds the final result</span>
+<span class="number">  424     </span>		<span class="key">return</span> resultsVectors[0];
+<span class="number">  425     </span>	}</span>
+<span class="number">  426     </span>
+<span class="number">  427     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  428   </span><span class="minmax" onclick="toggleminmax(this, 'sp427')" onmouseover="highlight('sp427')" onmouseout="removeHighlight('sp427')">-</span>	<span class="key">inline</span> vector&ltstring&gt NoSQLDB&ltType&gt::ExecuteQuery(Query qType, string argument, string optional) <span id="sp427">{
+<span class="number">  429     </span>		<span class="key">if</span> (qType == Children  && DB.find(argument) != DB.end()) <span class="key">return</span> DB[argument].GetChildren();
+<span class="number">  430     </span>		vector&ltstring&gt result;
+<span class="number">  431     </span>		string s = <span class="str">"(.*)"</span> + argument + <span class="str">"(.*)|(.*)"</span> + argument + <span class="str">"|"</span> + argument + <span class="str">"(.*)"</span>;
+<span class="number">  432     </span>		regex rgx(s, ECMAScript | icase);
+<span class="number">  433   </span><span class="minmax" onclick="toggleminmax(this, 'sp432')" onmouseover="highlight('sp432')" onmouseout="removeHighlight('sp432')">-</span>		<span class="key">for</span> (<span class="key">auto</span> it = DB.begin(); it != DB.end(); ++it) <span id="sp432">{
+<span class="number">  434   </span><span class="minmax" onclick="toggleminmax(this, 'sp433')" onmouseover="highlight('sp433')" onmouseout="removeHighlight('sp433')">-</span>			<span class="key">switch</span> (qType) <span id="sp433">{
+<span class="number">  435     </span>			<span class="key">case</span> KeyPattern:
+<span class="number">  436     </span>				<span class="key">if</span> (regex_match(it-&gtfirst, rgx)) result.push_back(it-&gtfirst);
+<span class="number">  437     </span>				<span class="key">break</span>;
+<span class="number">  438     </span>			<span class="key">case</span> Name:
+<span class="number">  439     </span>				<span class="key">if</span> (regex_match(it-&gtsecond.GetName(), rgx)) result.push_back(it-&gtfirst);
+<span class="number">  440     </span>				<span class="key">break</span>;
+<span class="number">  441     </span>			<span class="key">case</span> Category:
+<span class="number">  442     </span>				<span class="key">if</span> (regex_match(it-&gtsecond.GetCategory(), rgx)) result.push_back(it-&gtfirst);
+<span class="number">  443     </span>				<span class="key">break</span>;
+<span class="number">  444     </span>			<span class="key">case</span> StringData:
+<span class="number">  445   </span><span class="minmax" onclick="toggleminmax(this, 'sp444')" onmouseover="highlight('sp444')" onmouseout="removeHighlight('sp444')">-</span>				<span class="key">try</span> <span id="sp444">{
+<span class="number">  446     </span>					<span class="key">if</span> (regex_match(it-&gtsecond.GetData(), rgx)) result.push_back(it-&gtfirst);
+<span class="number">  447     </span>				}</span>
+<span class="number">  448   </span><span class="minmax" onclick="toggleminmax(this, 'sp447')" onmouseover="highlight('sp447')" onmouseout="removeHighlight('sp447')">-</span>				<span class="key">catch</span> (exception) <span id="sp447">{ <span class="key">return</span> vector&ltstring&gt(); }</span>
+<span class="number">  449     </span>				<span class="key">break</span>;
+<span class="number">  450     </span>			<span class="key">case</span> TimeDate:
+<span class="number">  451     </span>				time_t t1 = time(nullptr), t2 = time(nullptr); tm tm;
+<span class="number">  452   </span><span class="minmax" onclick="toggleminmax(this, 'sp451')" onmouseover="highlight('sp451')" onmouseout="removeHighlight('sp451')">-</span>				<span class="key">try</span> <span id="sp451">{ t1 = ParseTimeString(argument); }</span>
+<span class="number">  453   </span><span class="minmax" onclick="toggleminmax(this, 'sp452')" onmouseover="highlight('sp452')" onmouseout="removeHighlight('sp452')">-</span>				<span class="key">catch</span> (exception) <span id="sp452">{ localtime_s(&tm, &t1); }</span>
+<span class="number">  454   </span><span class="minmax" onclick="toggleminmax(this, 'sp453')" onmouseover="highlight('sp453')" onmouseout="removeHighlight('sp453')">-</span>				<span class="key">try</span> <span id="sp453">{ t2 = ParseTimeString(optional); }</span>
+<span class="number">  455   </span><span class="minmax" onclick="toggleminmax(this, 'sp454')" onmouseover="highlight('sp454')" onmouseout="removeHighlight('sp454')">-</span>				<span class="key">catch</span> (exception) <span id="sp454">{ localtime_s(&tm, &t2); }</span>
+<span class="number">  456     </span>				time_t currentTime = ParseTimeString(it-&gtsecond.GetTimeDate());
+<span class="number">  457     </span>				<span class="key">if</span> (t1 &lt= currentTime && currentTime &lt= t2) result.push_back(it-&gtfirst);
+<span class="number">  458     </span>				<span class="key">break</span>;
+<span class="number">  459     </span>			}</span>
+<span class="number">  460     </span>		}</span>
+<span class="number">  461     </span>		<span class="key">return</span> result;
+<span class="number">  462     </span>	}</span>
+<span class="number">  463     </span>
+<span class="number">  464     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  465     </span>	<span class="comment">/// Finds an element for a given key</span>
+<span class="number">  466     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  467     </span>	<span class="comment">/// &ltparam name="Key"&gtSpecifies the key to look for&lt/param&gt</span>
+<span class="number">  468     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  469   </span><span class="minmax" onclick="toggleminmax(this, 'sp468')" onmouseover="highlight('sp468')" onmouseout="removeHighlight('sp468')">-</span>	<span class="key">inline</span> Element&ltType&gt NoSQLDB&ltType&gt::GetElement(string Key) <span id="sp468">{
+<span class="number">  470     </span>		<span class="key">if</span> (DB.find(Key) != DB.end())
+<span class="number">  471     </span>			<span class="key">return</span> DB[Key];
+<span class="number">  472     </span>		<span class="key">return</span> Element&ltType&gt();
+<span class="number">  473     </span>	}</span>
+<span class="number">  474     </span>
+<span class="number">  475     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  476   </span><span class="minmax" onclick="toggleminmax(this, 'sp475')" onmouseover="highlight('sp475')" onmouseout="removeHighlight('sp475')">-</span>	<span class="key">inline</span> vector&ltstring&gt NoSQLDB&ltType&gt::GetAllKeys() <span id="sp475">{
+<span class="number">  477     </span>		vector&ltstring&gt v;
+<span class="number">  478     </span>		<span class="key">for</span> (<span class="key">auto</span> it = DB.begin(); it != DB.end(); ++it)
+<span class="number">  479     </span>			v.push_back(it-&gtfirst);
+<span class="number">  480     </span>		<span class="key">return</span> v;
+<span class="number">  481     </span>	}</span>
+<span class="number">  482     </span>
+<span class="number">  483     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  484     </span>	<span class="comment">/// Finds all children of an element given its key</span>
+<span class="number">  485     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  486     </span>	<span class="comment">/// &ltparam name="Key"&gtSpecifies the key used to reach the element&lt/param&gt</span>
+<span class="number">  487     </span>	<span class="comment">/// &ltreturns&gtVector of children keys for the given element&lt/returns&gt</span>
+<span class="number">  488     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  489   </span><span class="minmax" onclick="toggleminmax(this, 'sp488')" onmouseover="highlight('sp488')" onmouseout="removeHighlight('sp488')">-</span>	<span class="key">inline</span> set&ltstring&gt NoSQLDB&ltType&gt::GetChildren(string Key) <span id="sp488">{
+<span class="number">  490     </span>		<span class="key">if</span> (DB.find(Key) == DB.end()) <span class="key">return</span> set&ltstring&gt();
+<span class="number">  491     </span>		<span class="key">return</span> DB[Key].GetChildren();
+<span class="number">  492     </span>	}</span>
+<span class="number">  493     </span>
+<span class="number">  494     </span>
+<span class="number">  495     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  496     </span>	<span class="comment">/// Finds all keys that follow a specified pattern</span>
+<span class="number">  497     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  498     </span>	<span class="comment">/// &ltparam name="Pattern"&gtSpcifies the pattern to follow&lt/param&gt</span>
+<span class="number">  499     </span>	<span class="comment">/// &ltreturns&gtVector of all keys satisfying the condition&lt/returns&gt</span>
+<span class="number">  500     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  501   </span><span class="minmax" onclick="toggleminmax(this, 'sp500')" onmouseover="highlight('sp500')" onmouseout="removeHighlight('sp500')">-</span>	<span class="key">inline</span> vector&ltstring&gt NoSQLDB&ltType&gt::Keys_With_Pattern(string Pattern) <span id="sp500">{
+<span class="number">  502     </span>		vector&ltstring&gt result;
+<span class="number">  503     </span>		string s = <span class="str">"(.*)"</span> + Pattern + <span class="str">"(.*)|(.*)"</span> + Pattern + <span class="str">"|"</span> + Pattern + <span class="str">"(.*)"</span>;
+<span class="number">  504     </span>		regex rgx(s, ECMAScript | icase);
+<span class="number">  505     </span>
+<span class="number">  506     </span>		<span class="key">for</span> (<span class="key">auto</span> it = DB.begin(); it != DB.end(); ++it)
+<span class="number">  507     </span>			<span class="key">if</span> (regex_match(it-&gtfirst, rgx)) result.push_back(it-&gtfirst);
+<span class="number">  508     </span>
+<span class="number">  509     </span>		<span class="comment">// if nothing matched the pattern return all keys</span>
+<span class="number">  510     </span>		<span class="key">if</span> (result.size() == 0)
+<span class="number">  511     </span>			<span class="key">for</span> (<span class="key">auto</span> it = DB.begin(); it != DB.end(); ++it) result.push_back(it-&gtfirst);
+<span class="number">  512     </span>		<span class="key">return</span> result;
+<span class="number">  513     </span>	}</span>
+<span class="number">  514     </span>
+<span class="number">  515     </span>
+<span class="number">  516     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  517     </span>	<span class="comment">/// Finds all elements in the database which have a specified name</span>
+<span class="number">  518     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  519     </span>	<span class="comment">/// &ltparam name="Name"&gtSpecifies the name to search for&lt/param&gt</span>
+<span class="number">  520     </span>	<span class="comment">/// &ltreturns&gtVector of all keys satisfying the condition&lt/returns&gt</span>
+<span class="number">  521     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  522   </span><span class="minmax" onclick="toggleminmax(this, 'sp521')" onmouseover="highlight('sp521')" onmouseout="removeHighlight('sp521')">-</span>	<span class="key">inline</span> vector&ltstring&gt NoSQLDB&ltType&gt::Keys_With_Name(string Name) <span id="sp521">{
+<span class="number">  523     </span>		vector&ltstring&gt result;
+<span class="number">  524     </span>		string s = <span class="str">"(.*)"</span> + Name + <span class="str">"(.*)|(.*)"</span> + Name + <span class="str">"|"</span> + Name + <span class="str">"(.*)"</span>;
+<span class="number">  525     </span>		regex rgx(s, ECMAScript | icase);
+<span class="number">  526     </span>		<span class="key">for</span> (<span class="key">auto</span> it = DB.begin(); it != DB.end(); ++it)
+<span class="number">  527     </span>			<span class="key">if</span> (regex_match(it-&gtsecond.GetName(), rgx)) result.push_back(it-&gtfirst);
+<span class="number">  528     </span>
+<span class="number">  529     </span>		<span class="key">return</span> result;
+<span class="number">  530     </span>	}</span>
+<span class="number">  531     </span>
+<span class="number">  532     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  533     </span>	<span class="comment">/// Finds all elements in the database that contain a specified category</span>
+<span class="number">  534     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  535     </span>	<span class="comment">/// &ltparam name="Category"&gtSpecifies the search pattern for the category property&lt/param&gt</span>
+<span class="number">  536     </span>	<span class="comment">/// &ltreturns&gtVector of keys that satisfy the condition&lt/returns&gt</span>
+<span class="number">  537     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  538   </span><span class="minmax" onclick="toggleminmax(this, 'sp537')" onmouseover="highlight('sp537')" onmouseout="removeHighlight('sp537')">-</span>	<span class="key">inline</span> vector&ltstring&gt NoSQLDB&ltType&gt::Keys_with_Category(string Category) <span id="sp537">{
+<span class="number">  539     </span>		vector&ltstring&gt result;
+<span class="number">  540     </span>		string s = <span class="str">"(.*)"</span> + Category + <span class="str">"(.*)|(.*)"</span> + Category + <span class="str">"|"</span> + Category + <span class="str">"(.*)"</span>;
+<span class="number">  541     </span>		regex rgx(s, ECMAScript | icase);
+<span class="number">  542     </span>		<span class="key">for</span> (<span class="key">auto</span> it = DB.begin(); it != DB.end(); ++it)
+<span class="number">  543     </span>			<span class="key">if</span> (regex_match(it-&gtsecond.GetCategory(), rgx)) result.push_back(it-&gtfirst);
+<span class="number">  544     </span>		<span class="key">return</span> result;
+<span class="number">  545     </span>	}</span>
+<span class="number">  546     </span>
+<span class="number">  547     </span>
+<span class="number">  548     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  549     </span>	<span class="comment">/// Special for databases with string datatypes. </span>
+<span class="number">  550     </span>	<span class="comment">/// Finds all keys of which elements contain a specified string in their string data item</span>
+<span class="number">  551     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  552     </span>	<span class="comment">/// &ltparam name="Data"&gtSpecifies the string pattern to search for in the data items&lt/param&gt</span>
+<span class="number">  553     </span>	<span class="comment">/// &ltreturns&gtVector of all keys satisfying the condition&lt/returns&gt</span>
+<span class="number">  554     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  555   </span><span class="minmax" onclick="toggleminmax(this, 'sp554')" onmouseover="highlight('sp554')" onmouseout="removeHighlight('sp554')">-</span>	<span class="key">inline</span> vector&ltstring&gt NoSQLDB&ltType&gt::Keys_with_String_Data(string Data) <span id="sp554">{
+<span class="number">  556   </span><span class="minmax" onclick="toggleminmax(this, 'sp555')" onmouseover="highlight('sp555')" onmouseout="removeHighlight('sp555')">-</span>		<span class="key">try</span> <span id="sp555">{
+<span class="number">  557     </span>			vector&ltstring&gt result;
+<span class="number">  558     </span>			string s = <span class="str">"(.*)"</span> + Data + <span class="str">"(.*)|(.*)"</span> + Data + <span class="str">"|"</span> + Data + <span class="str">"(.*)"</span>;
+<span class="number">  559     </span>			regex rgx(s, ECMAScript | icase);
+<span class="number">  560     </span>			<span class="key">for</span> (<span class="key">auto</span> it = DB.begin(); it != DB.end(); ++it)
+<span class="number">  561     </span>				<span class="key">if</span> (regex_match(it-&gtsecond.GetData(), rgx)) result.push_back(it-&gtfirst);
+<span class="number">  562     </span>			<span class="key">return</span> result;
+<span class="number">  563     </span>		}</span>
+<span class="number">  564     </span>		<span class="comment">// if datatype is not string, finding something will throw an exception, so return</span>
+<span class="number">  565   </span><span class="minmax" onclick="toggleminmax(this, 'sp564')" onmouseover="highlight('sp564')" onmouseout="removeHighlight('sp564')">-</span>		<span class="key">catch</span> (exception ex) <span id="sp564">{
+<span class="number">  566     </span>			cout &lt&lt ex.what();
+<span class="number">  567     </span>			<span class="key">return</span> vector&ltstring&gt();
+<span class="number">  568     </span>		}</span>
+<span class="number">  569     </span>	}</span>
+<span class="number">  570     </span>
+<span class="number">  571     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  572     </span>	<span class="comment">/// Finds all keys for elements created between the given two dates.</span>
+<span class="number">  573     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  574     </span>	<span class="comment">/// &ltparam name="t1"&gtSpecifies the first date. If set to default "" then current date is set instead&lt/param&gt</span>
+<span class="number">  575     </span>	<span class="comment">/// &ltparam name="t2"&gtSpecifies the second date. If set to default "" then current date is set instead&lt/param&gt</span>
+<span class="number">  576     </span>	<span class="comment">/// &ltreturns&gtVector of all keys in the specified time interval&lt/returns&gt</span>
+<span class="number">  577     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  578   </span><span class="minmax" onclick="toggleminmax(this, 'sp577')" onmouseover="highlight('sp577')" onmouseout="removeHighlight('sp577')">-</span>	<span class="key">inline</span> vector&ltstring&gt NoSQLDB&ltType&gt::Keys_Within(string t1, string t2) <span id="sp577">{
+<span class="number">  579     </span>		time_t time1 = time(nullptr), time2 = time(nullptr);
+<span class="number">  580     </span>		tm tm;
+<span class="number">  581   </span><span class="minmax" onclick="toggleminmax(this, 'sp580')" onmouseover="highlight('sp580')" onmouseout="removeHighlight('sp580')">-</span>		<span class="key">try</span> <span id="sp580">{
+<span class="number">  582     </span>			time1 = ParseTimeString(t1);
+<span class="number">  583     </span>		}</span>
+<span class="number">  584   </span><span class="minmax" onclick="toggleminmax(this, 'sp583')" onmouseover="highlight('sp583')" onmouseout="removeHighlight('sp583')">-</span>		<span class="key">catch</span> (exception) <span id="sp583">{
+<span class="number">  585     </span>			localtime_s(&tm, &time1);
+<span class="number">  586     </span>		}</span>
+<span class="number">  587   </span><span class="minmax" onclick="toggleminmax(this, 'sp586')" onmouseover="highlight('sp586')" onmouseout="removeHighlight('sp586')">-</span>		<span class="key">try</span> <span id="sp586">{
+<span class="number">  588     </span>			time2 = ParseTimeString(t2);
+<span class="number">  589     </span>		}</span>
+<span class="number">  590   </span><span class="minmax" onclick="toggleminmax(this, 'sp589')" onmouseover="highlight('sp589')" onmouseout="removeHighlight('sp589')">-</span>		<span class="key">catch</span> (exception) <span id="sp589">{
+<span class="number">  591     </span>			localtime_s(&tm, &time2);
+<span class="number">  592     </span>		}</span>
+<span class="number">  593     </span>		vector&ltstring&gt result;
+<span class="number">  594   </span><span class="minmax" onclick="toggleminmax(this, 'sp593')" onmouseover="highlight('sp593')" onmouseout="removeHighlight('sp593')">-</span>		<span class="key">for</span> (<span class="key">auto</span> it = DB.begin(); it != DB.end(); ++it) <span id="sp593">{
+<span class="number">  595     </span>			time_t elementTime = ParseTimeString(it-&gtsecond.GetTimeDate());
+<span class="number">  596     </span>			<span class="key">if</span> (elementTime &gt= time1 && elementTime &lt= time2) result.push_back(it-&gtfirst);
+<span class="number">  597     </span>		}</span>
+<span class="number">  598     </span>		<span class="key">return</span> result;
+<span class="number">  599     </span>	}</span>
+<span class="number">  600     </span>
+<span class="number">  601     </span>
+<span class="number">  602     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  603     </span>	<span class="comment">/// Performs intersection operation between results of two other queries</span>
+<span class="number">  604     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  605     </span>	<span class="comment">/// &ltparam name="result1"&gtFirst query keys collection&lt/param&gt</span>
+<span class="number">  606     </span>	<span class="comment">/// &ltparam name="result2"&gtSecond query keys collection&lt/param&gt</span>
+<span class="number">  607     </span>	<span class="comment">/// &ltreturns&gtVector of keys holding distinct keys based on the intersection of the input vectors&lt/returns&gt</span>
+<span class="number">  608     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  609     </span>	<span class="key">inline</span> vector&ltstring&gt NoSQLDB&ltType&gt::Query_and_Query
+<span class="number">  610   </span><span class="minmax" onclick="toggleminmax(this, 'sp609')" onmouseover="highlight('sp609')" onmouseout="removeHighlight('sp609')">-</span>	(vector&ltstring&gt result1, vector&ltstring&gt result2) <span id="sp609">{
+<span class="number">  611     </span>		set&ltstring&gt s1(result1.begin(), result1.end());
+<span class="number">  612     </span>		set&ltstring&gt s2(result2.begin(), result2.end());
+<span class="number">  613     </span>		vector&ltstring&gt result;
+<span class="number">  614     </span>		set_intersection(s1.begin(), s1.end(), s2.begin(), s2.end(), back_inserter(result));
+<span class="number">  615     </span>		<span class="key">return</span> result;
+<span class="number">  616     </span>	}</span>
+<span class="number">  617     </span>
+<span class="number">  618     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  619     </span>	<span class="comment">/// Performs union operation between results of two other queries</span>
+<span class="number">  620     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  621     </span>	<span class="comment">/// &ltparam name="result1"&gtFirst query keys collection&lt/param&gt</span>
+<span class="number">  622     </span>	<span class="comment">/// &ltparam name="result2"&gtSecond query keys collection&lt/param&gt</span>
+<span class="number">  623     </span>	<span class="comment">/// &ltreturns&gtVector of keys holding distinct keys based on the union of the input results&lt/returns&gt</span>
+<span class="number">  624     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  625     </span>	<span class="key">inline</span> vector&ltstring&gt NoSQLDB&ltType&gt::Query_or_Query
+<span class="number">  626   </span><span class="minmax" onclick="toggleminmax(this, 'sp625')" onmouseover="highlight('sp625')" onmouseout="removeHighlight('sp625')">-</span>	(vector&ltstring&gt result1, vector&ltstring&gt result2) <span id="sp625">{
+<span class="number">  627     </span>		set&ltstring&gt s1(result1.begin(), result1.end());
+<span class="number">  628     </span>		set&ltstring&gt s2(result2.begin(), result2.end());
+<span class="number">  629     </span>		vector&ltstring&gt result;
+<span class="number">  630     </span>		set_union(s1.begin(), s1.end(), s2.begin(), s2.end(), back_inserter(result));
+<span class="number">  631     </span>		<span class="key">return</span> result;
+<span class="number">  632     </span>	}</span>
+<span class="number">  633     </span>
+<span class="number">  634     </span>
+<span class="number">  635     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  636     </span>	<span class="comment">// ---------------&lt Query Functions Area &gt---------------------------------------------------------</span>
+<span class="number">  637     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  638     </span>
+<span class="number">  639     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  640   </span><span class="minmax" onclick="toggleminmax(this, 'sp639')" onmouseover="highlight('sp639')" onmouseout="removeHighlight('sp639')">-</span>	<span class="key">inline</span> <span class="key">void</span> NoSQLDB&ltType&gt::SetTimedSave(<span class="key">short</span> Seconds, string Filename) <span id="sp639">{
+<span class="number">  641     </span>		<span class="key">if</span> (TimerThread.joinable()) TimerThread.join();
+<span class="number">  642     </span>		AutoTimedSave = <span class="key">true</span>;
+<span class="number">  643     </span>		TimerThread = thread(&NoSQLDB&ltType&gt::TimedAutoSave, <span class="key">this</span>, Seconds, Filename);
+<span class="number">  644     </span>	}</span>
+<span class="number">  645     </span>
+<span class="number">  646     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  647   </span><span class="minmax" onclick="toggleminmax(this, 'sp646')" onmouseover="highlight('sp646')" onmouseout="removeHighlight('sp646')">-</span>	<span class="key">inline</span> <span class="key">void</span> NoSQLDB&ltType&gt::SetWriteCounter(<span class="key">short</span> MaxCounts, string Filename) <span id="sp646">{
+<span class="number">  648     </span>		Max_Allowed_Counts = MaxCounts;
+<span class="number">  649     </span>		DefaultPath = Filename;
+<span class="number">  650     </span>		AutoCountSave = <span class="key">true</span>;
+<span class="number">  651     </span>	}</span>
+<span class="number">  652     </span>
+<span class="number">  653     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  654     </span>	<span class="comment">// ---------------&lt Query Processing Functions Area &gt----------------------------------------------</span>
+<span class="number">  655     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  656     </span>
+<span class="number">  657     </span>
+<span class="number">  658     </span>
+<span class="number">  659     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  660     </span>	<span class="comment">/// Executes separate queries given their information</span>
+<span class="number">  661     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  662     </span>	<span class="comment">/// &ltparam name="operations"&gtHolds the operations to consider&lt/param&gt</span>
+<span class="number">  663     </span>	<span class="comment">/// &ltparam name="arguments"&gtHolds the arguments for the operations&lt/param&gt</span>
+<span class="number">  664     </span>	<span class="comment">/// &ltparam name="resultsVectors"&gtVector of vectors of keys to hold each operation result&lt/param&gt</span>
+<span class="number">  665     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  666     </span>	<span class="key">inline</span> <span class="key">void</span> NoSQLDB&ltType&gt::ExecuteSingleQueries(vector&ltstring&gt& operations,
+<span class="number">  667   </span><span class="minmax" onclick="toggleminmax(this, 'sp666')" onmouseover="highlight('sp666')" onmouseout="removeHighlight('sp666')">-</span>		vector&ltstring&gt& arguments, vector&ltvector&ltstring&gt&gt &resultsVectors) <span id="sp666">{
+<span class="number">  668     </span>		<span class="key">int</span> size = operations.size();
+<span class="number">  669   </span><span class="minmax" onclick="toggleminmax(this, 'sp668')" onmouseover="highlight('sp668')" onmouseout="removeHighlight('sp668')">-</span>		<span class="key">for</span> (<span class="key">int</span> i = 0; i &lt size; i++) <span id="sp668">{
+<span class="number">  670     </span>			<span class="key">if</span> (operations[i].compare(<span class="str">"name"</span>) == 0)
+<span class="number">  671     </span>				resultsVectors.push_back(Keys_With_Name(arguments[i]));
+<span class="number">  672     </span>			<span class="key">else</span> <span class="key">if</span> (operations[i].compare(<span class="str">"category"</span>) == 0)
+<span class="number">  673     </span>				resultsVectors.push_back(Keys_with_Category(arguments[i]));
+<span class="number">  674     </span>			<span class="key">else</span> <span class="key">if</span> (operations[i].compare(<span class="str">"data"</span>) == 0)
+<span class="number">  675     </span>				resultsVectors.push_back(Keys_with_String_Data(arguments[i]));
+<span class="number">  676   </span><span class="minmax" onclick="toggleminmax(this, 'sp675')" onmouseover="highlight('sp675')" onmouseout="removeHighlight('sp675')">-</span>			<span class="key">else</span> <span class="key">if</span> (operations[i].compare(<span class="str">"timedate"</span>) == 0) <span id="sp675">{
+<span class="number">  677     </span>				stringstream ss(arguments[i]);
+<span class="number">  678     </span>				string t1 = <span class="str">""</span>, t2 = <span class="str">""</span>;
+<span class="number">  679     </span>				getline(ss, t1, <span class="str">','</span>);
+<span class="number">  680     </span>				getline(ss, t2);
+<span class="number">  681     </span>				resultsVectors.push_back(Keys_Within(t1, t2));
+<span class="number">  682     </span>			}</span>
+<span class="number">  683     </span>		}</span>
+<span class="number">  684     </span>	}</span>
+<span class="number">  685     </span>
+<span class="number">  686     </span>	<span class="comment">// special for execution of add command when issued by regular expression</span>
+<span class="number">  687     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  688   </span><span class="minmax" onclick="toggleminmax(this, 'sp687')" onmouseover="highlight('sp687')" onmouseout="removeHighlight('sp687')">-</span>	<span class="key">inline</span> <span class="key">void</span> NoSQLDB&ltType&gt::ExecuteAddQuery(vector&ltstring&gt& operations, vector&ltstring&gt& arguments) <span id="sp687">{
+<span class="number">  689   </span><span class="minmax" onclick="toggleminmax(this, 'sp688')" onmouseover="highlight('sp688')" onmouseout="removeHighlight('sp688')">-</span>		<span class="key">try</span> <span id="sp688">{
+<span class="number">  690     </span>			<span class="key">int</span> size = operations.size();
+<span class="number">  691     </span>			Element&ltstring&gt el;
+<span class="number">  692   </span><span class="minmax" onclick="toggleminmax(this, 'sp691')" onmouseover="highlight('sp691')" onmouseout="removeHighlight('sp691')">-</span>			<span class="key">for</span> (<span class="key">int</span> i = 0; i &lt size; i++) <span id="sp691">{
+<span class="number">  693     </span>				<span class="key">if</span> (operations[i].compare(<span class="str">"key"</span>) == 0) el.SetKey(arguments[i]);
+<span class="number">  694     </span>				<span class="key">if</span> (operations[i].compare(<span class="str">"name"</span>) == 0) el.SetName(arguments[i]);
+<span class="number">  695     </span>				<span class="key">if</span> (operations[i].compare(<span class="str">"category"</span>) == 0) el.SetCategory(arguments[i]);
+<span class="number">  696     </span>				<span class="key">if</span> (operations[i].compare(<span class="str">"description"</span>) == 0) el.SetDescription(arguments[i]);
+<span class="number">  697   </span><span class="minmax" onclick="toggleminmax(this, 'sp696')" onmouseover="highlight('sp696')" onmouseout="removeHighlight('sp696')">-</span>				<span class="key">if</span> (operations[i].compare(<span class="str">"children"</span>) == 0) <span id="sp696">{
+<span class="number">  698     </span>					stringstream ss(arguments[i]);
+<span class="number">  699     </span>					string child;
+<span class="number">  700   </span><span class="minmax" onclick="toggleminmax(this, 'sp699')" onmouseover="highlight('sp699')" onmouseout="removeHighlight('sp699')">-</span>					<span class="key">while</span> (getline(ss, child, <span class="str">','</span>)) <span id="sp699">{
+<span class="number">  701     </span>						child = trim(child);
+<span class="number">  702     </span>						el.AddChild(child);
+<span class="number">  703     </span>					}</span>
+<span class="number">  704     </span>				}</span>
+<span class="number">  705   </span><span class="minmax" onclick="toggleminmax(this, 'sp704')" onmouseover="highlight('sp704')" onmouseout="removeHighlight('sp704')">-</span>				<span class="key">if</span> (operations[i].compare(<span class="str">"data"</span>) == 0) <span id="sp704">{
+<span class="number">  706     </span>					Type data;
+<span class="number">  707     </span>					istringstream iss(arguments[i]);
+<span class="number">  708     </span>					iss &gt&gt data;
+<span class="number">  709     </span>					el.SetData(data);
+<span class="number">  710     </span>				}</span>
+<span class="number">  711     </span>			}</span>
+<span class="number">  712     </span>			<span class="key">if</span> (el.GetKey().empty())
+<span class="number">  713     </span>				<span class="key">throw</span> <span class="key">new</span> InvalidQueryException(<span class="str">"key was not specified"</span>);
+<span class="number">  714     </span>			AddEntry(el.GetKey(), el);
+<span class="number">  715     </span>		}</span>
+<span class="number">  716   </span><span class="minmax" onclick="toggleminmax(this, 'sp715')" onmouseover="highlight('sp715')" onmouseout="removeHighlight('sp715')">-</span>		<span class="key">catch</span> (InvalidQueryException ex) <span id="sp715">{
+<span class="number">  717     </span>			cout &lt&lt ex.what();
+<span class="number">  718     </span>		}</span>
+<span class="number">  719     </span>	}</span>
+<span class="number">  720     </span>
+<span class="number">  721     </span>	<span class="comment">/// &ltsummary&gt</span>
+<span class="number">  722     </span>	<span class="comment">/// Applies intersections then unions of query results given by different queries</span>
+<span class="number">  723     </span>	<span class="comment">/// &lt/summary&gt</span>
+<span class="number">  724     </span>	<span class="comment">/// &ltparam name="compound"&gtHolds booleans (true,false) which indicate </span>
+<span class="number">  725     </span>	<span class="comment">/// whether to do intersection or union, respectively&lt/param&gt</span>
+<span class="number">  726     </span>	<span class="comment">/// &ltparam name="resultsVectors"&gtVector of vectors of keys to hold each operation result&lt/param&gt</span>
+<span class="number">  727     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  728     </span>	<span class="key">inline</span> <span class="key">void</span> NoSQLDB&ltType&gt::Apply_Priorities(vector&lt<span class="key">int</span>&gt& priorities,
+<span class="number">  729   </span><span class="minmax" onclick="toggleminmax(this, 'sp728')" onmouseover="highlight('sp728')" onmouseout="removeHighlight('sp728')">-</span>		vector&ltvector&ltstring&gt&gt& resultsVectors) <span id="sp728">{
+<span class="number">  730     </span>		<span class="key">int</span> size, k;
+<span class="number">  731     </span>		<span class="comment">// priorities are from 1 (highest) to 4 (lowest) </span>
+<span class="number">  732     </span>		<span class="comment">// p=1 and p=3 are AND operations</span>
+<span class="number">  733     </span>		<span class="comment">// p=2 and p=4 are OR operations</span>
+<span class="number">  734   </span><span class="minmax" onclick="toggleminmax(this, 'sp733')" onmouseover="highlight('sp733')" onmouseout="removeHighlight('sp733')">-</span>		<span class="key">for</span> (<span class="key">int</span> p = 1; p &lt= 4; p++) <span id="sp733">{
+<span class="number">  735     </span>			size = priorities.size();
+<span class="number">  736     </span>			k = 0;
+<span class="number">  737   </span><span class="minmax" onclick="toggleminmax(this, 'sp736')" onmouseover="highlight('sp736')" onmouseout="removeHighlight('sp736')">-</span>			<span class="key">for</span> (<span class="key">int</span> i = 0; i &lt size; i++) <span id="sp736">{
+<span class="number">  738     </span>				vector&ltstring&gt result;
+<span class="number">  739   </span><span class="minmax" onclick="toggleminmax(this, 'sp738')" onmouseover="highlight('sp738')" onmouseout="removeHighlight('sp738')">-</span>				<span class="key">if</span> (priorities[i] == p) <span id="sp738">{
+<span class="number">  740     </span>					<span class="comment">// perform AND (intersection) between the two given result vectors</span>
+<span class="number">  741     </span>					<span class="key">if</span> (p % 2 != 0) result = Query_and_Query(resultsVectors[i - k], resultsVectors[i + 1 - k]);
+<span class="number">  742     </span>					<span class="key">else</span> result = Query_or_Query(resultsVectors[i - k], resultsVectors[i + 1 - k]);
+<span class="number">  743     </span>					<span class="comment">// remove the processed vectors</span>
+<span class="number">  744     </span>					resultsVectors.erase(resultsVectors.begin() + i - k);
+<span class="number">  745     </span>					resultsVectors.erase(resultsVectors.begin() + i - k);
+<span class="number">  746     </span>					<span class="comment">// add the result of processing in place of the removed vectors</span>
+<span class="number">  747     </span>					resultsVectors.insert(resultsVectors.begin() + i - k, result);
+<span class="number">  748     </span>					k++;
+<span class="number">  749     </span>				}</span>
+<span class="number">  750     </span>			}</span>
+<span class="number">  751     </span>			<span class="comment">// update priorities and remove the processed priority</span>
+<span class="number">  752     </span>			<span class="key">for</span> (<span class="key">int</span> i = size - 1; i &gt 0; i--)
+<span class="number">  753     </span>				<span class="key">if</span> (priorities[i] == p)
+<span class="number">  754     </span>					priorities.erase(priorities.begin() + i);
+<span class="number">  755     </span>		}</span>
+<span class="number">  756     </span>	}</span>
+<span class="number">  757     </span>
+<span class="number">  758     </span>	<span class="key">template</span>&lt<span class="key">typename</span> Type&gt
+<span class="number">  759   </span><span class="minmax" onclick="toggleminmax(this, 'sp758')" onmouseover="highlight('sp758')" onmouseout="removeHighlight('sp758')">-</span>	<span class="key">inline</span> <span class="key">void</span> NoSQLDB&ltType&gt::TimedAutoSave(<span class="key">short</span> Seconds, string Filename) <span id="sp758">{
+<span class="number">  760   </span><span class="minmax" onclick="toggleminmax(this, 'sp759')" onmouseover="highlight('sp759')" onmouseout="removeHighlight('sp759')">-</span>		<span class="key">while</span> (<span class="key">true</span>) <span id="sp759">{
+<span class="number">  761     </span>			Sleep(Seconds);
+<span class="number">  762     </span>			<span class="key">if</span> (!AutoTimedSave) <span class="key">break</span>;
+<span class="number">  763     </span>			StoreXML(Filename);
+<span class="number">  764     </span>		}</span>
+<span class="number">  765     </span>	}</span>
+<span class="number">  766     </span>
+<span class="number">  767     </span>
+<span class="number">  768     </span>
+<span class="number">  769     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  770     </span>	<span class="comment">// ---------------&lt Query Processing Functions Area &gt----------------------------------------------</span>
+<span class="number">  771     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  772     </span>
+<span class="number">  773     </span>
+<span class="number">  774     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  775     </span>	<span class="comment">// ---------------&lt Accessory Functions Area &gt-----------------------------------------------------</span>
+<span class="number">  776     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  777     </span>
+<span class="number">  778     </span>
+<span class="number">  779     </span>	<span class="comment">// timedate parser, takes string datetime and returns time_t of it</span>
+<span class="number">  780   </span><span class="minmax" onclick="toggleminmax(this, 'sp779')" onmouseover="highlight('sp779')" onmouseout="removeHighlight('sp779')">-</span>	<span class="key">inline</span> time_t ParseTimeString(string TimeString) <span id="sp779">{
+<span class="number">  781     </span>		<span class="key">int</span> years, month, day, hour = 0, minute = 0, second = 0;
+<span class="number">  782     </span>
+<span class="number">  783     </span>		years = stoi(TimeString.substr(0, 4));
+<span class="number">  784     </span>		day = stoi(TimeString.substr(5, 2));
+<span class="number">  785     </span>		month = stoi(TimeString.substr(8, 2));
+<span class="number">  786     </span>		<span class="key">if</span> (TimeString.length() == 14)
+<span class="number">  787     </span>			hour = stoi(TimeString.substr(12, 2));
+<span class="number">  788     </span>		<span class="key">if</span> (TimeString.length() == 17)
+<span class="number">  789     </span>			minute = stoi(TimeString.substr(15, 2));
+<span class="number">  790     </span>		<span class="key">if</span> (TimeString.length() == 20)
+<span class="number">  791     </span>			second = stoi(TimeString.substr(18, 2));
+<span class="number">  792     </span>
+<span class="number">  793     </span>		time_t t;
+<span class="number">  794     </span>		tm timedate;
+<span class="number">  795     </span>
+<span class="number">  796     </span>		time(&t);
+<span class="number">  797     </span>		localtime_s(&timedate, &t);
+<span class="number">  798     </span>		timedate.tm_year = years - 1900;
+<span class="number">  799     </span>		timedate.tm_mon = month - 1;
+<span class="number">  800     </span>		timedate.tm_mday = day;
+<span class="number">  801     </span>
+<span class="number">  802     </span>		timedate.tm_hour = hour;
+<span class="number">  803     </span>		timedate.tm_min = minute;
+<span class="number">  804     </span>		timedate.tm_sec = second;
+<span class="number">  805     </span>
+<span class="number">  806     </span>		t = mktime(&timedate);
+<span class="number">  807     </span>
+<span class="number">  808     </span>		<span class="key">return</span> t;
+<span class="number">  809     </span>	}</span>
+<span class="number">  810     </span>
+<span class="number">  811     </span>	<span class="comment">// character comparison</span>
+<span class="number">  812   </span><span class="minmax" onclick="toggleminmax(this, 'sp811')" onmouseover="highlight('sp811')" onmouseout="removeHighlight('sp811')">-</span>	<span class="key">inline</span> <span class="key">bool</span> icompare_pred(<span class="key">unsigned</span> <span class="key">char</span> a, <span class="key">unsigned</span> <span class="key">char</span> b) <span id="sp811">{
+<span class="number">  813     </span>		<span class="key">return</span> std::tolower(a) == std::tolower(b);
+<span class="number">  814     </span>	}</span>
+<span class="number">  815     </span>
+<span class="number">  816     </span>	<span class="comment">// compares two strings</span>
+<span class="number">  817   </span><span class="minmax" onclick="toggleminmax(this, 'sp816')" onmouseover="highlight('sp816')" onmouseout="removeHighlight('sp816')">-</span>	<span class="key">inline</span> <span class="key">bool</span> icompare(std::string const& a, std::string const& b) <span id="sp816">{
+<span class="number">  818     </span>		<span class="key">if</span> (a.length() != b.length()) <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  819     </span>		<span class="key">return</span> std::equal(b.begin(), b.end(), a.begin(), icompare_pred);
+<span class="number">  820     </span>	}</span>
+<span class="number">  821     </span>
+<span class="number">  822     </span>
+<span class="number">  823     </span>
+<span class="number">  824     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  825     </span>	<span class="comment">// ---------------&lt Accessory Functions Area &gt-----------------------------------------------------</span>
+<span class="number">  826     </span>	<span class="comment">// ------------------------------------------------------------------------------------------------</span>
+<span class="number">  827     </span>
+<span class="number">  828     </span>	<span class="comment">// adds support to import full string (including whitespaces and newlines)</span>
+<span class="number">  829   </span><span class="minmax" onclick="toggleminmax(this, 'sp828')" onmouseover="highlight('sp828')" onmouseout="removeHighlight('sp828')">-</span>	<span class="key">inline</span> istream& <span class="key">operator</span> &gt&gt (istream& in, string& ss) <span id="sp828">{
+<span class="number">  830     </span>		ostringstream oss;
+<span class="number">  831     </span>		string temp;
+<span class="number">  832   </span><span class="minmax" onclick="toggleminmax(this, 'sp831')" onmouseover="highlight('sp831')" onmouseout="removeHighlight('sp831')">-</span>		<span class="key">while</span> (in.good()) <span id="sp831">{
+<span class="number">  833     </span>			getline(in, temp);
+<span class="number">  834     </span>			oss &lt&lt temp &lt&lt <span class="str">"\n"</span>;
+<span class="number">  835     </span>		}</span>
+<span class="number">  836     </span>		ss = oss.str().substr(0, oss.str().size() - 1);
+<span class="number">  837     </span>		<span class="key">return</span> in;
+<span class="number">  838     </span>	}</span>
+<span class="number">  839     </span>
+<span class="number">  840     </span>	<span class="comment">// adds support to import vector from string</span>
+<span class="number">  841     </span>	<span class="key">template</span> &lt<span class="key">typename</span> T&gt
+<span class="number">  842   </span><span class="minmax" onclick="toggleminmax(this, 'sp841')" onmouseover="highlight('sp841')" onmouseout="removeHighlight('sp841')">-</span>	<span class="key">inline</span> istream& <span class="key">operator</span> &gt&gt (istream& in, vector&ltT&gt& vec) <span id="sp841">{
+<span class="number">  843     </span>		istringstream temp;
+<span class="number">  844     </span>		string s;
+<span class="number">  845   </span><span class="minmax" onclick="toggleminmax(this, 'sp844')" onmouseover="highlight('sp844')" onmouseout="removeHighlight('sp844')">-</span>		<span class="key">while</span> (in.good()) <span id="sp844">{
+<span class="number">  846     </span>			T val;
+<span class="number">  847     </span>			getline(in, s);
+<span class="number">  848     </span>			temp.str(s);
+<span class="number">  849   </span><span class="minmax" onclick="toggleminmax(this, 'sp848')" onmouseover="highlight('sp848')" onmouseout="removeHighlight('sp848')">-</span>			<span class="key">while</span> (temp.good()) <span id="sp848">{
+<span class="number">  850     </span>				temp &gt&gt val;
+<span class="number">  851     </span>				vec.push_back(val);
+<span class="number">  852     </span>			}</span>
+<span class="number">  853     </span>			s.clear();
+<span class="number">  854     </span>			temp.clear();
+<span class="number">  855     </span>		}</span>
+<span class="number">  856     </span>		<span class="key">return</span> in;
+<span class="number">  857     </span>	}</span>
+<span class="number">  858     </span>
+<span class="number">  859     </span>}</span>
+
+</pre>
+  </body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<!------------------------------------------------------------------------
+  Tokenizer.h.html - Project 3 published file
+  Published: Sun Apr  2 17:35:56 2017
+
+  Ammar Salman, CSE687 - Object Oriented Design, Spring 2017
+ ------------------------------------------------------------------------->
+<html>
+  <head>
+     <link rel="stylesheet" type="text/css" href="resources/light.css"/>
+     <script src="resources/scripts.js"></script>
+     <button class="Fixed" onclick="toggleStyle(this)">Dark Theme</button>
+  </head>
+  <body>
+   <h3>Tokenizer.h</h3>
+   <hr/>
+   <div class = "indent">
+     <h4>Dependencies:</h4>
+     <div><a href="Tokenizer.cpp.html">Tokenizer.cpp</a></div>
+   </div>
+   <hr/>
+<pre><span class="number">  1       </span>
+<span class="number">  2       </span>
+<span class="number">  3       </span><span class="directive">#ifndef</span> TOKENIZER_H
+<span class="number">  4       </span><span class="directive">#define</span> TOKENIZER_H
+<span class="number">  5       </span><span class="comment">///////////////////////////////////////////////////////////////////////</span>
+<span class="number">  6       </span><span class="comment">// Tokenizer.h - read words from a std::stream                       //</span>
+<span class="number">  7       </span><span class="comment">// ver 4.2                                                           //</span>
+<span class="number">  8       </span><span class="comment">// Language:    C++, Visual Studio 2015                              //</span>
+<span class="number">  9       </span><span class="comment">// Platform:    Dell XPS 8900, Windows 10                            //</span>
+<span class="number">  10      </span><span class="comment">// Application: Parser component, CSE687 - Object Oriented Design    //</span>
+<span class="number">  11      </span><span class="comment">// Author:      Jim Fawcett, Syracuse University, CST 4-187          //</span>
+<span class="number">  12      </span><span class="comment">//              jfawcett@twcny.rr.com                                //</span>
+<span class="number">  13      </span><span class="comment">///////////////////////////////////////////////////////////////////////</span>
+<span class="number">  14    </span><span class="minmax" onclick="toggleminmax(this, 'sp13')" onmouseover="highlight('sp13')" onmouseout="removeHighlight('sp13')">-</span><span id="sp13"><span class="comment">/*
+<span class="number">  15      </span> * Package Operations:
+<span class="number">  16      </span> * -------------------
+<span class="number">  17      </span> * This package provides a public Toker class and private ConsumeState class.
+<span class="number">  18      </span> * Toker reads words from a std::stream, throws away whitespace and optionally
+<span class="number">  19      </span> * throws away comments.
+<span class="number">  20      </span> *
+<span class="number">  21      </span> * Toker returns words from the stream in the order encountered.  Quoted
+<span class="number">  22      </span> * strings and certain punctuators and newlines are returned as single tokens.
+<span class="number">  23      </span> *
+<span class="number">  24      </span> * This is a new version, based on the State Design Pattern.  Older versions
+<span class="number">  25      </span> * exist, based on an informal state machine design.
+<span class="number">  26      </span> *
+<span class="number">  27      </span> * Build Process:
+<span class="number">  28      </span> * --------------
+<span class="number">  29      </span> * Required Files: Tokenizer.h, Tokenizer.cpp
+<span class="number">  30      </span> *
+<span class="number">  31      </span> * Build Command: devenv Tokenizer.sln /rebuild debug
+<span class="number">  32      </span> *
+<span class="number">  33      </span> * Maintenance History:
+<span class="number">  34      </span> * --------------------
+<span class="number">  35      </span> * ver 4.2 : 26 Feb 2017
+<span class="number">  36      </span> * - converted all uses of std::isspace from &ltcctype&gt to std::isspace from &ltlocale&gt
+<span class="number">  37      </span> * ver 4.1 : 19 Aug 2016
+<span class="number">  38      </span> * - added "@" to specialCharTokens
+<span class="number">  39      </span> * - added states EatRawCppString and EatRawCSharpString
+<span class="number">  40      </span> * - rearranged placement of nextState processing
+<span class="number">  41      </span> * - added comments
+<span class="number">  42      </span> * - modified attach() to reinitialze the context allowing the attachment of
+<span class="number">  43      </span> *   more than one file sequentially without creating a new parser for each.
+<span class="number">  44      </span> * ver 4.0 : 16 Feb 2016
+<span class="number">  45      </span> * - modified EatDQString::eatChars() and EatSQString::eatChars() to properly
+<span class="number">  46      </span> *   handle repetition of escape char, '\', using isEscaped(tok) function.
+<span class="number">  47      </span> * ver 3.9 : 15 Feb 2016
+<span class="number">  48      </span> * - added isComment(tok)
+<span class="number">  49      </span> * ver 3.8 : 06 Feb 2016
+<span class="number">  50      </span> * - Converted ver 3.7 design to use references to a context instead of static members.
+<span class="number">  51      </span> *   This is more complex, but now multiple Tokers won't interfere with each other.
+<span class="number">  52      </span> * ver 3.7 : 06 Feb 2016
+<span class="number">  53      </span> * - reverted to the original static design, as implemented in helper code
+<span class="number">  54      </span> * - the next version will be a design using references to a context
+<span class="number">  55      </span> *   instead of many static members.
+<span class="number">  56      </span> * ver 3.6 : 05 Feb 2016
+<span class="number">  57      </span> * - added ConsumeState::currentLineCount() and Toker::currentLineCount
+<span class="number">  58      </span> * - added ConsumeState::collectChar which checks stream state and, 
+<span class="number">  59      </span> *   if possible extracts a new currChar after updating prevChar
+<span class="number">  60      </span> *   and checking for newlines.  All of the eatChars() member functions
+<span class="number">  61      </span> *   were revised to use this function.
+<span class="number">  62      </span> * ver 3.5 : 03 Feb 2016
+<span class="number">  63      </span> * - added collection of single and two character tokens
+<span class="number">  64      </span> * - added collection of single and double quoted strings
+<span class="number">  65      </span> * ver 3.4 : 03 Feb 2016
+<span class="number">  66      </span> * - fixed bug that prevented reading of last character in source by
+<span class="number">  67      </span> *   clearing stream errors at beginning of ConsumeState::nextState()
+<span class="number">  68      </span> * ver 3.3 : 02 Feb 2016
+<span class="number">  69      </span> * - declared ConsumeState copy constructor and assignment operator = delete
+<span class="number">  70      </span> * ver 3.2 : 28 Jan 2016
+<span class="number">  71      </span> * - fixed bug in ConsumeState::nextState() by returning a valid state
+<span class="number">  72      </span> *   pointer if all tests fail due to reaching end of file instead of
+<span class="number">  73      </span> *   throwing logic_error exception.
+<span class="number">  74      </span> * ver 3.1 : 27 Jan 2016
+<span class="number">  75      </span> * - fixed bug in EatCComment::eatChars()
+<span class="number">  76      </span> * - removed redundant statements assigning _pState in derived eatChars() 
+<span class="number">  77      </span> *   functions
+<span class="number">  78      </span> * - removed calls to nextState() in each derived eatChars() and fixed
+<span class="number">  79      </span> *   call to nextState() in ConsumeState::consumeChars()
+<span class="number">  80      </span> * ver 3.0 : 11 Jun 2014
+<span class="number">  81      </span> * - first release of new design
+<span class="number">  82      </span> *
+<span class="number">  83      </span> * Planned Additions and Changes:
+<span class="number">  84      </span> * ------------------------------
+<span class="number">  85      </span> * - merge the oneCharacter and twoCharacter special Tokens into a
+<span class="number">  86      </span> *   single collection with a single setter method.
+<span class="number">  87      </span> * - consider replacing std::vector containers for special characteres
+<span class="number">  88      </span> *   with an unordered_map (hash table).
+<span class="number">  89      </span> */</span></span>
+<span class="number">  90      </span><span class="directive">#include</span> <span class="str">&ltiosfwd&gt</span>
+<span class="number">  91      </span><span class="directive">#include</span> <span class="str">&ltstring&gt</span>
+<span class="number">  92      </span>
+<span class="number">  93      </span><span class="key">namespace</span> Scanner
+<span class="number">  94    </span><span class="minmax" onclick="toggleminmax(this, 'sp93')" onmouseover="highlight('sp93')" onmouseout="removeHighlight('sp93')">-</span><span id="sp93">{
+<span class="number">  95      </span>  <span class="key">class</span> ConsumeState;    <span class="comment">// private worker class</span>
+<span class="number">  96      </span>  <span class="key">struct</span> Context;        <span class="comment">// private shared data storage</span>
+<span class="number">  97      </span>
+<span class="number">  98      </span>  <span class="key">class</span> Toker
+<span class="number">  99    </span><span class="minmax" onclick="toggleminmax(this, 'sp98')" onmouseover="highlight('sp98')" onmouseout="removeHighlight('sp98')">-</span>  <span id="sp98">{
+<span class="number">  100     </span>  <span class="key">public</span>:
+<span class="number">  101     </span>    Toker();
+<span class="number">  102     </span>    Toker(const Toker&) = <span class="key">delete</span>;
+<span class="number">  103     </span>    ~Toker();
+<span class="number">  104     </span>    Toker& <span class="key">operator</span>=(const Toker&) = <span class="key">delete</span>;
+<span class="number">  105     </span>    <span class="key">bool</span> attach(std::istream* pIn);
+<span class="number">  106     </span>    std::string getTok();
+<span class="number">  107     </span>    <span class="key">bool</span> canRead();
+<span class="number">  108     </span>    <span class="key">void</span> returnComments(<span class="key">bool</span> doReturnComments = <span class="key">true</span>);
+<span class="number">  109     </span>		<span class="key">void</span> returnSpaces(<span class="key">bool</span> doReturnSpaces = <span class="key">false</span>);
+<span class="number">  110     </span>    <span class="key">bool</span> isComment(const std::string& tok);
+<span class="number">  111     </span>    size_t currentLineCount();
+<span class="number">  112     </span>    <span class="key">void</span> setSpecialTokens(const std::string& commaSeparatedString);
+<span class="number">  113     </span>  <span class="key">private</span>:
+<span class="number">  114     </span>    ConsumeState* pConsumer;
+<span class="number">  115     </span>    Context* _pContext;
+<span class="number">  116     </span>  }</span>;
+<span class="number">  117     </span>}</span>
+<span class="number">  118     </span><span class="directive">#endif</span>
+<span class="number">  119     </span>
+
+</pre>
+  </body>
+</html>

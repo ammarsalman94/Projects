@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<!------------------------------------------------------------------------
+  FileSystem.h.html - Project 3 published file
+  Published: Sun Apr  2 17:35:53 2017
+
+  Ammar Salman, CSE687 - Object Oriented Design, Spring 2017
+ ------------------------------------------------------------------------->
+<html>
+  <head>
+     <link rel="stylesheet" type="text/css" href="resources/light.css"/>
+     <script src="resources/scripts.js"></script>
+     <button class="Fixed" onclick="toggleStyle(this)">Dark Theme</button>
+  </head>
+  <body>
+   <h3>FileSystem.h</h3>
+   <hr/>
+   <div class = "indent">
+     <h4>Dependencies:</h4>
+     <div><a href="FileSystem.cpp.html">FileSystem.cpp</a></div>
+   </div>
+   <hr/>
+<pre><span class="number">  1       </span><span class="directive">#ifndef</span> FILESYSTEM_H
+<span class="number">  2       </span><span class="directive">#define</span> FILESYSTEM_H
+<span class="number">  3       </span><span class="comment">/////////////////////////////////////////////////////////////////////////////</span>
+<span class="number">  4       </span><span class="comment">// FileSystem.h - Support file and directory operations                    //</span>
+<span class="number">  5       </span><span class="comment">// ver 2.4                                                                 //</span>
+<span class="number">  6       </span><span class="comment">// ----------------------------------------------------------------------- //</span>
+<span class="number">  7       </span><span class="comment">// copyright © Jim Fawcett, 2012                                           //</span>
+<span class="number">  8       </span><span class="comment">// All rights granted provided that this notice is retained                //</span>
+<span class="number">  9       </span><span class="comment">// ----------------------------------------------------------------------- //</span>
+<span class="number">  10      </span><span class="comment">// Language:    Visual C++, Visual Studio 2010                             //</span>
+<span class="number">  11      </span><span class="comment">// Platform:    Dell XPS 8300, Core i7, Windows 7 SP1                      //</span>
+<span class="number">  12      </span><span class="comment">// Application: Summer Projects, 2012                                      //</span>
+<span class="number">  13      </span><span class="comment">// Author:      Jim Fawcett, CST 4-187, Syracuse University                //</span>
+<span class="number">  14      </span><span class="comment">//              (315) 443-3948, jfawcett@twcny.rr.com                      //</span>
+<span class="number">  15      </span><span class="comment">/////////////////////////////////////////////////////////////////////////////</span>
+<span class="number">  16    </span><span class="minmax" onclick="toggleminmax(this, 'sp15')" onmouseover="highlight('sp15')" onmouseout="removeHighlight('sp15')">-</span><span id="sp15"><span class="comment">/*
+<span class="number">  17      </span> * Module Operations:
+<span class="number">  18      </span> * ==================
+<span class="number">  19      </span> * This module provides classes, File, FileInfo, Path, Directory, and 
+<span class="number">  20      </span> * FileSystemSearch.
+<span class="number">  21      </span> *
+<span class="number">  22      </span> * The File class supports opening text and binary files for either input 
+<span class="number">  23      </span> * or output.  File objects have names, get and put lines of text, get and
+<span class="number">  24      </span> * put blocks of bytes if binary, can be tested for operational state,
+<span class="number">  25      </span> * cleared of errors, and output File objects can be flushed to their streams.
+<span class="number">  26      </span> *
+<span class="number">  27      </span> * FileInfo class accepts a fully qualified filespec and supports queries
+<span class="number">  28      </span> * concerning name, time and date, size, and attributes.  You can compare
+<span class="number">  29      </span> * FileInfo objects by name, date, and size.
+<span class="number">  30      </span> *
+<span class="number">  31      </span> * Path class provides static methods to turn a relative filespec into an
+<span class="number">  32      </span> * absolute filespec, return the path, name, or extension of the filespec,
+<span class="number">  33      </span> * and build filespecs from path and name.  Path also provides methods to
+<span class="number">  34      </span> * convert filespecs to uppercase and to lowercase.
+<span class="number">  35      </span> *
+<span class="number">  36      </span> * The Directory class supports getting filenames or directories from a 
+<span class="number">  37      </span> * fully qualified filespec, e.g., path + filename pattern using static
+<span class="number">  38      </span> * methods.  It also provides non-static methods to get and set the current
+<span class="number">  39      </span> * directory.
+<span class="number">  40      </span> *
+<span class="number">  41      </span> * Public Interface:
+<span class="number">  42      </span> * =================
+<span class="number">  43      </span> * File f(filespec,File::in,File::binary);
+<span class="number">  44      </span> * File g(filespec,File::out,File::binary);
+<span class="number">  45      </span> * while(f.isGood()) {
+<span class="number">  46      </span> *   block b = f.getBlock();
+<span class="number">  47      </span> *   g.putBlock(b);
+<span class="number">  48      </span> * }
+<span class="number">  49      </span> * File h(filespec,File::in);
+<span class="number">  50      </span> * h.readLine();
+<span class="number">  51      </span> *
+<span class="number">  52      </span> * FileInfo fi("..\foobar.txt");
+<span class="number">  53      </span> * if(fi.good())
+<span class="number">  54      </span> *   ...
+<span class="number">  55      </span> * std::string filespec = "..\temp.txt";
+<span class="number">  56      </span> * std::string fullyqualified = Path::getFullFileSpec(filename);
+<span class="number">  57      </span> *  -- This uses the current path to expand a relative path.
+<span class="number">  58      </span> *  -- If you have a filespec relative to some other path
+<span class="number">  59      </span> *  -- you need to setCurrentPath(newPath), use getFullFileSpec(...)
+<span class="number">  60      </span> *  -- then reset the current path with setCurrentPath(origPath)
+<span class="number">  61      </span> * std::string fullyqualified = Path::fileSpec(path, filename);
+<span class="number">  62      </span> *  -- This simply concatenates path with filename
+<span class="number">  63      </span> * std::string path = Path::getPath(fullyqualified);
+<span class="number">  64      </span> * std::string name = Path::getName(fullyqualified);
+<span class="number">  65      </span> * std::string extn = Path::getExt(fullyqualified);
+<span class="number">  66      </span> *
+<span class="number">  67      </span> * Directory d;
+<span class="number">  68      </span> * std::string dir = d.getCurrentDirectory();
+<span class="number">  69      </span> * d.setCurrentDirectory(dir);
+<span class="number">  70      </span> * std::vector&ltstd::string&gt files = Directory::getFiles(path, pattern);
+<span class="number">  71      </span> * std::vector&ltstd::string&gt dirs = Directory::getDirectories(path);
+<span class="number">  72      </span> * 
+<span class="number">  73      </span> * Required Files:
+<span class="number">  74      </span> * ===============
+<span class="number">  75      </span> * FileSystem.h, FileSystem.cpp
+<span class="number">  76      </span> *
+<span class="number">  77      </span> * Build Command:
+<span class="number">  78      </span> * ==============
+<span class="number">  79      </span> * cl /EHa /DTEST_FILESYSTEM FileSystem.cpp
+<span class="number">  80      </span> *
+<span class="number">  81      </span> * Maintenance History:
+<span class="number">  82      </span> * ====================
+<span class="number">  83      </span> * ver 2.4 : 01 Feb 15
+<span class="number">  84      </span> * - added File::readAll()
+<span class="number">  85      </span> * - improved test stub testing
+<span class="number">  86      </span> * ver 2.3 : 31 Jan 15
+<span class="number">  87      </span> * - fixed bug in File::getLine() discovered by Huanming Fang
+<span class="number">  88      </span> *   This appears to be a change in behavior of istream::getline(...) with C++11
+<span class="number">  89      </span> * - added comments in Public Interface, above, to clarify way that Path::getFullFileSpec
+<span class="number">  90      </span> *   and Path::fileSpec work.
+<span class="number">  91      </span> * ver 2.2 : 23 Feb 13
+<span class="number">  92      </span> * - fixed bug in Path::getExt(...) discovered by Yang Zhou and Kevin Kong
+<span class="number">  93      </span> * ver 2.1 : 07 Jun 12
+<span class="number">  94      </span> * - moved FileSystemSearch to cpp file to make private
+<span class="number">  95      </span> * - added bool withExt parameter to Path::getName
+<span class="number">  96      </span> * - made Directory's getCurrentDirectory and setCurrentDirectory static
+<span class="number">  97      </span> * - added exists, create, and remove to Directory class
+<span class="number">  98      </span> * ver 2.0 : 04 Jun 12
+<span class="number">  99      </span> * - made a few small changes to provide same interface as 
+<span class="number">  100     </span> *   Linux version.
+<span class="number">  101     </span> * ver 1.0 : 31 Jan 09
+<span class="number">  102     </span> * - first release
+<span class="number">  103     </span> */</span></span>
+<span class="number">  104     </span><span class="directive">#include</span> <span class="str">&ltfstream&gt</span>
+<span class="number">  105     </span><span class="directive">#include</span> <span class="str">&ltstring&gt</span>
+<span class="number">  106     </span><span class="directive">#include</span> <span class="str">&ltvector&gt</span>
+<span class="number">  107     </span><span class="directive">#include</span> <span class="str">&ltwindows.h&gt</span>
+<span class="number">  108     </span>
+<span class="number">  109     </span><span class="key">namespace</span> FileSystem
+<span class="number">  110   </span><span class="minmax" onclick="toggleminmax(this, 'sp109')" onmouseover="highlight('sp109')" onmouseout="removeHighlight('sp109')">-</span><span id="sp109">{
+<span class="number">  111     </span>  <span class="comment">/////////////////////////////////////////////////////////</span>
+<span class="number">  112     </span>  <span class="comment">// Block</span>
+<span class="number">  113     </span>  
+<span class="number">  114     </span>  <span class="key">typedef</span> <span class="key">char</span> Byte;
+<span class="number">  115     </span>
+<span class="number">  116     </span>  <span class="key">class</span> Block
+<span class="number">  117   </span><span class="minmax" onclick="toggleminmax(this, 'sp116')" onmouseover="highlight('sp116')" onmouseout="removeHighlight('sp116')">-</span>  <span id="sp116">{
+<span class="number">  118     </span>  <span class="key">public</span>:
+<span class="number">  119   </span><span class="minmax" onclick="toggleminmax(this, 'sp118')" onmouseover="highlight('sp118')" onmouseout="removeHighlight('sp118')">-</span>    Block(size_t size=0) : bytes_(size) <span id="sp118">{}</span>
+<span class="number">  120     </span>    Block(Byte* beg, Byte* end);
+<span class="number">  121     </span>    <span class="key">void</span> push_back(Byte b);
+<span class="number">  122     </span>    Byte& <span class="key">operator</span>[](size_t i);
+<span class="number">  123     </span>    Byte <span class="key">operator</span>[](size_t i) const;
+<span class="number">  124     </span>    <span class="key">bool</span> <span class="key">operator</span>==(const Block&) const;
+<span class="number">  125     </span>    <span class="key">bool</span> <span class="key">operator</span>!=(const Block&) const;
+<span class="number">  126     </span>    size_t size() const;
+<span class="number">  127     </span>  <span class="key">private</span>:
+<span class="number">  128     </span>    std::vector&ltByte&gt bytes_;
+<span class="number">  129     </span>  }</span>;
+<span class="number">  130     </span>
+<span class="number">  131     </span>  <span class="comment">/////////////////////////////////////////////////////////</span>
+<span class="number">  132     </span>  <span class="comment">// File</span>
+<span class="number">  133     </span>  
+<span class="number">  134     </span>  <span class="key">class</span> File
+<span class="number">  135   </span><span class="minmax" onclick="toggleminmax(this, 'sp134')" onmouseover="highlight('sp134')" onmouseout="removeHighlight('sp134')">-</span>  <span id="sp134">{
+<span class="number">  136     </span>  <span class="key">public</span>:
+<span class="number">  137   </span><span class="minmax" onclick="toggleminmax(this, 'sp136')" onmouseover="highlight('sp136')" onmouseout="removeHighlight('sp136')">-</span>    <span class="key">enum</span> direction <span id="sp136">{ in, out }</span>;
+<span class="number">  138   </span><span class="minmax" onclick="toggleminmax(this, 'sp137')" onmouseover="highlight('sp137')" onmouseout="removeHighlight('sp137')">-</span>    <span class="key">enum</span> type <span id="sp137">{ text, binary }</span>;
+<span class="number">  139     </span>    File(const std::string& filespec);
+<span class="number">  140     </span>    <span class="key">bool</span> open(direction dirn, type typ=File::text);
+<span class="number">  141     </span>    ~File();
+<span class="number">  142     </span>    std::string name();
+<span class="number">  143     </span>    std::string getLine(<span class="key">bool</span> keepNewLine = <span class="key">false</span>);
+<span class="number">  144     </span>    std::string readAll(<span class="key">bool</span> KeepNewLines = <span class="key">false</span>);
+<span class="number">  145     </span>    <span class="key">void</span> putLine(const std::string& line, <span class="key">bool</span> wantReturn=<span class="key">true</span>);
+<span class="number">  146     </span>    Block getBlock(size_t size);
+<span class="number">  147     </span>    <span class="key">void</span> putBlock(const Block&);
+<span class="number">  148     </span>    <span class="key">bool</span> isGood();
+<span class="number">  149     </span>    <span class="key">void</span> clear();
+<span class="number">  150     </span>    <span class="key">void</span> flush();
+<span class="number">  151     </span>    <span class="key">void</span> close();
+<span class="number">  152     </span>    <span class="key">static</span> <span class="key">bool</span> exists(const std::string& file);
+<span class="number">  153     </span>    <span class="key">static</span> <span class="key">bool</span> copy(const std::string& src, const std::string& dst, <span class="key">bool</span> failIfExists=<span class="key">false</span>);
+<span class="number">  154     </span>    <span class="key">static</span> <span class="key">bool</span> remove(const std::string& filespec);
+<span class="number">  155     </span>  <span class="key">private</span>:
+<span class="number">  156     </span>    std::string name_;
+<span class="number">  157     </span>    std::ifstream* pIStream;
+<span class="number">  158     </span>    std::ofstream* pOStream;
+<span class="number">  159     </span>    direction dirn_;
+<span class="number">  160     </span>    type typ_;
+<span class="number">  161     </span>    <span class="key">bool</span> good_;
+<span class="number">  162     </span>  }</span>;
+<span class="number">  163     </span>
+<span class="number">  164   </span><span class="minmax" onclick="toggleminmax(this, 'sp163')" onmouseover="highlight('sp163')" onmouseout="removeHighlight('sp163')">-</span>  <span class="key">inline</span> std::string File::name() <span id="sp163">{ <span class="key">return</span> name_; }</span>
+<span class="number">  165     </span>
+<span class="number">  166     </span>  <span class="comment">/////////////////////////////////////////////////////////</span>
+<span class="number">  167     </span>  <span class="comment">// FileInfo</span>
+<span class="number">  168     </span>
+<span class="number">  169     </span>  <span class="key">class</span> FileInfo
+<span class="number">  170   </span><span class="minmax" onclick="toggleminmax(this, 'sp169')" onmouseover="highlight('sp169')" onmouseout="removeHighlight('sp169')">-</span>  <span id="sp169">{
+<span class="number">  171     </span>  <span class="key">public</span>:
+<span class="number">  172   </span><span class="minmax" onclick="toggleminmax(this, 'sp171')" onmouseover="highlight('sp171')" onmouseout="removeHighlight('sp171')">-</span>    <span class="key">enum</span> dateFormat <span id="sp171">{ fullformat, timeformat, dateformat }</span>;
+<span class="number">  173     </span>    FileInfo(const std::string& fileSpec);
+<span class="number">  174     </span>    <span class="key">bool</span> good();
+<span class="number">  175     </span>    std::string name() const;
+<span class="number">  176     </span>    std::string date(dateFormat df=fullformat) const;
+<span class="number">  177     </span>    size_t size() const;
+<span class="number">  178     </span>    
+<span class="number">  179     </span>    <span class="key">bool</span> isArchive() const;
+<span class="number">  180     </span>    <span class="key">bool</span> isCompressed() const;
+<span class="number">  181     </span>    <span class="key">bool</span> isDirectory() const;
+<span class="number">  182     </span>    <span class="key">bool</span> isEncrypted() const;
+<span class="number">  183     </span>    <span class="key">bool</span> isHidden() const;
+<span class="number">  184     </span>    <span class="key">bool</span> isNormal() const;
+<span class="number">  185     </span>    <span class="key">bool</span> isOffLine() const;
+<span class="number">  186     </span>    <span class="key">bool</span> isReadOnly() const;
+<span class="number">  187     </span>    <span class="key">bool</span> isSystem() const;
+<span class="number">  188     </span>    <span class="key">bool</span> isTemporary() const;
+<span class="number">  189     </span>
+<span class="number">  190     </span>    <span class="key">bool</span> <span class="key">operator</span>&lt(const FileInfo& fi) const;
+<span class="number">  191     </span>    <span class="key">bool</span> <span class="key">operator</span>==(const FileInfo& fi) const;
+<span class="number">  192     </span>    <span class="key">bool</span> <span class="key">operator</span>&gt(const FileInfo& fi) const;
+<span class="number">  193     </span>    <span class="key">bool</span> earlier(const FileInfo& fi) const;
+<span class="number">  194     </span>    <span class="key">bool</span> later(const FileInfo& fi) const;
+<span class="number">  195     </span>    <span class="key">bool</span> smaller(const FileInfo& fi) const;
+<span class="number">  196     </span>    <span class="key">bool</span> larger(const FileInfo& fi) const;
+<span class="number">  197     </span>  <span class="key">private</span>:
+<span class="number">  198     </span>    <span class="key">bool</span> good_;
+<span class="number">  199     </span>    <span class="key">static</span> std::string intToString(<span class="key">long</span> i);
+<span class="number">  200     </span>    WIN32_FIND_DATAA data;
+<span class="number">  201     </span>  }</span>;
+<span class="number">  202     </span>
+<span class="number">  203     </span>  <span class="comment">/////////////////////////////////////////////////////////</span>
+<span class="number">  204     </span>  <span class="comment">// Path</span>
+<span class="number">  205     </span>
+<span class="number">  206     </span>  <span class="key">class</span> Path
+<span class="number">  207   </span><span class="minmax" onclick="toggleminmax(this, 'sp206')" onmouseover="highlight('sp206')" onmouseout="removeHighlight('sp206')">-</span>  <span id="sp206">{
+<span class="number">  208     </span>  <span class="key">public</span>:
+<span class="number">  209     </span>    <span class="key">static</span> std::string getFullFileSpec(const std::string& fileSpec);
+<span class="number">  210     </span>    <span class="key">static</span> std::string getPath(const std::string& fileSpec);
+<span class="number">  211     </span>    <span class="key">static</span> std::string getName(const std::string& fileSpec, <span class="key">bool</span> withExt=<span class="key">true</span>);
+<span class="number">  212     </span>    <span class="key">static</span> std::string getExt(const std::string& fileSpec);
+<span class="number">  213     </span>    <span class="key">static</span> std::string fileSpec(const std::string& path, const std::string& name);
+<span class="number">  214     </span>    <span class="key">static</span> std::string toLower(const std::string& src);
+<span class="number">  215     </span>    <span class="key">static</span> std::string toUpper(const std::string& src);
+<span class="number">  216     </span>  }</span>;
+<span class="number">  217     </span>  
+<span class="number">  218     </span>  <span class="comment">/////////////////////////////////////////////////////////</span>
+<span class="number">  219     </span>  <span class="comment">// Directory</span>
+<span class="number">  220     </span>
+<span class="number">  221     </span>  <span class="key">class</span> Directory
+<span class="number">  222   </span><span class="minmax" onclick="toggleminmax(this, 'sp221')" onmouseover="highlight('sp221')" onmouseout="removeHighlight('sp221')">-</span>  <span id="sp221">{
+<span class="number">  223     </span>  <span class="key">public</span>:
+<span class="number">  224     </span>    <span class="key">static</span> <span class="key">bool</span> create(const std::string& path);
+<span class="number">  225     </span>    <span class="key">static</span> <span class="key">bool</span> remove(const std::string& path);
+<span class="number">  226     </span>    <span class="key">static</span> <span class="key">bool</span> exists(const std::string& path);
+<span class="number">  227     </span>    <span class="key">static</span> std::string getCurrentDirectory();
+<span class="number">  228     </span>    <span class="key">static</span> <span class="key">bool</span> setCurrentDirectory(const std::string& path);
+<span class="number">  229     </span>    <span class="key">static</span> std::vector&ltstd::string&gt getFiles(const std::string& path=<span class="str">"."</span>, const std::string& pattern=<span class="str">"*.*"</span>);
+<span class="number">  230     </span>    <span class="key">static</span> std::vector&ltstd::string&gt getDirectories(const std::string& path=<span class="str">"."</span>, const std::string& pattern=<span class="str">"*.*"</span>);
+<span class="number">  231     </span>  <span class="key">private</span>:
+<span class="number">  232     </span>    <span class="comment">//static const int BufSize = 255;</span>
+<span class="number">  233     </span>    <span class="comment">//char buffer[BufSize];</span>
+<span class="number">  234     </span>  }</span>;
+<span class="number">  235     </span>}</span>
+<span class="number">  236     </span>
+<span class="number">  237     </span><span class="directive">#endif</span>
+<span class="number">  238     </span>
+
+</pre>
+  </body>
+</html>

@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<!------------------------------------------------------------------------
+  Tokenizer.cpp.html - Project 3 published file
+  Published: Sun Apr  2 17:35:53 2017
+
+  Ammar Salman, CSE687 - Object Oriented Design, Spring 2017
+ ------------------------------------------------------------------------->
+<html>
+  <head>
+     <link rel="stylesheet" type="text/css" href="resources/light.css"/>
+     <script src="resources/scripts.js"></script>
+     <button class="Fixed" onclick="toggleStyle(this)">Dark Theme</button>
+  </head>
+  <body>
+   <h3>Tokenizer.cpp</h3>
+   <hr/>
+   <div class = "indent">
+     <h4>Dependencies:</h4>
+     <div><a href="Tokenizer.h.html">Tokenizer.h</a></div>
+   </div>
+   <hr/>
+<pre><span class="number">  1       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  2       </span><span class="comment">// Tokenizer.cpp - read words from a std::stream                   //</span>
+<span class="number">  3       </span><span class="comment">// ver 4.2                                                         //</span>
+<span class="number">  4       </span><span class="comment">// Language:    C++, Visual Studio 2015                            //</span>
+<span class="number">  5       </span><span class="comment">// Platform:    Dell XPS 8900, Windows 10                          //</span>
+<span class="number">  6       </span><span class="comment">// Application: Parser component, CSE687 - Object Oriented Design  //</span>
+<span class="number">  7       </span><span class="comment">// Author:      Jim Fawcett, Syracuse University, CST 4-187        //</span>
+<span class="number">  8       </span><span class="comment">//              jfawcett@twcny.rr.com                              //</span>
+<span class="number">  9       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  10      </span>
+<span class="number">  11      </span><span class="directive">#include</span> <span class="str">&ltiostream&gt</span>
+<span class="number">  12      </span><span class="directive">#include</span> <span class="str">&ltlocale&gt</span>
+<span class="number">  13      </span><span class="directive">#include</span> <span class="str">&ltstring&gt</span>
+<span class="number">  14      </span><span class="directive">#include</span> <span class="str">&ltvector&gt</span>
+<span class="number">  15      </span><span class="directive">#include</span> <span class="str">"Tokenizer.h"</span>
+<span class="number">  16      </span><span class="directive">#include</span> <span class="str">"..\Utilities\Utilities.h"</span>
+<span class="number">  17      </span>
+<span class="number">  18      </span><span class="key">namespace</span> Scanner
+<span class="number">  19    </span><span class="minmax" onclick="toggleminmax(this, 'sp18')" onmouseover="highlight('sp18')" onmouseout="removeHighlight('sp18')">-</span><span id="sp18">{
+<span class="number">  20      </span>  <span class="comment">///////////////////////////////////////////////////////////////////</span>
+<span class="number">  21      </span>  <span class="comment">// Context is a shared data storage facility.</span>
+<span class="number">  22    </span><span class="minmax" onclick="toggleminmax(this, 'sp21')" onmouseover="highlight('sp21')" onmouseout="removeHighlight('sp21')">-</span>  <span id="sp21"><span class="comment">/*
+<span class="number">  23      </span>   * - with Context we don't need static members to share
+<span class="number">  24      </span>   *   state pointes etc.  Context holds and shares all that.
+<span class="number">  25      </span>   * - Context is an entirely private facility used by ConsumeState
+<span class="number">  26      </span>   *   and its derived instances, so there is no need for encapsulation
+<span class="number">  27      </span>   *   and we use a struct.  This won't be appropriate if we handed
+<span class="number">  28      </span>   *   the context to clients of Toker.
+<span class="number">  29      </span>   */</span></span>
+<span class="number">  30      </span>  <span class="key">struct</span> Context
+<span class="number">  31    </span><span class="minmax" onclick="toggleminmax(this, 'sp30')" onmouseover="highlight('sp30')" onmouseout="removeHighlight('sp30')">-</span>  <span id="sp30">{
+<span class="number">  32      </span>    Context();
+<span class="number">  33      </span>    ~Context();
+<span class="number">  34      </span>    std::string token;
+<span class="number">  35      </span>    std::istream* _pIn;
+<span class="number">  36      </span>    std::vector&ltstd::string&gt _oneCharTokens =
+<span class="number">  37    </span><span class="minmax" onclick="toggleminmax(this, 'sp36')" onmouseover="highlight('sp36')" onmouseout="removeHighlight('sp36')">-</span>    <span id="sp36">{
+<span class="number">  38      </span>      <span class="str">"\n"</span>, <span class="str">"&lt"</span>, <span class="str">"&gt"</span>, <span class="str">"{"</span>, <span class="str">"}"</span>, <span class="str">"["</span>, <span class="str">"]"</span>, <span class="str">"("</span>, <span class="str">")"</span>, <span class="str">":"</span>, <span class="str">";"</span>, <span class="str">" = "</span>, <span class="str">" + "</span>, <span class="str">" - "</span>, <span class="str">"*"</span>, <span class="str">"."</span>, <span class="str">","</span>, <span class="str">"@"</span>
+<span class="number">  39      </span>    }</span>;
+<span class="number">  40      </span>    std::vector&ltstd::string&gt _twoCharTokens =
+<span class="number">  41    </span><span class="minmax" onclick="toggleminmax(this, 'sp40')" onmouseover="highlight('sp40')" onmouseout="removeHighlight('sp40')">-</span>    <span id="sp40">{
+<span class="number">  42      </span>      <span class="str">"&lt&lt"</span>, <span class="str">"&gt&gt"</span>, <span class="str">"::"</span>, <span class="str">"++"</span>, <span class="str">"--"</span>, <span class="str">"=="</span>, <span class="str">"+="</span>, <span class="str">"-="</span>, <span class="str">"*="</span>, <span class="str">"/="</span>
+<span class="number">  43      </span>    }</span>;
+<span class="number">  44      </span>    <span class="key">int</span> prevChar;
+<span class="number">  45      </span>    <span class="key">int</span> currChar;
+<span class="number">  46      </span>    <span class="key">bool</span> _doReturnComments;
+<span class="number">  47      </span>		<span class="key">bool</span> _doReturnSpaces;
+<span class="number">  48      </span>    <span class="key">bool</span> inCSharpString = <span class="key">false</span>;
+<span class="number">  49      </span>    size_t _lineCount;
+<span class="number">  50      </span>    ConsumeState* _pState;
+<span class="number">  51      </span>    ConsumeState* _pEatCppComment;
+<span class="number">  52      </span>    ConsumeState* _pEatCComment;
+<span class="number">  53      </span>    ConsumeState* _pEatWhitespace;
+<span class="number">  54      </span>    ConsumeState* _pEatPunctuator;
+<span class="number">  55      </span>    ConsumeState* _pEatAlphanum;
+<span class="number">  56      </span>    ConsumeState* _pEatSpecialCharacters;
+<span class="number">  57      </span>    ConsumeState* _pEatDQString;
+<span class="number">  58      </span>    ConsumeState* _pEatSQString;
+<span class="number">  59      </span>    ConsumeState* _pEatRawCppString;
+<span class="number">  60      </span>    ConsumeState* _pEatRawCSharpString;
+<span class="number">  61      </span>  }</span>;
+<span class="number">  62      </span>
+<span class="number">  63      </span>  <span class="comment">///////////////////////////////////////////////////////////////////</span>
+<span class="number">  64      </span>  <span class="comment">// private ConsumeState worker class</span>
+<span class="number">  65    </span><span class="minmax" onclick="toggleminmax(this, 'sp64')" onmouseover="highlight('sp64')" onmouseout="removeHighlight('sp64')">-</span>  <span id="sp64"><span class="comment">/*
+<span class="number">  66      </span>   *   Nota Bene:
+<span class="number">  67      </span>   *   - At exit the eatChars() member should return with
+<span class="number">  68      </span>   *     currChar set to the first non-state character.
+<span class="number">  69      </span>   *   - Each derived class must insure that this condition
+<span class="number">  70      </span>   *     is meet.
+<span class="number">  71      </span>   */</span></span>
+<span class="number">  72      </span>  <span class="key">class</span> ConsumeState
+<span class="number">  73    </span><span class="minmax" onclick="toggleminmax(this, 'sp72')" onmouseover="highlight('sp72')" onmouseout="removeHighlight('sp72')">-</span>  <span id="sp72">{
+<span class="number">  74      </span>    <span class="key">friend</span> <span class="key">class</span> Toker;
+<span class="number">  75      </span>  <span class="key">public</span>:
+<span class="number">  76      </span>    <span class="key">using</span> Token = std::string;
+<span class="number">  77      </span>    ConsumeState();
+<span class="number">  78      </span>    ConsumeState(const ConsumeState&) = <span class="key">delete</span>;
+<span class="number">  79      </span>    ConsumeState& <span class="key">operator</span>=(const ConsumeState&) = <span class="key">delete</span>;
+<span class="number">  80      </span>    <span class="key">virtual</span> ~ConsumeState();
+<span class="number">  81      </span>    <span class="key">void</span> attach(std::istream* pIn);
+<span class="number">  82      </span>    <span class="key">virtual</span> <span class="key">void</span> eatChars() = 0;
+<span class="number">  83    </span><span class="minmax" onclick="toggleminmax(this, 'sp82')" onmouseover="highlight('sp82')" onmouseout="removeHighlight('sp82')">-</span>    <span class="key">void</span> consumeChars() <span id="sp82">{
+<span class="number">  84      </span>      _pContext-&gt_pState-&gteatChars();
+<span class="number">  85      </span>      _pContext-&gt_pState = nextState();
+<span class="number">  86      </span>    }</span>
+<span class="number">  87    </span><span class="minmax" onclick="toggleminmax(this, 'sp86')" onmouseover="highlight('sp86')" onmouseout="removeHighlight('sp86')">-</span>    <span class="key">bool</span> canRead() <span id="sp86">{ <span class="key">return</span> _pContext-&gt_pIn-&gtgood(); }</span>
+<span class="number">  88    </span><span class="minmax" onclick="toggleminmax(this, 'sp87')" onmouseover="highlight('sp87')" onmouseout="removeHighlight('sp87')">-</span>    std::string getTok() <span id="sp87">{ <span class="key">return</span> _pContext-&gttoken; }</span>
+<span class="number">  89    </span><span class="minmax" onclick="toggleminmax(this, 'sp88')" onmouseover="highlight('sp88')" onmouseout="removeHighlight('sp88')">-</span>    <span class="key">bool</span> hasTok() <span id="sp88">{ <span class="key">return</span> _pContext-&gttoken.size() &gt 0; }</span>
+<span class="number">  90      </span>    ConsumeState* nextState();
+<span class="number">  91      </span>    <span class="key">void</span> returnComments(<span class="key">bool</span> doReturnComments = <span class="key">false</span>);
+<span class="number">  92      </span>		<span class="key">void</span> returnSpaces(<span class="key">bool</span> eatSpaces = <span class="key">false</span>);
+<span class="number">  93      </span>    size_t currentLineCount();
+<span class="number">  94      </span>    <span class="key">void</span> setSpecialTokens(const std::string& commaSeparatedString);
+<span class="number">  95      </span>    <span class="key">void</span> setContext(Context* pContext);
+<span class="number">  96      </span>
+<span class="number">  97      </span>
+<span class="number">  98      </span>  <span class="key">protected</span>:
+<span class="number">  99      </span>    Context* _pContext;
+<span class="number">  100     </span>    <span class="key">bool</span> collectChar();
+<span class="number">  101     </span>    <span class="key">bool</span> isOneCharToken(Token tok);
+<span class="number">  102     </span>    <span class="key">bool</span> isTwoCharToken(Token tok);
+<span class="number">  103     </span>    Token makeString(<span class="key">int</span> ch);
+<span class="number">  104     </span>  }</span>;
+<span class="number">  105     </span>}</span>
+<span class="number">  106     </span>
+<span class="number">  107     </span><span class="key">using</span> <span class="key">namespace</span> Scanner;
+<span class="number">  108     </span><span class="key">using</span> Token = std::string;
+<span class="number">  109     </span>
+<span class="number">  110     </span><span class="comment">//----&lt used by Toker to provide Consumer with Context ptr &gt---------</span>
+<span class="number">  111     </span>
+<span class="number">  112     </span><span class="key">void</span> ConsumeState::setContext(Context* pContext)
+<span class="number">  113   </span><span class="minmax" onclick="toggleminmax(this, 'sp112')" onmouseover="highlight('sp112')" onmouseout="removeHighlight('sp112')">-</span><span id="sp112">{
+<span class="number">  114     </span>  _pContext = pContext;
+<span class="number">  115     </span>}</span>
+<span class="number">  116     </span><span class="comment">//----&lt attach or re-attach to input stream &gt------------------------</span>
+<span class="number">  117     </span>
+<span class="number">  118     </span><span class="key">void</span> ConsumeState::attach(std::istream* pIn)
+<span class="number">  119   </span><span class="minmax" onclick="toggleminmax(this, 'sp118')" onmouseover="highlight('sp118')" onmouseout="removeHighlight('sp118')">-</span><span id="sp118">{
+<span class="number">  120     </span>  _pContext-&gt_pState = _pContext-&gt_pEatWhitespace;
+<span class="number">  121     </span>  _pContext-&gt_lineCount = 0;
+<span class="number">  122     </span>  _pContext-&gt_pIn = pIn;
+<span class="number">  123     </span>}</span>
+<span class="number">  124     </span><span class="comment">//----&lt replace one and two char tokens &gt----------------------------</span>
+<span class="number">  125     </span>
+<span class="number">  126     </span><span class="key">void</span> ConsumeState::setSpecialTokens(const std::string& commaSeparatedTokens)
+<span class="number">  127   </span><span class="minmax" onclick="toggleminmax(this, 'sp126')" onmouseover="highlight('sp126')" onmouseout="removeHighlight('sp126')">-</span><span id="sp126">{
+<span class="number">  128     </span>  std::vector&ltToken&gt result = Utilities::StringHelper::split(commaSeparatedTokens);
+<span class="number">  129     </span>  _pContext-&gt_oneCharTokens.clear();
+<span class="number">  130     </span>  _pContext-&gt_twoCharTokens.clear();
+<span class="number">  131     </span>  <span class="key">for</span> (std::string item : result)
+<span class="number">  132   </span><span class="minmax" onclick="toggleminmax(this, 'sp131')" onmouseover="highlight('sp131')" onmouseout="removeHighlight('sp131')">-</span>  <span id="sp131">{
+<span class="number">  133     </span>    <span class="key">if</span> (item.size() == 1 || item == <span class="str">"\n"</span>)
+<span class="number">  134     </span>      _pContext-&gt_oneCharTokens.push_back(item);
+<span class="number">  135     </span>    <span class="key">if</span> (item.size() &gt= 2)
+<span class="number">  136     </span>      _pContext-&gt_twoCharTokens.push_back(item);
+<span class="number">  137     </span>  }</span>
+<span class="number">  138     </span>}</span>
+<span class="number">  139     </span><span class="comment">//----&lt return number of newlines collected from stream &gt------------</span>
+<span class="number">  140     </span>
+<span class="number">  141   </span><span class="minmax" onclick="toggleminmax(this, 'sp140')" onmouseover="highlight('sp140')" onmouseout="removeHighlight('sp140')">-</span>size_t ConsumeState::currentLineCount() <span id="sp140">{ <span class="key">return</span> _pContext-&gt_lineCount; }</span>
+<span class="number">  142     </span>
+<span class="number">  143     </span><span class="comment">//----&lt collect character from stream &gt------------------------------</span>
+<span class="number">  144     </span>
+<span class="number">  145     </span><span class="key">bool</span> ConsumeState::collectChar()
+<span class="number">  146   </span><span class="minmax" onclick="toggleminmax(this, 'sp145')" onmouseover="highlight('sp145')" onmouseout="removeHighlight('sp145')">-</span><span id="sp145">{
+<span class="number">  147     </span>  <span class="key">if</span> (_pContext-&gt_pIn-&gtgood())
+<span class="number">  148   </span><span class="minmax" onclick="toggleminmax(this, 'sp147')" onmouseover="highlight('sp147')" onmouseout="removeHighlight('sp147')">-</span>  <span id="sp147">{
+<span class="number">  149     </span>    _pContext-&gtprevChar = _pContext-&gtcurrChar;
+<span class="number">  150     </span>    _pContext-&gtcurrChar = _pContext-&gt_pIn-&gtget();
+<span class="number">  151     </span>    <span class="key">if</span> (_pContext-&gtcurrChar == <span class="str">'\n'</span>)
+<span class="number">  152     </span>      ++(_pContext-&gt_lineCount);
+<span class="number">  153     </span>    <span class="key">return</span> <span class="key">true</span>;
+<span class="number">  154     </span>  }</span>
+<span class="number">  155     </span>  <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  156     </span>}</span>
+<span class="number">  157     </span>
+<span class="number">  158     </span><span class="comment">//----&lt logs to console if TEST_LOG is defined &gt---------------------</span>
+<span class="number">  159     </span>
+<span class="number">  160     </span><span class="key">void</span> testLog(const std::string& msg);  <span class="comment">// forward declaration</span>
+<span class="number">  161     </span>
+<span class="number">  162     </span><span class="comment">//----&lt turn on\off returning comments as tokens &gt-------------------</span>
+<span class="number">  163     </span>
+<span class="number">  164     </span><span class="key">void</span> ConsumeState::returnComments(<span class="key">bool</span> doReturnComments)
+<span class="number">  165   </span><span class="minmax" onclick="toggleminmax(this, 'sp164')" onmouseover="highlight('sp164')" onmouseout="removeHighlight('sp164')">-</span><span id="sp164">{
+<span class="number">  166     </span>  _pContext-&gt_doReturnComments = doReturnComments;
+<span class="number">  167     </span>}</span>
+<span class="number">  168     </span>
+<span class="number">  169     </span><span class="comment">//-----&lt turn on\off returning spaces as tokens &gt--------------------</span>
+<span class="number">  170     </span><span class="key">void</span> Scanner::ConsumeState::returnSpaces(<span class="key">bool</span> _doReturnSpaces)
+<span class="number">  171   </span><span class="minmax" onclick="toggleminmax(this, 'sp170')" onmouseover="highlight('sp170')" onmouseout="removeHighlight('sp170')">-</span><span id="sp170">{
+<span class="number">  172     </span>	_pContext-&gt_doReturnSpaces = _doReturnSpaces;
+<span class="number">  173     </span>}</span>
+<span class="number">  174     </span>
+<span class="number">  175     </span><span class="comment">//----&lt is tok one of the special one character tokens? &gt------------</span>
+<span class="number">  176     </span>
+<span class="number">  177     </span><span class="key">bool</span> ConsumeState::isOneCharToken(Token tok)
+<span class="number">  178   </span><span class="minmax" onclick="toggleminmax(this, 'sp177')" onmouseover="highlight('sp177')" onmouseout="removeHighlight('sp177')">-</span><span id="sp177">{
+<span class="number">  179     </span>  <span class="key">for</span> (size_t i = 0; i &lt _pContext-&gt_oneCharTokens.size(); ++i)
+<span class="number">  180     </span>    <span class="key">if</span> (_pContext-&gt_oneCharTokens[i] == tok)
+<span class="number">  181     </span>      <span class="key">return</span> <span class="key">true</span>;
+<span class="number">  182     </span>  <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  183     </span>}</span>
+<span class="number">  184     </span><span class="comment">//----&lt is tok one of the special two character tokens? &gt------------</span>
+<span class="number">  185     </span>
+<span class="number">  186     </span><span class="key">bool</span> ConsumeState::isTwoCharToken(Token tok)
+<span class="number">  187   </span><span class="minmax" onclick="toggleminmax(this, 'sp186')" onmouseover="highlight('sp186')" onmouseout="removeHighlight('sp186')">-</span><span id="sp186">{
+<span class="number">  188     </span>  <span class="key">for</span> (size_t i = 0; i &lt _pContext-&gt_twoCharTokens.size(); ++i)
+<span class="number">  189     </span>    <span class="key">if</span> (_pContext-&gt_twoCharTokens[i] == tok)
+<span class="number">  190     </span>      <span class="key">return</span> <span class="key">true</span>;
+<span class="number">  191     </span>  <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  192     </span>}</span>
+<span class="number">  193     </span><span class="comment">//----&lt make a string with this one integer &gt------------------------</span>
+<span class="number">  194     </span>
+<span class="number">  195     </span>ConsumeState::Token ConsumeState::makeString(<span class="key">int</span> ch)
+<span class="number">  196   </span><span class="minmax" onclick="toggleminmax(this, 'sp195')" onmouseover="highlight('sp195')" onmouseout="removeHighlight('sp195')">-</span><span id="sp195">{
+<span class="number">  197     </span>  Token temp;
+<span class="number">  198     </span>  <span class="key">return</span> temp += ch;
+<span class="number">  199     </span>}</span>
+<span class="number">  200     </span><span class="comment">//----&lt decide which state to use next &gt-----------------------------</span>
+<span class="number">  201     </span>
+<span class="number">  202     </span>ConsumeState* ConsumeState::nextState()
+<span class="number">  203   </span><span class="minmax" onclick="toggleminmax(this, 'sp202')" onmouseover="highlight('sp202')" onmouseout="removeHighlight('sp202')">-</span><span id="sp202">{
+<span class="number">  204     </span>  std::locale loc;
+<span class="number">  205     </span>
+<span class="number">  206     </span>  <span class="key">if</span> (!(_pContext-&gt_pIn-&gtgood()))
+<span class="number">  207   </span><span class="minmax" onclick="toggleminmax(this, 'sp206')" onmouseover="highlight('sp206')" onmouseout="removeHighlight('sp206')">-</span>  <span id="sp206">{
+<span class="number">  208     </span>    <span class="key">return</span> nullptr;
+<span class="number">  209     </span>  }</span>
+<span class="number">  210     </span>  <span class="key">int</span> chNext = _pContext-&gt_pIn-&gtpeek();
+<span class="number">  211     </span>  <span class="key">if</span> (chNext == EOF)
+<span class="number">  212   </span><span class="minmax" onclick="toggleminmax(this, 'sp211')" onmouseover="highlight('sp211')" onmouseout="removeHighlight('sp211')">-</span>  <span id="sp211">{
+<span class="number">  213     </span>    _pContext-&gt_pIn-&gtclear();
+<span class="number">  214     </span>    <span class="comment">// if peek() reads end of file character, EOF, then eofbit is set and</span>
+<span class="number">  215     </span>    <span class="comment">// _pIn-&gtgood() will return false.  clear() restores state to good</span>
+<span class="number">  216     </span>  }</span>
+<span class="number">  217     </span>  <span class="comment">//---------------------------------------------------------</span>
+<span class="number">  218     </span>  <span class="comment">// The following tests must come first</span>
+<span class="number">  219     </span>
+<span class="number">  220     </span>  <span class="key">if</span> (_pContext-&gtcurrChar == <span class="str">'\"'</span> && _pContext-&gtprevChar != <span class="str">'\\'</span>)
+<span class="number">  221   </span><span class="minmax" onclick="toggleminmax(this, 'sp220')" onmouseover="highlight('sp220')" onmouseout="removeHighlight('sp220')">-</span>  <span id="sp220">{
+<span class="number">  222     </span>    testLog(<span class="str">"state: eatDQString"</span>);
+<span class="number">  223     </span>    <span class="key">return</span> _pContext-&gt_pEatDQString;
+<span class="number">  224     </span>  }</span>
+<span class="number">  225     </span>  <span class="key">if</span> (_pContext-&gtcurrChar == <span class="str">'\''</span> && _pContext-&gtprevChar != <span class="str">'\\'</span>)
+<span class="number">  226   </span><span class="minmax" onclick="toggleminmax(this, 'sp225')" onmouseover="highlight('sp225')" onmouseout="removeHighlight('sp225')">-</span>  <span id="sp225">{
+<span class="number">  227     </span>    testLog(<span class="str">"state: eatSQString"</span>);
+<span class="number">  228     </span>    <span class="key">return</span> _pContext-&gt_pEatSQString;
+<span class="number">  229     </span>  }</span>
+<span class="number">  230     </span>  <span class="key">if</span> (_pContext-&gtcurrChar == <span class="str">'/'</span> && chNext == <span class="str">'/'</span>)
+<span class="number">  231   </span><span class="minmax" onclick="toggleminmax(this, 'sp230')" onmouseover="highlight('sp230')" onmouseout="removeHighlight('sp230')">-</span>  <span id="sp230">{
+<span class="number">  232     </span>    testLog(<span class="str">"state: eatCppComment"</span>);
+<span class="number">  233     </span>    <span class="key">return</span> _pContext-&gt_pEatCppComment;
+<span class="number">  234     </span>  }</span>
+<span class="number">  235     </span>  <span class="key">if</span> (_pContext-&gtcurrChar == <span class="str">'/'</span> && chNext == <span class="str">'*'</span>)
+<span class="number">  236   </span><span class="minmax" onclick="toggleminmax(this, 'sp235')" onmouseover="highlight('sp235')" onmouseout="removeHighlight('sp235')">-</span>  <span id="sp235">{
+<span class="number">  237     </span>    testLog(<span class="str">"state: eatCComment"</span>);
+<span class="number">  238     </span>    <span class="key">return</span> _pContext-&gt_pEatCComment;
+<span class="number">  239     </span>  }</span>
+<span class="number">  240     </span>  <span class="key">if</span> (_pContext-&gtcurrChar == <span class="str">'R'</span> && chNext == <span class="str">'\"'</span>)
+<span class="number">  241   </span><span class="minmax" onclick="toggleminmax(this, 'sp240')" onmouseover="highlight('sp240')" onmouseout="removeHighlight('sp240')">-</span>  <span id="sp240">{
+<span class="number">  242     </span>    testLog(<span class="str">"state: eatRawCppString"</span>);
+<span class="number">  243     </span>    <span class="key">return</span> _pContext-&gt_pEatRawCppString;
+<span class="number">  244     </span>  }</span>
+<span class="number">  245     </span>  <span class="key">if</span> (_pContext-&gtcurrChar == <span class="str">'@'</span> && chNext == <span class="str">'\"'</span>)
+<span class="number">  246   </span><span class="minmax" onclick="toggleminmax(this, 'sp245')" onmouseover="highlight('sp245')" onmouseout="removeHighlight('sp245')">-</span>  <span id="sp245">{
+<span class="number">  247     </span>    testLog(<span class="str">"state: eatRawCSharpString"</span>);
+<span class="number">  248     </span>    <span class="key">return</span> _pContext-&gt_pEatRawCSharpString;
+<span class="number">  249     </span>  }</span>
+<span class="number">  250     </span>  <span class="comment">//---------------------------------------------------------</span>
+<span class="number">  251     </span>  <span class="comment">// The following tests must come after those above</span>
+<span class="number">  252     </span>
+<span class="number">  253     </span>  <span class="key">if</span> (isOneCharToken(makeString(_pContext-&gtcurrChar)))
+<span class="number">  254   </span><span class="minmax" onclick="toggleminmax(this, 'sp253')" onmouseover="highlight('sp253')" onmouseout="removeHighlight('sp253')">-</span>  <span id="sp253">{
+<span class="number">  255     </span>    testLog(<span class="str">"state: eatSpecialCharacters"</span>);
+<span class="number">  256     </span>    <span class="key">return</span> _pContext-&gt_pEatSpecialCharacters;
+<span class="number">  257     </span>  }</span>
+<span class="number">  258     </span>  <span class="key">if</span> (std::isspace(_pContext-&gtcurrChar, loc) && _pContext-&gtcurrChar != <span class="str">'\n'</span>)
+<span class="number">  259   </span><span class="minmax" onclick="toggleminmax(this, 'sp258')" onmouseover="highlight('sp258')" onmouseout="removeHighlight('sp258')">-</span>  <span id="sp258">{
+<span class="number">  260     </span>    testLog(<span class="str">"state: eatWhitespace"</span>);
+<span class="number">  261     </span>    <span class="key">return</span> _pContext-&gt_pEatWhitespace;
+<span class="number">  262     </span>  }</span>
+<span class="number">  263     </span>  <span class="key">if</span> (std::isalnum(_pContext-&gtcurrChar, loc) || _pContext-&gtcurrChar == <span class="str">'_'</span>)
+<span class="number">  264   </span><span class="minmax" onclick="toggleminmax(this, 'sp263')" onmouseover="highlight('sp263')" onmouseout="removeHighlight('sp263')">-</span>  <span id="sp263">{
+<span class="number">  265     </span>    testLog(<span class="str">"state: eatAlphanum"</span>);
+<span class="number">  266     </span>    <span class="key">return</span> _pContext-&gt_pEatAlphanum;
+<span class="number">  267     </span>  }</span>
+<span class="number">  268     </span>  <span class="key">if</span> (ispunct(_pContext-&gtcurrChar))
+<span class="number">  269   </span><span class="minmax" onclick="toggleminmax(this, 'sp268')" onmouseover="highlight('sp268')" onmouseout="removeHighlight('sp268')">-</span>  <span id="sp268">{
+<span class="number">  270     </span>    testLog(<span class="str">"state: eatPunctuator"</span>);
+<span class="number">  271     </span>    <span class="key">return</span> _pContext-&gt_pEatPunctuator;
+<span class="number">  272     </span>  }</span>
+<span class="number">  273     </span>  <span class="key">if</span> (!_pContext-&gt_pIn-&gtgood())
+<span class="number">  274   </span><span class="minmax" onclick="toggleminmax(this, 'sp273')" onmouseover="highlight('sp273')" onmouseout="removeHighlight('sp273')">-</span>  <span id="sp273">{
+<span class="number">  275     </span>    testLog(<span class="str">"state: eatWhitespace"</span>);
+<span class="number">  276     </span>    <span class="key">return</span> _pContext-&gt_pEatWhitespace;
+<span class="number">  277     </span>  }</span>
+<span class="number">  278     </span>  <span class="comment">//---------------------------------------------------------</span>
+<span class="number">  279     </span>  <span class="comment">// If _pContext-&gtcurrChar is not a state transition char</span>
+<span class="number">  280     </span>  <span class="comment">// then we go to eatPuctuator state</span>
+<span class="number">  281     </span>
+<span class="number">  282     </span>  <span class="key">return</span> _pContext-&gt_pEatPunctuator;
+<span class="number">  283     </span>}</span>
+<span class="number">  284     </span><span class="comment">//----&lt class that consumes whitespace &gt-----------------------------</span>
+<span class="number">  285     </span>
+<span class="number">  286     </span><span class="key">class</span> EatWhitespace : <span class="key">public</span> ConsumeState
+<span class="number">  287   </span><span class="minmax" onclick="toggleminmax(this, 'sp286')" onmouseover="highlight('sp286')" onmouseout="removeHighlight('sp286')">-</span><span id="sp286">{
+<span class="number">  288     </span><span class="key">public</span>:
+<span class="number">  289     </span>  EatWhitespace(Context* pContext)
+<span class="number">  290   </span><span class="minmax" onclick="toggleminmax(this, 'sp289')" onmouseover="highlight('sp289')" onmouseout="removeHighlight('sp289')">-</span>  <span id="sp289">{
+<span class="number">  291     </span>    _pContext = pContext;
+<span class="number">  292     </span>  }</span>
+<span class="number">  293     </span>  <span class="key">virtual</span> <span class="key">void</span> eatChars()
+<span class="number">  294   </span><span class="minmax" onclick="toggleminmax(this, 'sp293')" onmouseover="highlight('sp293')" onmouseout="removeHighlight('sp293')">-</span>  <span id="sp293">{
+<span class="number">  295     </span>    std::locale loc;
+<span class="number">  296     </span>    _pContext-&gttoken.clear();
+<span class="number">  297   </span><span class="minmax" onclick="toggleminmax(this, 'sp296')" onmouseover="highlight('sp296')" onmouseout="removeHighlight('sp296')">-</span>    <span class="key">do</span> <span id="sp296">{
+<span class="number">  298     </span>			<span class="key">if</span> (_pContext-&gt_doReturnSpaces)
+<span class="number">  299     </span>				_pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  300     </span>      <span class="key">if</span> (!collectChar())
+<span class="number">  301     </span>        <span class="key">return</span>;
+<span class="number">  302     </span>    }</span> <span class="key">while</span> (std::isspace(_pContext-&gtcurrChar, loc) && _pContext-&gtcurrChar != <span class="str">'\n'</span>);
+<span class="number">  303     </span>  }</span>
+<span class="number">  304     </span>}</span>;
+<span class="number">  305     </span><span class="comment">//----&lt class that consumes C++ comment &gt----------------------------</span>
+<span class="number">  306     </span>
+<span class="number">  307     </span><span class="key">class</span> EatCppComment : <span class="key">public</span> ConsumeState
+<span class="number">  308   </span><span class="minmax" onclick="toggleminmax(this, 'sp307')" onmouseover="highlight('sp307')" onmouseout="removeHighlight('sp307')">-</span><span id="sp307">{
+<span class="number">  309     </span><span class="key">public</span>:
+<span class="number">  310     </span>  EatCppComment(Context* pContext)
+<span class="number">  311   </span><span class="minmax" onclick="toggleminmax(this, 'sp310')" onmouseover="highlight('sp310')" onmouseout="removeHighlight('sp310')">-</span>  <span id="sp310">{
+<span class="number">  312     </span>    _pContext = pContext;
+<span class="number">  313     </span>  }</span>
+<span class="number">  314     </span>  <span class="key">virtual</span> <span class="key">void</span> eatChars()
+<span class="number">  315   </span><span class="minmax" onclick="toggleminmax(this, 'sp314')" onmouseover="highlight('sp314')" onmouseout="removeHighlight('sp314')">-</span>  <span id="sp314">{
+<span class="number">  316     </span>    _pContext-&gttoken.clear();
+<span class="number">  317   </span><span class="minmax" onclick="toggleminmax(this, 'sp316')" onmouseover="highlight('sp316')" onmouseout="removeHighlight('sp316')">-</span>    <span class="key">do</span> <span id="sp316">{
+<span class="number">  318     </span>      <span class="key">if</span> (_pContext-&gt_doReturnComments)
+<span class="number">  319     </span>        _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  320     </span>      <span class="key">if</span> (!collectChar())
+<span class="number">  321     </span>        <span class="key">return</span>;
+<span class="number">  322     </span>    }</span> <span class="key">while</span> (_pContext-&gtcurrChar != <span class="str">'\n'</span>);
+<span class="number">  323     </span>  }</span>
+<span class="number">  324     </span>}</span>;
+<span class="number">  325     </span><span class="comment">//----&lt class that consumes C comment &gt------------------------------</span>
+<span class="number">  326     </span>
+<span class="number">  327     </span><span class="key">class</span> EatCComment : <span class="key">public</span> ConsumeState
+<span class="number">  328   </span><span class="minmax" onclick="toggleminmax(this, 'sp327')" onmouseover="highlight('sp327')" onmouseout="removeHighlight('sp327')">-</span><span id="sp327">{
+<span class="number">  329     </span><span class="key">public</span>:
+<span class="number">  330     </span>  EatCComment(Context* pContext)
+<span class="number">  331   </span><span class="minmax" onclick="toggleminmax(this, 'sp330')" onmouseover="highlight('sp330')" onmouseout="removeHighlight('sp330')">-</span>  <span id="sp330">{
+<span class="number">  332     </span>    _pContext = pContext;
+<span class="number">  333     </span>  }</span>
+<span class="number">  334     </span>  <span class="key">virtual</span> <span class="key">void</span> eatChars()
+<span class="number">  335   </span><span class="minmax" onclick="toggleminmax(this, 'sp334')" onmouseover="highlight('sp334')" onmouseout="removeHighlight('sp334')">-</span>  <span id="sp334">{
+<span class="number">  336     </span>    _pContext-&gttoken.clear();
+<span class="number">  337   </span><span class="minmax" onclick="toggleminmax(this, 'sp336')" onmouseover="highlight('sp336')" onmouseout="removeHighlight('sp336')">-</span>    <span class="key">do</span> <span id="sp336">{
+<span class="number">  338     </span>      <span class="key">if</span> (_pContext-&gt_doReturnComments)
+<span class="number">  339     </span>        _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  340     </span>      <span class="key">if</span> (!collectChar())
+<span class="number">  341     </span>        <span class="key">return</span>;
+<span class="number">  342     </span>    }</span> <span class="key">while</span> (_pContext-&gtcurrChar != <span class="str">'*'</span> || _pContext-&gt_pIn-&gtpeek() != <span class="str">'/'</span>);
+<span class="number">  343     </span>    <span class="key">if</span> (_pContext-&gt_doReturnComments)
+<span class="number">  344     </span>      _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  345     </span>    <span class="key">if</span> (!collectChar())      <span class="comment">// get terminating '/'</span>
+<span class="number">  346     </span>      <span class="key">return</span>;
+<span class="number">  347     </span>    <span class="key">if</span> (_pContext-&gt_doReturnComments)
+<span class="number">  348     </span>      _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  349     </span>    collectChar();           <span class="comment">// get first non-comment char</span>
+<span class="number">  350     </span>  }</span>
+<span class="number">  351     </span>}</span>;
+<span class="number">  352     </span><span class="comment">//----&lt class that eats punctuators &gt--------------------------------</span>
+<span class="number">  353     </span>
+<span class="number">  354     </span><span class="key">class</span> EatPunctuator : <span class="key">public</span> ConsumeState
+<span class="number">  355   </span><span class="minmax" onclick="toggleminmax(this, 'sp354')" onmouseover="highlight('sp354')" onmouseout="removeHighlight('sp354')">-</span><span id="sp354">{
+<span class="number">  356     </span><span class="key">public</span>:
+<span class="number">  357     </span>  EatPunctuator(Context* pContext)
+<span class="number">  358   </span><span class="minmax" onclick="toggleminmax(this, 'sp357')" onmouseover="highlight('sp357')" onmouseout="removeHighlight('sp357')">-</span>  <span id="sp357">{
+<span class="number">  359     </span>    _pContext = pContext;
+<span class="number">  360     </span>  }</span>
+<span class="number">  361     </span>  <span class="key">virtual</span> <span class="key">void</span> eatChars()
+<span class="number">  362   </span><span class="minmax" onclick="toggleminmax(this, 'sp361')" onmouseover="highlight('sp361')" onmouseout="removeHighlight('sp361')">-</span>  <span id="sp361">{
+<span class="number">  363     </span>    _pContext-&gttoken.clear();
+<span class="number">  364     </span>    <span class="key">int</span> chNext = _pContext-&gt_pIn-&gtpeek();
+<span class="number">  365   </span><span class="minmax" onclick="toggleminmax(this, 'sp364')" onmouseover="highlight('sp364')" onmouseout="removeHighlight('sp364')">-</span>    <span class="key">do</span> <span id="sp364">{
+<span class="number">  366     </span>      <span class="key">if</span> (_pContext-&gtcurrChar == <span class="str">'\"'</span> && _pContext-&gtprevChar != <span class="str">'\\'</span>)    <span class="comment">// start of double quoted string</span>
+<span class="number">  367   </span><span class="minmax" onclick="toggleminmax(this, 'sp366')" onmouseover="highlight('sp366')" onmouseout="removeHighlight('sp366')">-</span>      <span id="sp366">{
+<span class="number">  368     </span>        <span class="key">return</span>;
+<span class="number">  369     </span>      }</span>
+<span class="number">  370     </span>      <span class="key">if</span> (_pContext-&gtcurrChar == <span class="str">'@'</span> && chNext == <span class="str">'\"'</span>)    <span class="comment">// start of raw C# double quoted string</span>
+<span class="number">  371   </span><span class="minmax" onclick="toggleminmax(this, 'sp370')" onmouseover="highlight('sp370')" onmouseout="removeHighlight('sp370')">-</span>      <span id="sp370">{
+<span class="number">  372     </span>        <span class="key">return</span>;
+<span class="number">  373     </span>      }</span>
+<span class="number">  374     </span>      <span class="key">if</span> (_pContext-&gtcurrChar == <span class="str">'\''</span> && _pContext-&gtprevChar != <span class="str">'\\'</span>)    <span class="comment">// start of single quoted string</span>
+<span class="number">  375   </span><span class="minmax" onclick="toggleminmax(this, 'sp374')" onmouseover="highlight('sp374')" onmouseout="removeHighlight('sp374')">-</span>      <span id="sp374">{
+<span class="number">  376     </span>        <span class="key">return</span>;
+<span class="number">  377     </span>      }</span>
+<span class="number">  378     </span>      Token temp = makeString(_pContext-&gtcurrChar);
+<span class="number">  379     </span>      <span class="key">if</span> (isOneCharToken(temp))
+<span class="number">  380   </span><span class="minmax" onclick="toggleminmax(this, 'sp379')" onmouseover="highlight('sp379')" onmouseout="removeHighlight('sp379')">-</span>      <span id="sp379">{
+<span class="number">  381     </span>        <span class="key">return</span>;
+<span class="number">  382     </span>      }</span>
+<span class="number">  383     </span>      _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  384     </span>      <span class="key">if</span> (!_pContext-&gt_pIn-&gtgood())  <span class="comment">// end of stream</span>
+<span class="number">  385   </span><span class="minmax" onclick="toggleminmax(this, 'sp384')" onmouseover="highlight('sp384')" onmouseout="removeHighlight('sp384')">-</span>      <span id="sp384">{
+<span class="number">  386     </span>        <span class="key">return</span>;
+<span class="number">  387     </span>      }</span>
+<span class="number">  388     </span>      <span class="key">if</span> (!collectChar())
+<span class="number">  389     </span>        <span class="key">return</span>;
+<span class="number">  390     </span>    }</span> <span class="key">while</span> (ispunct(_pContext-&gtcurrChar));
+<span class="number">  391     </span>  }</span>
+<span class="number">  392     </span>}</span>;
+<span class="number">  393     </span><span class="comment">//----&lt class that eats alphanumeric characters &gt--------------------</span>
+<span class="number">  394   </span><span class="minmax" onclick="toggleminmax(this, 'sp393')" onmouseover="highlight('sp393')" onmouseout="removeHighlight('sp393')">-</span><span id="sp393"><span class="comment">/*
+<span class="number">  395     </span> * treats underscore '_' as alphanumeric character
+<span class="number">  396     </span> */</span></span>
+<span class="number">  397     </span><span class="key">class</span> EatAlphanum : <span class="key">public</span> ConsumeState
+<span class="number">  398   </span><span class="minmax" onclick="toggleminmax(this, 'sp397')" onmouseover="highlight('sp397')" onmouseout="removeHighlight('sp397')">-</span><span id="sp397">{
+<span class="number">  399     </span><span class="key">public</span>:
+<span class="number">  400     </span>  EatAlphanum(Context* pContext)
+<span class="number">  401   </span><span class="minmax" onclick="toggleminmax(this, 'sp400')" onmouseover="highlight('sp400')" onmouseout="removeHighlight('sp400')">-</span>  <span id="sp400">{
+<span class="number">  402     </span>    _pContext = pContext;
+<span class="number">  403     </span>  }</span>
+<span class="number">  404     </span>  <span class="key">virtual</span> <span class="key">void</span> eatChars()
+<span class="number">  405   </span><span class="minmax" onclick="toggleminmax(this, 'sp404')" onmouseover="highlight('sp404')" onmouseout="removeHighlight('sp404')">-</span>  <span id="sp404">{
+<span class="number">  406     </span>    _pContext-&gttoken.clear();
+<span class="number">  407     </span>    <span class="key">int</span> chNext = _pContext-&gt_pIn-&gtpeek();
+<span class="number">  408   </span><span class="minmax" onclick="toggleminmax(this, 'sp407')" onmouseover="highlight('sp407')" onmouseout="removeHighlight('sp407')">-</span>    <span class="key">do</span> <span id="sp407">{
+<span class="number">  409     </span>      _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  410     </span>      <span class="key">if</span> (!collectChar())
+<span class="number">  411     </span>        <span class="key">return</span>;
+<span class="number">  412     </span>    }</span> <span class="key">while</span> (isalnum(_pContext-&gtcurrChar) || _pContext-&gtcurrChar == <span class="str">'_'</span>);
+<span class="number">  413     </span>  }</span>
+<span class="number">  414     </span>}</span>;
+<span class="number">  415     </span><span class="comment">//----&lt class that eats one and two character tokens &gt---------------</span>
+<span class="number">  416     </span>
+<span class="number">  417     </span><span class="key">class</span> EatSpecialCharacters : <span class="key">public</span> ConsumeState
+<span class="number">  418   </span><span class="minmax" onclick="toggleminmax(this, 'sp417')" onmouseover="highlight('sp417')" onmouseout="removeHighlight('sp417')">-</span><span id="sp417">{
+<span class="number">  419     </span><span class="key">public</span>:
+<span class="number">  420     </span>  EatSpecialCharacters(Context* pContext)
+<span class="number">  421   </span><span class="minmax" onclick="toggleminmax(this, 'sp420')" onmouseover="highlight('sp420')" onmouseout="removeHighlight('sp420')">-</span>  <span id="sp420">{
+<span class="number">  422     </span>    _pContext = pContext;
+<span class="number">  423     </span>  }</span>
+<span class="number">  424     </span>  <span class="key">virtual</span> <span class="key">void</span> eatChars()
+<span class="number">  425   </span><span class="minmax" onclick="toggleminmax(this, 'sp424')" onmouseover="highlight('sp424')" onmouseout="removeHighlight('sp424')">-</span>  <span id="sp424">{
+<span class="number">  426     </span>    _pContext-&gttoken.clear();
+<span class="number">  427     </span>    _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  428     </span>    Token temp = makeString(_pContext-&gtcurrChar) += _pContext-&gt_pIn-&gtpeek();
+<span class="number">  429     </span>    <span class="key">if</span> (isTwoCharToken(temp))
+<span class="number">  430   </span><span class="minmax" onclick="toggleminmax(this, 'sp429')" onmouseover="highlight('sp429')" onmouseout="removeHighlight('sp429')">-</span>    <span id="sp429">{
+<span class="number">  431     </span>      collectChar();
+<span class="number">  432     </span>      _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  433     </span>    }</span>
+<span class="number">  434     </span>    collectChar();
+<span class="number">  435     </span>  }</span>
+<span class="number">  436     </span>}</span>;
+<span class="number">  437     </span><span class="comment">//----&lt class that eats double quoted string &gt-----------------------</span>
+<span class="number">  438     </span>
+<span class="number">  439     </span><span class="key">bool</span> isEscapted(std::string tok)
+<span class="number">  440   </span><span class="minmax" onclick="toggleminmax(this, 'sp439')" onmouseover="highlight('sp439')" onmouseout="removeHighlight('sp439')">-</span><span id="sp439">{
+<span class="number">  441     </span>  size_t backSlashCount = 0;
+<span class="number">  442     </span>  <span class="key">for</span> (size_t i = tok.size() - 1; i &gt= 0; --i)
+<span class="number">  443   </span><span class="minmax" onclick="toggleminmax(this, 'sp442')" onmouseover="highlight('sp442')" onmouseout="removeHighlight('sp442')">-</span>  <span id="sp442">{
+<span class="number">  444     </span>    <span class="key">if</span> (tok[i] == <span class="str">'\\'</span>)
+<span class="number">  445     </span>      ++backSlashCount;
+<span class="number">  446     </span>    <span class="key">else</span> <span class="key">break</span>;
+<span class="number">  447     </span>  }</span>
+<span class="number">  448     </span>  <span class="key">return</span> (backSlashCount % 2 == 1);
+<span class="number">  449     </span>}</span>
+<span class="number">  450     </span><span class="comment">//----&lt class that eats double quoted string &gt-----------------------</span>
+<span class="number">  451     </span>
+<span class="number">  452     </span><span class="key">class</span> EatDQString : <span class="key">public</span> ConsumeState
+<span class="number">  453   </span><span class="minmax" onclick="toggleminmax(this, 'sp452')" onmouseover="highlight('sp452')" onmouseout="removeHighlight('sp452')">-</span><span id="sp452">{
+<span class="number">  454     </span><span class="key">public</span>:
+<span class="number">  455     </span>  EatDQString(Context* pContext)
+<span class="number">  456   </span><span class="minmax" onclick="toggleminmax(this, 'sp455')" onmouseover="highlight('sp455')" onmouseout="removeHighlight('sp455')">-</span>  <span id="sp455">{
+<span class="number">  457     </span>    _pContext = pContext;
+<span class="number">  458     </span>  }</span>
+<span class="number">  459     </span>  <span class="key">virtual</span> <span class="key">void</span> eatChars()
+<span class="number">  460   </span><span class="minmax" onclick="toggleminmax(this, 'sp459')" onmouseover="highlight('sp459')" onmouseout="removeHighlight('sp459')">-</span>  <span id="sp459">{
+<span class="number">  461     </span>    _pContext-&gttoken.clear();
+<span class="number">  462     </span>    <span class="key">do</span>
+<span class="number">  463   </span><span class="minmax" onclick="toggleminmax(this, 'sp462')" onmouseover="highlight('sp462')" onmouseout="removeHighlight('sp462')">-</span>    <span id="sp462">{
+<span class="number">  464     </span>      _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  465     </span>      <span class="key">if</span> (!collectChar())
+<span class="number">  466     </span>        <span class="key">return</span>;
+<span class="number">  467     </span>    }</span> <span class="key">while</span> (_pContext-&gtcurrChar != <span class="str">'\"'</span> || isEscapted(_pContext-&gttoken));
+<span class="number">  468     </span>    _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  469     </span>    _pContext-&gtinCSharpString = <span class="key">false</span>;
+<span class="number">  470     </span>    collectChar();
+<span class="number">  471     </span>  }</span>
+<span class="number">  472     </span>}</span>;
+<span class="number">  473     </span><span class="comment">//----&lt class that eats double quoted string &gt-----------------------</span>
+<span class="number">  474     </span>
+<span class="number">  475     </span><span class="key">class</span> EatRawCppString : <span class="key">public</span> ConsumeState
+<span class="number">  476   </span><span class="minmax" onclick="toggleminmax(this, 'sp475')" onmouseover="highlight('sp475')" onmouseout="removeHighlight('sp475')">-</span><span id="sp475">{
+<span class="number">  477     </span><span class="key">public</span>:
+<span class="number">  478     </span>  EatRawCppString(Context* pContext)
+<span class="number">  479   </span><span class="minmax" onclick="toggleminmax(this, 'sp478')" onmouseover="highlight('sp478')" onmouseout="removeHighlight('sp478')">-</span>  <span id="sp478">{
+<span class="number">  480     </span>    _pContext = pContext;
+<span class="number">  481     </span>  }</span>
+<span class="number">  482     </span>  <span class="key">virtual</span> <span class="key">void</span> eatChars()
+<span class="number">  483   </span><span class="minmax" onclick="toggleminmax(this, 'sp482')" onmouseover="highlight('sp482')" onmouseout="removeHighlight('sp482')">-</span>  <span id="sp482">{
+<span class="number">  484     </span>    _pContext-&gttoken.clear();
+<span class="number">  485     </span>    <span class="key">do</span>
+<span class="number">  486   </span><span class="minmax" onclick="toggleminmax(this, 'sp485')" onmouseover="highlight('sp485')" onmouseout="removeHighlight('sp485')">-</span>    <span id="sp485">{
+<span class="number">  487     </span>      _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  488     </span>      <span class="key">if</span> (!collectChar())
+<span class="number">  489     </span>        <span class="key">return</span>;
+<span class="number">  490     </span>    }</span> <span class="key">while</span> (_pContext-&gtcurrChar != <span class="str">'\"'</span> || _pContext-&gtprevChar == <span class="str">'R'</span>);
+<span class="number">  491     </span>    _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  492     </span>    collectChar();
+<span class="number">  493     </span>  }</span>
+<span class="number">  494     </span>}</span>;
+<span class="number">  495     </span><span class="comment">//----&lt class that eats double quoted string &gt-----------------------</span>
+<span class="number">  496     </span>
+<span class="number">  497     </span><span class="key">class</span> EatRawCSharpString : <span class="key">public</span> ConsumeState
+<span class="number">  498   </span><span class="minmax" onclick="toggleminmax(this, 'sp497')" onmouseover="highlight('sp497')" onmouseout="removeHighlight('sp497')">-</span><span id="sp497">{
+<span class="number">  499     </span><span class="key">public</span>:
+<span class="number">  500     </span>  EatRawCSharpString(Context* pContext)
+<span class="number">  501   </span><span class="minmax" onclick="toggleminmax(this, 'sp500')" onmouseover="highlight('sp500')" onmouseout="removeHighlight('sp500')">-</span>  <span id="sp500">{
+<span class="number">  502     </span>    _pContext = pContext;
+<span class="number">  503     </span>  }</span>
+<span class="number">  504     </span>  <span class="key">virtual</span> <span class="key">void</span> eatChars()
+<span class="number">  505   </span><span class="minmax" onclick="toggleminmax(this, 'sp504')" onmouseover="highlight('sp504')" onmouseout="removeHighlight('sp504')">-</span>  <span id="sp504">{
+<span class="number">  506     </span>    _pContext-&gttoken.clear();
+<span class="number">  507     </span>    <span class="key">do</span>
+<span class="number">  508   </span><span class="minmax" onclick="toggleminmax(this, 'sp507')" onmouseover="highlight('sp507')" onmouseout="removeHighlight('sp507')">-</span>    <span id="sp507">{
+<span class="number">  509     </span>      _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  510     </span>      <span class="key">if</span> (!collectChar())
+<span class="number">  511     </span>        <span class="key">return</span>;
+<span class="number">  512     </span>    }</span> <span class="key">while</span> (_pContext-&gtcurrChar != <span class="str">'\"'</span> || _pContext-&gtprevChar == <span class="str">'@'</span>);
+<span class="number">  513     </span>    _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  514     </span>    collectChar();
+<span class="number">  515     </span>  }</span>
+<span class="number">  516     </span>}</span>;
+<span class="number">  517     </span><span class="comment">//----&lt class that eats single quoted string &gt-----------------------</span>
+<span class="number">  518     </span>
+<span class="number">  519     </span><span class="key">class</span> EatSQString : <span class="key">public</span> ConsumeState
+<span class="number">  520   </span><span class="minmax" onclick="toggleminmax(this, 'sp519')" onmouseover="highlight('sp519')" onmouseout="removeHighlight('sp519')">-</span><span id="sp519">{
+<span class="number">  521     </span><span class="key">public</span>:
+<span class="number">  522     </span>  EatSQString(Context* pContext)
+<span class="number">  523   </span><span class="minmax" onclick="toggleminmax(this, 'sp522')" onmouseover="highlight('sp522')" onmouseout="removeHighlight('sp522')">-</span>  <span id="sp522">{
+<span class="number">  524     </span>    _pContext = pContext;
+<span class="number">  525     </span>  }</span>
+<span class="number">  526     </span>  <span class="key">virtual</span> <span class="key">void</span> eatChars()
+<span class="number">  527   </span><span class="minmax" onclick="toggleminmax(this, 'sp526')" onmouseover="highlight('sp526')" onmouseout="removeHighlight('sp526')">-</span>  <span id="sp526">{
+<span class="number">  528     </span>    _pContext-&gttoken.clear();
+<span class="number">  529     </span>    <span class="key">do</span>
+<span class="number">  530   </span><span class="minmax" onclick="toggleminmax(this, 'sp529')" onmouseover="highlight('sp529')" onmouseout="removeHighlight('sp529')">-</span>    <span id="sp529">{
+<span class="number">  531     </span>      _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  532     </span>      <span class="key">if</span> (!collectChar())
+<span class="number">  533     </span>        <span class="key">return</span>;
+<span class="number">  534     </span>    }</span> <span class="key">while</span> (_pContext-&gtcurrChar != <span class="str">'\''</span> || isEscapted(_pContext-&gttoken));
+<span class="number">  535     </span>    _pContext-&gttoken += _pContext-&gtcurrChar;
+<span class="number">  536     </span>    collectChar();
+<span class="number">  537     </span>  }</span>
+<span class="number">  538     </span>}</span>;
+<span class="number">  539     </span><span class="comment">//----&lt construct shared data storage &gt------------------------------</span>
+<span class="number">  540     </span>
+<span class="number">  541     </span>Context::Context()
+<span class="number">  542   </span><span class="minmax" onclick="toggleminmax(this, 'sp541')" onmouseover="highlight('sp541')" onmouseout="removeHighlight('sp541')">-</span><span id="sp541">{
+<span class="number">  543     </span>  _pEatAlphanum = <span class="key">new</span> EatAlphanum(<span class="key">this</span>);
+<span class="number">  544     </span>  _pEatCComment = <span class="key">new</span> EatCComment(<span class="key">this</span>);
+<span class="number">  545     </span>  _pEatCppComment = <span class="key">new</span> EatCppComment(<span class="key">this</span>);
+<span class="number">  546     </span>  _pEatPunctuator = <span class="key">new</span> EatPunctuator(<span class="key">this</span>);
+<span class="number">  547     </span>  _pEatWhitespace = <span class="key">new</span> EatWhitespace(<span class="key">this</span>);
+<span class="number">  548     </span>  _pEatSpecialCharacters = <span class="key">new</span> EatSpecialCharacters(<span class="key">this</span>);
+<span class="number">  549     </span>  _pEatDQString = <span class="key">new</span> EatDQString(<span class="key">this</span>);
+<span class="number">  550     </span>  _pEatRawCppString = <span class="key">new</span> EatRawCppString(<span class="key">this</span>);
+<span class="number">  551     </span>  _pEatRawCSharpString = <span class="key">new</span> EatRawCSharpString(<span class="key">this</span>);
+<span class="number">  552     </span>  _pEatSQString = <span class="key">new</span> EatSQString(<span class="key">this</span>);
+<span class="number">  553     </span>  _pState = _pEatWhitespace;
+<span class="number">  554     </span>  _lineCount = 0;
+<span class="number">  555     </span>  _doReturnComments = <span class="key">false</span>;
+<span class="number">  556     </span>	_doReturnSpaces = <span class="key">false</span>;
+<span class="number">  557     </span>}</span>
+<span class="number">  558     </span><span class="comment">//----&lt return shared resources &gt------------------------------------</span>
+<span class="number">  559     </span>
+<span class="number">  560     </span>Context::~Context()
+<span class="number">  561   </span><span class="minmax" onclick="toggleminmax(this, 'sp560')" onmouseover="highlight('sp560')" onmouseout="removeHighlight('sp560')">-</span><span id="sp560">{
+<span class="number">  562     </span>  <span class="key">delete</span> _pEatAlphanum;
+<span class="number">  563     </span>  <span class="key">delete</span> _pEatCComment;
+<span class="number">  564     </span>  <span class="key">delete</span> _pEatCppComment;
+<span class="number">  565     </span>  <span class="key">delete</span> _pEatPunctuator;
+<span class="number">  566     </span>  <span class="key">delete</span> _pEatWhitespace;
+<span class="number">  567     </span>  <span class="key">delete</span> _pEatSpecialCharacters;
+<span class="number">  568     </span>  <span class="key">delete</span> _pEatDQString;
+<span class="number">  569     </span>  <span class="key">delete</span> _pEatRawCppString;
+<span class="number">  570     </span>  <span class="key">delete</span> _pEatRawCSharpString;
+<span class="number">  571     </span>  <span class="key">delete</span> _pEatSQString;
+<span class="number">  572     </span>}</span>
+<span class="number">  573     </span><span class="comment">//----&lt no longer has anything to do - will be removed &gt-------------</span>
+<span class="number">  574     </span>
+<span class="number">  575   </span><span class="minmax" onclick="toggleminmax(this, 'sp574')" onmouseover="highlight('sp574')" onmouseout="removeHighlight('sp574')">-</span>ConsumeState::ConsumeState() <span id="sp574">{}</span>
+<span class="number">  576     </span>
+<span class="number">  577     </span><span class="comment">//----&lt no longer has anything to do - will be removed &gt-------------</span>
+<span class="number">  578     </span>
+<span class="number">  579   </span><span class="minmax" onclick="toggleminmax(this, 'sp578')" onmouseover="highlight('sp578')" onmouseout="removeHighlight('sp578')">-</span>ConsumeState::~ConsumeState() <span id="sp578">{}</span>
+<span class="number">  580     </span>
+<span class="number">  581     </span><span class="comment">//----&lt construct toker starting in state EatWhitespace &gt------------</span>
+<span class="number">  582     </span>
+<span class="number">  583     </span>Toker::Toker()
+<span class="number">  584   </span><span class="minmax" onclick="toggleminmax(this, 'sp583')" onmouseover="highlight('sp583')" onmouseout="removeHighlight('sp583')">-</span><span id="sp583">{
+<span class="number">  585     </span>  _pContext = <span class="key">new</span> Context();
+<span class="number">  586     </span>  pConsumer = _pContext-&gt_pEatWhitespace;
+<span class="number">  587     </span>  pConsumer-&gtsetContext(_pContext);
+<span class="number">  588     </span>}</span>
+<span class="number">  589     </span>
+<span class="number">  590     </span><span class="comment">//----&lt destructor deletes the current state &gt-----------------------</span>
+<span class="number">  591   </span><span class="minmax" onclick="toggleminmax(this, 'sp590')" onmouseover="highlight('sp590')" onmouseout="removeHighlight('sp590')">-</span><span id="sp590"><span class="comment">/*
+<span class="number">  592     </span> * deleting any state deletes them all since derived destructor
+<span class="number">  593     </span> * implicitly invokes the base destructor
+<span class="number">  594     </span> */</span></span>
+<span class="number">  595     </span>Toker::~Toker() 
+<span class="number">  596   </span><span class="minmax" onclick="toggleminmax(this, 'sp595')" onmouseover="highlight('sp595')" onmouseout="removeHighlight('sp595')">-</span><span id="sp595">{
+<span class="number">  597     </span>  <span class="key">delete</span> _pContext;
+<span class="number">  598     </span>  _pContext = nullptr;
+<span class="number">  599     </span>}</span>
+<span class="number">  600     </span>
+<span class="number">  601     </span><span class="comment">//----&lt attach tokenizer to stream &gt---------------------------------</span>
+<span class="number">  602   </span><span class="minmax" onclick="toggleminmax(this, 'sp601')" onmouseover="highlight('sp601')" onmouseout="removeHighlight('sp601')">-</span><span id="sp601"><span class="comment">/*
+<span class="number">  603     </span> * stream can be either a std::fstream or std::stringstream
+<span class="number">  604     </span> */</span></span>
+<span class="number">  605     </span><span class="key">bool</span> Toker::attach(std::istream* pIn)
+<span class="number">  606   </span><span class="minmax" onclick="toggleminmax(this, 'sp605')" onmouseover="highlight('sp605')" onmouseout="removeHighlight('sp605')">-</span><span id="sp605">{
+<span class="number">  607     </span>  <span class="key">if</span> (pIn != nullptr && pIn-&gtgood())
+<span class="number">  608   </span><span class="minmax" onclick="toggleminmax(this, 'sp607')" onmouseover="highlight('sp607')" onmouseout="removeHighlight('sp607')">-</span>  <span id="sp607">{
+<span class="number">  609     </span>    pConsumer-&gtattach(pIn);
+<span class="number">  610     </span>    <span class="comment">//_pContext-&gt_pIn = pIn;</span>
+<span class="number">  611     </span>    <span class="key">return</span> <span class="key">true</span>;
+<span class="number">  612     </span>  }</span>
+<span class="number">  613     </span>  <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  614     </span>}</span>
+<span class="number">  615     </span><span class="comment">//----&lt collect token generated by ConsumeState &gt--------------------</span>
+<span class="number">  616     </span>
+<span class="number">  617     </span>std::string Toker::getTok()
+<span class="number">  618   </span><span class="minmax" onclick="toggleminmax(this, 'sp617')" onmouseover="highlight('sp617')" onmouseout="removeHighlight('sp617')">-</span><span id="sp617">{
+<span class="number">  619     </span>  <span class="key">while</span>(<span class="key">true</span>) 
+<span class="number">  620   </span><span class="minmax" onclick="toggleminmax(this, 'sp619')" onmouseover="highlight('sp619')" onmouseout="removeHighlight('sp619')">-</span>  <span id="sp619">{
+<span class="number">  621     </span>    <span class="key">if</span> (!pConsumer-&gtcanRead())
+<span class="number">  622     </span>      <span class="key">return</span> <span class="str">""</span>;
+<span class="number">  623     </span>    pConsumer-&gtconsumeChars();
+<span class="number">  624     </span>    <span class="key">if</span> (pConsumer-&gthasTok())
+<span class="number">  625     </span>      <span class="key">break</span>;
+<span class="number">  626     </span>  }</span>
+<span class="number">  627     </span>  <span class="key">return</span> pConsumer-&gtgetTok();
+<span class="number">  628     </span>}</span>
+<span class="number">  629     </span><span class="comment">//----&lt has toker reached the end of its stream? &gt-------------------</span>
+<span class="number">  630     </span>
+<span class="number">  631   </span><span class="minmax" onclick="toggleminmax(this, 'sp630')" onmouseover="highlight('sp630')" onmouseout="removeHighlight('sp630')">-</span><span class="key">bool</span> Toker::canRead() <span id="sp630">{ <span class="key">return</span> pConsumer-&gtcanRead(); }</span>
+<span class="number">  632     </span>
+<span class="number">  633     </span><span class="comment">//----&lt start/stop returning comments as tokens &gt--------------------</span>
+<span class="number">  634     </span>
+<span class="number">  635     </span><span class="key">void</span> Toker::returnComments(<span class="key">bool</span> doReturnComments)
+<span class="number">  636   </span><span class="minmax" onclick="toggleminmax(this, 'sp635')" onmouseover="highlight('sp635')" onmouseout="removeHighlight('sp635')">-</span><span id="sp635">{
+<span class="number">  637     </span>  pConsumer-&gtreturnComments(doReturnComments);
+<span class="number">  638     </span>}</span>
+<span class="number">  639     </span>
+<span class="number">  640     </span><span class="comment">//-----&lt start/stop returning spaces as tokens &gt---------------------</span>
+<span class="number">  641     </span><span class="key">void</span> Scanner::Toker::returnSpaces(<span class="key">bool</span> doReturnSpaces) 
+<span class="number">  642   </span><span class="minmax" onclick="toggleminmax(this, 'sp641')" onmouseover="highlight('sp641')" onmouseout="removeHighlight('sp641')">-</span><span id="sp641">{
+<span class="number">  643     </span>	pConsumer-&gtreturnSpaces(doReturnSpaces);
+<span class="number">  644     </span>}</span>
+<span class="number">  645     </span>
+<span class="number">  646     </span>
+<span class="number">  647     </span><span class="comment">//----&lt is this token a comment? &gt-----------------------------------</span>
+<span class="number">  648     </span>
+<span class="number">  649     </span><span class="key">bool</span> Toker::isComment(const std::string& tok)
+<span class="number">  650   </span><span class="minmax" onclick="toggleminmax(this, 'sp649')" onmouseover="highlight('sp649')" onmouseout="removeHighlight('sp649')">-</span><span id="sp649">{
+<span class="number">  651     </span>  <span class="key">if</span> (tok.find(<span class="str">"//"</span>) &lt tok.size() || tok.find(<span class="str">"/*"</span>) &lt tok.size())
+<span class="number">  652     </span>    <span class="key">return</span> <span class="key">true</span>;
+<span class="number">  653     </span>  <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  654     </span>}</span>
+<span class="number">  655     </span><span class="comment">//----&lt return number of newlines pulled from stream &gt---------------</span>
+<span class="number">  656     </span>
+<span class="number">  657     </span>size_t Toker::currentLineCount()
+<span class="number">  658   </span><span class="minmax" onclick="toggleminmax(this, 'sp657')" onmouseover="highlight('sp657')" onmouseout="removeHighlight('sp657')">-</span><span id="sp657">{
+<span class="number">  659     </span>  <span class="key">return</span> pConsumer-&gtcurrentLineCount();
+<span class="number">  660     </span>}</span>
+<span class="number">  661     </span><span class="comment">//----&lt set one and two char tokens &gt--------------------------------</span>
+<span class="number">  662     </span>
+<span class="number">  663     </span><span class="key">void</span> Toker::setSpecialTokens(const std::string& commaSeparatedTokens)
+<span class="number">  664   </span><span class="minmax" onclick="toggleminmax(this, 'sp663')" onmouseover="highlight('sp663')" onmouseout="removeHighlight('sp663')">-</span><span id="sp663">{
+<span class="number">  665     </span>  pConsumer-&gtsetSpecialTokens(commaSeparatedTokens);
+<span class="number">  666     </span>}</span>
+<span class="number">  667     </span><span class="comment">//----&lt debugging output to console if TEST_LOG is #defined &gt--------</span>
+<span class="number">  668     </span>
+<span class="number">  669     </span><span class="key">void</span> testLog(const std::string& msg)
+<span class="number">  670   </span><span class="minmax" onclick="toggleminmax(this, 'sp669')" onmouseover="highlight('sp669')" onmouseout="removeHighlight('sp669')">-</span><span id="sp669">{
+<span class="number">  671     </span><span class="directive">#ifdef</span> TEST_LOG
+<span class="number">  672     </span>  std::cout &lt&lt <span class="str">"\n  "</span> &lt&lt msg;
+<span class="number">  673     </span><span class="directive">#endif</span>
+<span class="number">  674     </span>}
+<span class="number">  675     </span>
+<span class="number">  676     </span><span class="comment">//----&lt test stub &gt--------------------------------------------------</span>
+<span class="number">  677     </span>
+<span class="number">  678     </span><span class="key">using</span> Helper = Utilities::StringHelper;
+<span class="number">  679     </span><span class="key">using</span> <span class="key">namespace</span> Utilities;
+<span class="number">  680     </span>
+<span class="number">  681     </span><span class="directive">#ifdef</span> TEST_TOKENIZER
+<span class="number">  682     </span>
+<span class="number">  683     </span><span class="directive">#include</span> <span class="str">&ltfstream&gt</span>
+<span class="number">  684     </span><span class="directive">#include</span> <span class="str">&ltexception&gt</span>
+<span class="number">  685     </span>
+<span class="number">  686     </span>
+<span class="number">  687     </span><span class="key">int</span> main()
+<span class="number">  688   </span><span class="minmax" onclick="toggleminmax(this, 'sp687')" onmouseover="highlight('sp687')" onmouseout="removeHighlight('sp687')">-</span><span id="sp687">{
+<span class="number">  689     </span>  Helper::Title(<span class="str">"Testing Tokenizer"</span>);
+<span class="number">  690     </span>
+<span class="number">  691     </span>  <span class="comment">//std::string fileSpec = "../Tokenizer/Tokenizer.cpp";</span>
+<span class="number">  692     </span>  <span class="comment">//std::string fileSpec = "../Tokenizer/Tokenizer.h";</span>
+<span class="number">  693     </span>  std::string fileSpec = <span class="str">"../Tokenizer/Test.txt"</span>;
+<span class="number">  694     </span>  <span class="comment">//std::string fileSpec = "../SemiExp/SemiExp.h";</span>
+<span class="number">  695     </span>  <span class="key">try</span>
+<span class="number">  696   </span><span class="minmax" onclick="toggleminmax(this, 'sp695')" onmouseover="highlight('sp695')" onmouseout="removeHighlight('sp695')">-</span>  <span id="sp695">{
+<span class="number">  697     </span>    std::ifstream in(fileSpec);
+<span class="number">  698     </span>    <span class="key">if</span> (!in.good())
+<span class="number">  699   </span><span class="minmax" onclick="toggleminmax(this, 'sp698')" onmouseover="highlight('sp698')" onmouseout="removeHighlight('sp698')">-</span>    <span id="sp698">{
+<span class="number">  700     </span>      std::cout &lt&lt <span class="str">"\n  can't open "</span> &lt&lt fileSpec &lt&lt <span class="str">"\n\n"</span>;
+<span class="number">  701     </span>      <span class="key">return</span> 1;
+<span class="number">  702     </span>    }</span>
+<span class="number">  703     </span>
+<span class="number">  704   </span><span class="minmax" onclick="toggleminmax(this, 'sp703')" onmouseover="highlight('sp703')" onmouseout="removeHighlight('sp703')">-</span>    <span id="sp703">{
+<span class="number">  705     </span>      Toker toker;
+<span class="number">  706     </span>      toker.returnComments();
+<span class="number">  707     </span>      toker.attach(&in);
+<span class="number">  708     </span>      std::cout &lt&lt <span class="str">"\n  current line count = "</span> &lt&lt toker.currentLineCount();
+<span class="number">  709     </span>      <span class="key">do</span>
+<span class="number">  710   </span><span class="minmax" onclick="toggleminmax(this, 'sp709')" onmouseover="highlight('sp709')" onmouseout="removeHighlight('sp709')">-</span>      <span id="sp709">{
+<span class="number">  711     </span>        std::string tok = toker.getTok();
+<span class="number">  712     </span>        <span class="key">if</span> (tok == <span class="str">"\n"</span>)
+<span class="number">  713     </span>          tok = <span class="str">"newline"</span>;
+<span class="number">  714     </span>        std::cout &lt&lt <span class="str">"\n -- "</span> &lt&lt tok;
+<span class="number">  715     </span>      }</span> <span class="key">while</span> (in.good());
+<span class="number">  716     </span>      std::cout &lt&lt <span class="str">"\n  current line count = "</span> &lt&lt toker.currentLineCount();
+<span class="number">  717     </span>    }</span>
+<span class="number">  718     </span> 
+<span class="number">  719     </span>    putline();
+<span class="number">  720     </span>    Helper::title(<span class="str">"Testing change of special characters"</span>);
+<span class="number">  721     </span>    std::string newSpecialChars = <span class="str">"., :, +, +=, \n { }"</span>;
+<span class="number">  722     </span>
+<span class="number">  723     </span>    Toker toker;
+<span class="number">  724     </span>    toker.returnComments();
+<span class="number">  725     </span>    toker.setSpecialTokens(newSpecialChars);
+<span class="number">  726     </span>    in.clear();
+<span class="number">  727     </span>
+<span class="number">  728     </span>    in.seekg(std::ios::beg);
+<span class="number">  729     </span>    toker.attach(&in);
+<span class="number">  730     </span>    std::cout &lt&lt <span class="str">"\n  new special tokens: "</span> &lt&lt newSpecialChars;
+<span class="number">  731     </span>    <span class="key">do</span>
+<span class="number">  732   </span><span class="minmax" onclick="toggleminmax(this, 'sp731')" onmouseover="highlight('sp731')" onmouseout="removeHighlight('sp731')">-</span>    <span id="sp731">{
+<span class="number">  733     </span>      std::string tok = toker.getTok();
+<span class="number">  734     </span>      <span class="key">if</span> (tok == <span class="str">"\n"</span>)
+<span class="number">  735     </span>        tok = <span class="str">"newline"</span>;
+<span class="number">  736     </span>      std::cout &lt&lt <span class="str">"\n -- "</span> &lt&lt tok;
+<span class="number">  737     </span>    }</span> <span class="key">while</span> (in.good());
+<span class="number">  738     </span>    std::cout &lt&lt <span class="str">"\n  current line count = "</span> &lt&lt toker.currentLineCount() &lt&lt <span class="str">"\n"</span>;
+<span class="number">  739     </span>
+<span class="number">  740     </span>    <span class="comment">//Helper::title("Testing re-attach:");</span>
+<span class="number">  741     </span>    <span class="comment">//std::string path = "../Tokenizer/Tokenizer.h";</span>
+<span class="number">  742     </span>    <span class="comment">//std::ifstream inAgain(path);</span>
+<span class="number">  743     </span>    <span class="comment">//if (inAgain.good())</span>
+<span class="number">  744     </span>    <span class="comment">//{</span>
+<span class="number">  745     </span>    <span class="comment">//  toker.attach(&inAgain);</span>
+<span class="number">  746     </span>    <span class="comment">//  do</span>
+<span class="number">  747     </span>    <span class="comment">//  {</span>
+<span class="number">  748     </span>    <span class="comment">//    std::string tok = toker.getTok();</span>
+<span class="number">  749     </span>    <span class="comment">//    if (tok == "\n")</span>
+<span class="number">  750     </span>    <span class="comment">//      tok = "newline";</span>
+<span class="number">  751     </span>    <span class="comment">//    std::cout &lt&lt "\n -- " &lt&lt tok;</span>
+<span class="number">  752     </span>    <span class="comment">//  } while (inAgain.good());</span>
+<span class="number">  753     </span>    <span class="comment">//  std::cout &lt&lt "\n  current line count = " &lt&lt toker.currentLineCount();</span>
+<span class="number">  754     </span>    <span class="comment">//}</span>
+<span class="number">  755     </span>    <span class="comment">//else</span>
+<span class="number">  756     </span>    <span class="comment">//{</span>
+<span class="number">  757     </span>    <span class="comment">//  std::cout &lt&lt "\n  can't attach to " &lt&lt path &lt&lt "\n";</span>
+<span class="number">  758     </span>    <span class="comment">//}</span>
+<span class="number">  759     </span>  }</span>
+<span class="number">  760     </span>  <span class="key">catch</span> (std::logic_error& ex)
+<span class="number">  761   </span><span class="minmax" onclick="toggleminmax(this, 'sp760')" onmouseover="highlight('sp760')" onmouseout="removeHighlight('sp760')">-</span>  <span id="sp760">{
+<span class="number">  762     </span>    std::cout &lt&lt <span class="str">"\n  "</span> &lt&lt ex.what();
+<span class="number">  763     </span>  }</span>
+<span class="number">  764     </span>  std::cout &lt&lt <span class="str">"\n\n"</span>;
+<span class="number">  765     </span>  <span class="key">return</span> 0;
+<span class="number">  766     </span>}</span>
+<span class="number">  767     </span><span class="directive">#endif</span>
+<span class="number">  768     </span>
+
+</pre>
+  </body>
+</html>

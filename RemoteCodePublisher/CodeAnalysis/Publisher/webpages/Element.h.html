@@ -1,0 +1,196 @@
+<html>
+  <head>
+     <link rel="stylesheet" type="text/css" href="resources/light.css"/>
+     <script src="resources/scripts.js"></script>
+     <button class="Fixed" onclick="toggleStyle(this)">Dark Theme</button>
+  </head>
+  <body>
+   <h3>Element.h</h3>
+   <hr/>
+   <div class = "indent">
+     <h4>Dependencies:</h4>
+   </div>
+   <hr/>
+<pre><span class="number">  1       </span><span class="directive">#pragma</span> once
+<span class="number">  2       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  3       </span><span class="comment">// Element.h -  Database element for NoSqlDb.h                     //</span>
+<span class="number">  4       </span><span class="comment">// Ver 1.0                                                         //</span>
+<span class="number">  5       </span><span class="comment">// Application: Project #1 - No-SQL Database - CSE-687             //</span>
+<span class="number">  6       </span><span class="comment">// Platform:    Dell Inspiron 5520, Win 10, Visual Studio 2015	   //</span>
+<span class="number">  7       </span><span class="comment">// Author:      Ammar Salman, EECS, Syracuse University            //</span>
+<span class="number">  8       </span><span class="comment">//              (313) 788-4694  hoplite.90@hotmail.com             //</span>
+<span class="number">  9       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  10    </span><span class="minmax" onclick="toggleminmax(this, 'sp9')" onmouseover="highlight('sp9')" onmouseout="removeHighlight('sp9')">-</span><span id="sp9"><span class="comment">/*
+<span class="number">  11      </span>* Package Operations:
+<span class="number">  12      </span>* -------------------
+<span class="number">  13      </span>* This package is used as an element for NoSqlDb.h. It has string
+<span class="number">  14      </span>* properties, a vector of strings that holds child relationships,
+<span class="number">  15      </span>* and template data member which can be "anything".
+<span class="number">  16      </span>* 
+<span class="number">  17      </span>* It is true the data member can be initialized to anything, but 
+<span class="number">  18      </span>* for it to work well with the database the operators &lt&lt and &gt&gt 
+<span class="number">  19      </span>* will have to be overloaded for that specific type in order to
+<span class="number">  20      </span>* allow for import/export from/to XML files.
+<span class="number">  21      </span>*
+<span class="number">  22      </span>* Required Files:
+<span class="number">  23      </span>* ---------------
+<span class="number">  24      </span>*   - Element.h, XmlDocument.h
+<span class="number">  25      </span>*
+<span class="number">  26      </span>* Build Process:
+<span class="number">  27      </span>* --------------
+<span class="number">  28      </span>*   devenv NoSQLDB.sln /debug rebuild
+<span class="number">  29      </span>*
+<span class="number">  30      </span>* Maintenance History:
+<span class="number">  31      </span>* --------------------
+<span class="number">  32      </span>* Ver 1.0 : 28 Jan 2017
+<span class="number">  33      </span>* - first release
+<span class="number">  34      </span>*
+<span class="number">  35      </span>*/</span></span>
+<span class="number">  36      </span>
+<span class="number">  37      </span><span class="directive">#include</span> <span class="str">&ltstring&gt</span>
+<span class="number">  38      </span><span class="directive">#include</span> <span class="str">&ltvector&gt</span>
+<span class="number">  39      </span><span class="directive">#include</span> <span class="str">&ltsstream&gt</span>
+<span class="number">  40      </span><span class="directive">#include</span> <span class="str">&ltctime&gt</span>
+<span class="number">  41      </span><span class="directive">#include</span> <span class="str">&ltiostream&gt</span>
+<span class="number">  42      </span><span class="directive">#include</span> <span class="str">&ltiomanip&gt</span>
+<span class="number">  43      </span><span class="directive">#include</span> <span class="str">"..\XmlDocument\XmlDocument\XmlDocument.h"</span>
+<span class="number">  44      </span>
+<span class="number">  45    </span><span class="minmax" onclick="toggleminmax(this, 'sp44')" onmouseover="highlight('sp44')" onmouseout="removeHighlight('sp44')">-</span><span class="key">namespace</span> Databases <span id="sp44">{
+<span class="number">  46      </span>	<span class="key">using</span> <span class="key">namespace</span> std;
+<span class="number">  47      </span>
+<span class="number">  48    </span><span class="minmax" onclick="toggleminmax(this, 'sp47')" onmouseover="highlight('sp47')" onmouseout="removeHighlight('sp47')">-</span>	<span class="key">template</span>&lt<span class="key">typename</span> T&gt <span class="key">class</span> Element <span id="sp47">{
+<span class="number">  49      </span>	<span class="key">private</span>:
+<span class="number">  50      </span>		string Key;
+<span class="number">  51      </span>		string Name;
+<span class="number">  52      </span>		string Category;
+<span class="number">  53      </span>		string Description;
+<span class="number">  54      </span>		string TimeDate;
+<span class="number">  55      </span>		vector&ltstring&gt Children;
+<span class="number">  56      </span>		T Data;
+<span class="number">  57      </span>
+<span class="number">  58      </span>	<span class="key">public</span>:
+<span class="number">  59      </span>		Element();
+<span class="number">  60      </span>		~Element();
+<span class="number">  61      </span>
+<span class="number">  62      </span>		<span class="key">bool</span> AddChild(string Key);
+<span class="number">  63      </span>		<span class="key">bool</span> RemoveChild(string Key);
+<span class="number">  64      </span>
+<span class="number">  65    </span><span class="minmax" onclick="toggleminmax(this, 'sp64')" onmouseover="highlight('sp64')" onmouseout="removeHighlight('sp64')">-</span>		string ToXMLString() <span id="sp64">{ <span class="key">return</span> ToXMLString(Key); }</span>
+<span class="number">  66      </span>		string ToXMLString(string Key);
+<span class="number">  67      </span>		string ToString();
+<span class="number">  68      </span>
+<span class="number">  69    </span><span class="minmax" onclick="toggleminmax(this, 'sp68')" onmouseover="highlight('sp68')" onmouseout="removeHighlight('sp68')">-</span>		string GetKey() <span id="sp68">{ <span class="key">return</span> Key; }</span>
+<span class="number">  70    </span><span class="minmax" onclick="toggleminmax(this, 'sp69')" onmouseover="highlight('sp69')" onmouseout="removeHighlight('sp69')">-</span>		<span class="key">void</span> SetKey(string value) <span id="sp69">{ Key = value; }</span>
+<span class="number">  71    </span><span class="minmax" onclick="toggleminmax(this, 'sp70')" onmouseover="highlight('sp70')" onmouseout="removeHighlight('sp70')">-</span>		string GetName() <span id="sp70">{ <span class="key">return</span> Name; }</span>
+<span class="number">  72    </span><span class="minmax" onclick="toggleminmax(this, 'sp71')" onmouseover="highlight('sp71')" onmouseout="removeHighlight('sp71')">-</span>		<span class="key">void</span> SetName(string value) <span id="sp71">{ Name = value; }</span>
+<span class="number">  73    </span><span class="minmax" onclick="toggleminmax(this, 'sp72')" onmouseover="highlight('sp72')" onmouseout="removeHighlight('sp72')">-</span>		string GetCategory() <span id="sp72">{ <span class="key">return</span> Category; }</span>
+<span class="number">  74    </span><span class="minmax" onclick="toggleminmax(this, 'sp73')" onmouseover="highlight('sp73')" onmouseout="removeHighlight('sp73')">-</span>		<span class="key">void</span> SetCategory(string value) <span id="sp73">{ Category = value; }</span>
+<span class="number">  75    </span><span class="minmax" onclick="toggleminmax(this, 'sp74')" onmouseover="highlight('sp74')" onmouseout="removeHighlight('sp74')">-</span>		string GetDescription() <span id="sp74">{ <span class="key">return</span> Description; }</span>
+<span class="number">  76    </span><span class="minmax" onclick="toggleminmax(this, 'sp75')" onmouseover="highlight('sp75')" onmouseout="removeHighlight('sp75')">-</span>		<span class="key">void</span> SetDescription(string value) <span id="sp75">{ Description = value; }</span>
+<span class="number">  77    </span><span class="minmax" onclick="toggleminmax(this, 'sp76')" onmouseover="highlight('sp76')" onmouseout="removeHighlight('sp76')">-</span>		string GetTimeDate() <span id="sp76">{ <span class="key">return</span> TimeDate; }</span>
+<span class="number">  78    </span><span class="minmax" onclick="toggleminmax(this, 'sp77')" onmouseover="highlight('sp77')" onmouseout="removeHighlight('sp77')">-</span>		<span class="key">void</span> SetTimeDate(string value) <span id="sp77">{ TimeDate = value; }</span>
+<span class="number">  79    </span><span class="minmax" onclick="toggleminmax(this, 'sp78')" onmouseover="highlight('sp78')" onmouseout="removeHighlight('sp78')">-</span>		vector&ltstring&gt GetChildren() <span id="sp78">{ <span class="key">return</span> Children; }</span>
+<span class="number">  80    </span><span class="minmax" onclick="toggleminmax(this, 'sp79')" onmouseover="highlight('sp79')" onmouseout="removeHighlight('sp79')">-</span>		<span class="key">void</span> SetChildren(vector&ltstring&gt value) <span id="sp79">{ Children = value; }</span>
+<span class="number">  81    </span><span class="minmax" onclick="toggleminmax(this, 'sp80')" onmouseover="highlight('sp80')" onmouseout="removeHighlight('sp80')">-</span>		T GetData() <span id="sp80">{ <span class="key">return</span> Data; }</span>
+<span class="number">  82    </span><span class="minmax" onclick="toggleminmax(this, 'sp81')" onmouseover="highlight('sp81')" onmouseout="removeHighlight('sp81')">-</span>		<span class="key">void</span> SetData(T value) <span id="sp81">{ Data = value; }</span>
+<span class="number">  83      </span>
+<span class="number">  84      </span>	}</span>;
+<span class="number">  85      </span>
+<span class="number">  86    </span><span class="minmax" onclick="toggleminmax(this, 'sp85')" onmouseover="highlight('sp85')" onmouseout="removeHighlight('sp85')">-</span>	<span class="key">template</span> &lt<span class="key">typename</span> T&gt <span class="key">inline</span> string Element&ltT&gt::ToXMLString(string Key) <span id="sp85">{
+<span class="number">  87      </span>		ostringstream oss;
+<span class="number">  88      </span>		oss &lt&lt <span class="str">"\n&ltElement&gt"</span>;
+<span class="number">  89      </span>		oss &lt&lt <span class="str">"\n\t&ltKey&gt"</span> &lt&lt Key &lt&lt <span class="str">"&lt/Key&gt"</span>;
+<span class="number">  90      </span>		oss &lt&lt <span class="str">"\n\t&ltName&gt"</span> &lt&lt Name &lt&lt <span class="str">"&lt/Name&gt"</span>;
+<span class="number">  91      </span>		oss &lt&lt <span class="str">"\n\t&ltCategory&gt"</span> &lt&lt Category &lt&lt <span class="str">"&lt/Category&gt"</span>;
+<span class="number">  92      </span>		oss &lt&lt <span class="str">"\n\t&ltDescription&gt"</span> &lt&lt Description &lt&lt <span class="str">"&lt/Description&gt"</span>;
+<span class="number">  93      </span>		oss &lt&lt <span class="str">"\n\t&ltTimeDate&gt"</span> &lt&lt TimeDate &lt&lt <span class="str">"&lt/TimeDate&gt"</span>;
+<span class="number">  94      </span>		oss &lt&lt <span class="str">"\n\t&ltChildren&gt"</span>;
+<span class="number">  95      </span>		size_t size = Children.size();
+<span class="number">  96      </span>		<span class="key">for</span> (<span class="key">int</span> i = 0; i &lt size; i++)
+<span class="number">  97      </span>			oss &lt&lt <span class="str">"\n\t\t&ltChild&gt"</span> &lt&lt Children[i] &lt&lt <span class="str">"&lt/Child&gt"</span>;
+<span class="number">  98      </span>		oss &lt&lt <span class="str">"\n\t&lt/Children&gt"</span>;
+<span class="number">  99      </span>		oss &lt&lt <span class="str">"\n\t&ltData&gt"</span> &lt&lt Data &lt&lt <span class="str">"\n\t&lt/Data&gt"</span>;
+<span class="number">  100     </span>		oss &lt&lt <span class="str">"\n&lt/Element&gt"</span>;
+<span class="number">  101     </span>		<span class="key">return</span> oss.str();
+<span class="number">  102     </span>	}</span>
+<span class="number">  103     </span>
+<span class="number">  104     </span>	<span class="key">template</span>&lt<span class="key">typename</span> T&gt
+<span class="number">  105   </span><span class="minmax" onclick="toggleminmax(this, 'sp104')" onmouseover="highlight('sp104')" onmouseout="removeHighlight('sp104')">-</span>	<span class="key">inline</span> string Element&ltT&gt::ToString() <span id="sp104">{
+<span class="number">  106     </span>		ostringstream oss;
+<span class="number">  107     </span>		oss &lt&lt setw(20) &lt&lt <span class="str">"Key : "</span> &lt&lt Key &lt&lt endl;
+<span class="number">  108     </span>		oss &lt&lt setw(20) &lt&lt <span class="str">"Name : "</span> &lt&lt Name &lt&lt endl;
+<span class="number">  109     </span>		oss &lt&lt setw(20) &lt&lt <span class="str">"Category : "</span> &lt&lt Category &lt&lt endl;
+<span class="number">  110     </span>		oss &lt&lt setw(20) &lt&lt <span class="str">"Description : "</span> &lt&lt Description &lt&lt endl;
+<span class="number">  111     </span>		oss &lt&lt setw(20) &lt&lt <span class="str">"Date & Time : "</span> &lt&lt TimeDate &lt&lt endl;
+<span class="number">  112     </span>		oss &lt&lt setw(20) &lt&lt <span class="str">"Children : "</span>;
+<span class="number">  113   </span><span class="minmax" onclick="toggleminmax(this, 'sp112')" onmouseover="highlight('sp112')" onmouseout="removeHighlight('sp112')">-</span>		<span class="key">for</span> (size_t i = 0; i &lt Children.size(); i++) <span id="sp112">{
+<span class="number">  114     </span>			oss &lt&lt Children[i];
+<span class="number">  115     </span>			<span class="key">if</span> (Children.size() - i &gt 1)
+<span class="number">  116     </span>				oss &lt&lt <span class="str">"\n"</span> &lt&lt setw(20) &lt&lt <span class="str">""</span>;
+<span class="number">  117     </span>		}</span>
+<span class="number">  118     </span>		oss &lt&lt endl;
+<span class="number">  119     </span>		oss &lt&lt setw(20) &lt&lt <span class="str">"Data : "</span> &lt&lt Data &lt&lt endl;
+<span class="number">  120     </span>		<span class="key">return</span> oss.str();
+<span class="number">  121     </span>	}</span>
+<span class="number">  122     </span>
+<span class="number">  123     </span>
+<span class="number">  124     </span>	<span class="key">template</span>&lt<span class="key">typename</span> T&gt <span class="key">inline</span>
+<span class="number">  125   </span><span class="minmax" onclick="toggleminmax(this, 'sp124')" onmouseover="highlight('sp124')" onmouseout="removeHighlight('sp124')">-</span>		Element&ltT&gt::Element() <span id="sp124">{
+<span class="number">  126     </span>		time_t t = time(nullptr);
+<span class="number">  127     </span>		tm tm;
+<span class="number">  128     </span>		localtime_s(&tm, &t);
+<span class="number">  129     </span>		stringstream ss;
+<span class="number">  130     </span>		ss &lt&lt std::put_time(&tm, <span class="str">"%Y/%d/%m  %H:%M:%S"</span>);
+<span class="number">  131     </span>		TimeDate = ss.str();
+<span class="number">  132     </span>	}</span>
+<span class="number">  133     </span>
+<span class="number">  134     </span>
+<span class="number">  135     </span>	<span class="key">template</span>&lt<span class="key">typename</span> T&gt <span class="key">inline</span>
+<span class="number">  136   </span><span class="minmax" onclick="toggleminmax(this, 'sp135')" onmouseover="highlight('sp135')" onmouseout="removeHighlight('sp135')">-</span>		Element&ltT&gt::~Element() <span id="sp135">{
+<span class="number">  137     </span>		Children.clear();
+<span class="number">  138     </span>	}</span>
+<span class="number">  139     </span>
+<span class="number">  140     </span>	<span class="key">template</span>&lt<span class="key">typename</span> T&gt <span class="key">inline</span>
+<span class="number">  141   </span><span class="minmax" onclick="toggleminmax(this, 'sp140')" onmouseover="highlight('sp140')" onmouseout="removeHighlight('sp140')">-</span>		<span class="key">bool</span> Element&ltT&gt::AddChild(string Key) <span id="sp140">{
+<span class="number">  142     </span>		<span class="comment">// check if key exists in child relations</span>
+<span class="number">  143     </span>		size_t size = Children.size();
+<span class="number">  144     </span>		<span class="key">for</span> (<span class="key">int</span> i = 0; i &lt size; i++)
+<span class="number">  145     </span>			<span class="key">if</span> (Children[i].compare(Key) == 0) <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  146     </span>
+<span class="number">  147     </span>		<span class="comment">// add key to child relations</span>
+<span class="number">  148     </span>		Children.push_back(Key);
+<span class="number">  149     </span>		<span class="key">return</span> <span class="key">true</span>;
+<span class="number">  150     </span>	}</span>
+<span class="number">  151     </span>
+<span class="number">  152     </span>	<span class="key">template</span>&lt<span class="key">typename</span> T&gt <span class="key">inline</span>
+<span class="number">  153   </span><span class="minmax" onclick="toggleminmax(this, 'sp152')" onmouseover="highlight('sp152')" onmouseout="removeHighlight('sp152')">-</span>		<span class="key">bool</span> Element&ltT&gt::RemoveChild(string Key) <span id="sp152">{
+<span class="number">  154     </span>		<span class="comment">// check if key exists in child relations</span>
+<span class="number">  155     </span>		<span class="key">int</span> size = Children.size();
+<span class="number">  156     </span>		<span class="key">for</span> (<span class="key">int</span> i = 0; i &lt size; i++)
+<span class="number">  157   </span><span class="minmax" onclick="toggleminmax(this, 'sp156')" onmouseover="highlight('sp156')" onmouseout="removeHighlight('sp156')">-</span>			<span class="key">if</span> (Children[i].compare(Key) == 0) <span id="sp156">{
+<span class="number">  158     </span>				Children.erase(Children.begin() + i);
+<span class="number">  159     </span>				<span class="key">return</span> <span class="key">true</span>;
+<span class="number">  160     </span>			}</span>
+<span class="number">  161     </span>		<span class="comment">// if it reaches here then the key </span>
+<span class="number">  162     </span>		<span class="comment">// was not found in child relations</span>
+<span class="number">  163     </span>		<span class="key">return</span> <span class="key">false</span>;
+<span class="number">  164     </span>	}</span>
+<span class="number">  165     </span>
+<span class="number">  166     </span>
+<span class="number">  167     </span>
+<span class="number">  168     </span>	<span class="comment">// adds support to export vector to string</span>
+<span class="number">  169     </span>	<span class="key">template</span> &lt<span class="key">typename</span> T&gt
+<span class="number">  170   </span><span class="minmax" onclick="toggleminmax(this, 'sp169')" onmouseover="highlight('sp169')" onmouseout="removeHighlight('sp169')">-</span>	ostream& <span class="key">operator</span> &lt&lt (ostream& out, vector&ltT&gt& vec) <span id="sp169">{
+<span class="number">  171     </span>		<span class="key">int</span> size = vec.size() - 1;
+<span class="number">  172   </span><span class="minmax" onclick="toggleminmax(this, 'sp171')" onmouseover="highlight('sp171')" onmouseout="removeHighlight('sp171')">-</span>		<span class="key">for</span> (<span class="key">int</span> i = 0; i &lt size; i++) <span id="sp171">{
+<span class="number">  173     </span>			out &lt&lt vec[i] &lt&lt <span class="str">" "</span>;
+<span class="number">  174     </span>		}</span>
+<span class="number">  175     </span>		out &lt&lt vec[size] &lt&lt <span class="str">"\n"</span>;
+<span class="number">  176     </span>		<span class="key">return</span> out;
+<span class="number">  177     </span>	}</span>
+<span class="number">  178     </span>
+<span class="number">  179     </span>}</span>
+
+</pre>
+  </body>
+</html>

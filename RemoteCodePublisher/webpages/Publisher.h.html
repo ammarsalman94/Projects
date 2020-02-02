@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!------------------------------------------------------------------------
+  Publisher.h.html - Project 3 published file
+  Published: Sun Apr  2 17:36:05 2017
+
+  Ammar Salman, CSE687 - Object Oriented Design, Spring 2017
+ ------------------------------------------------------------------------->
+<html>
+  <head>
+     <link rel="stylesheet" type="text/css" href="resources/light.css"/>
+     <script src="resources/scripts.js"></script>
+     <button class="Fixed" onclick="toggleStyle(this)">Dark Theme</button>
+  </head>
+  <body>
+   <h3>Publisher.h</h3>
+   <hr/>
+   <div class = "indent">
+     <h4>Dependencies:</h4>
+     <div><a href="Tokenizer.h.html">Tokenizer.h</a></div>
+     <div><a href="NoSqlDb.h.html">NoSqlDb.h</a></div>
+     <div><a href="Publisher.cpp.html">Publisher.cpp</a></div>
+   </div>
+   <hr/>
+<pre><span class="number">  1       </span><span class="directive">#pragma</span> once
+<span class="number">  2       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  3       </span><span class="comment">// Publisher.h - Produces webpages from source code files          //</span>
+<span class="number">  4       </span><span class="comment">// Ver 1.0                                                         //</span>
+<span class="number">  5       </span><span class="comment">// Application: Project #3 - Code Publisher - CSE-687              //</span>
+<span class="number">  6       </span><span class="comment">// Platform:    Dell Inspiron 5520, Win 10, Visual Studio 2015     //</span>
+<span class="number">  7       </span><span class="comment">// Author:      Ammar Salman, EECS, Syracuse University            //</span>
+<span class="number">  8       </span><span class="comment">//              (313) 788-4694  hoplite.90@hotmail.com             //</span>
+<span class="number">  9       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  10    </span><span class="minmax" onclick="toggleminmax(this, 'sp9')" onmouseover="highlight('sp9')" onmouseout="removeHighlight('sp9')">-</span><span id="sp9"><span class="comment">/*
+<span class="number">  11      </span>* Package Operations:
+<span class="number">  12      </span>* -------------------
+<span class="number">  13      </span>* This package creates webpages based on the output of dependency 
+<span class="number">  14      </span>* analysis when performed on a set of source code files.
+<span class="number">  15      </span>*
+<span class="number">  16      </span>* Public Interface:
+<span class="number">  17      </span>* Publisher p;
+<span class="number">  18      </span>* p.ProcessCommandLineArgs(argc, argv);
+<span class="number">  19      </span>* p.CopyStylesAndScripts();
+<span class="number">  20      </span>* p.PerformDependencyAnalysis(); // or if already processed use : p.SetAnalysisDB(database);
+<span class="number">  21      </span>* p.PrintProgress();
+<span class="number">  22      </span>* p.ProcessFiles();
+<span class="number">  23      </span>* p.CreateMainPage();
+<span class="number">  24      </span>* p.OpenMainPage();
+<span class="number">  25      </span>* string dir = p.OutputDirectory();
+<span class="number">  26      </span>*
+<span class="number">  27      </span>* Required Files:
+<span class="number">  28      </span>* ---------------
+<span class="number">  29      </span>*   - Publisher.h, Publisher.cpp, DependencyAnalyzer.h, NoSqlDb.h, Tokenizer.h, FileSystem.h
+<span class="number">  30      </span>*
+<span class="number">  31      </span>* Build Process:
+<span class="number">  32      </span>* --------------
+<span class="number">  33      </span>*   devenv Publisher.sln /debug rebuild
+<span class="number">  34      </span>*
+<span class="number">  35      </span>* Maintenance History:
+<span class="number">  36      </span>* --------------------
+<span class="number">  37      </span>* Ver 1.0 : 30 March 2017
+<span class="number">  38      </span>* - first release
+<span class="number">  39      </span>*
+<span class="number">  40      </span>*/</span></span>
+<span class="number">  41      </span>
+<span class="number">  42      </span>
+<span class="number">  43      </span><span class="directive">#include</span> <span class="str">"..\DependencyAnalysis\CodeAnalyzer\Tokenizer\Tokenizer.h"</span>
+<span class="number">  44      </span><span class="directive">#include</span> <span class="str">"..\DependencyAnalysis\NoSQLDB\NoSqlDb\NoSqlDb.h"</span>
+<span class="number">  45      </span><span class="directive">#include</span> <span class="str">&ltstring&gt</span>
+<span class="number">  46      </span><span class="directive">#include</span> <span class="str">&ltvector&gt</span>
+<span class="number">  47      </span>
+<span class="number">  48      </span>
+<span class="number">  49      </span><span class="key">using</span> <span class="key">namespace</span> std;
+<span class="number">  50    </span><span class="minmax" onclick="toggleminmax(this, 'sp49')" onmouseover="highlight('sp49')" onmouseout="removeHighlight('sp49')">-</span><span class="key">namespace</span> CodePublisher <span id="sp49">{
+<span class="number">  51    </span><span class="minmax" onclick="toggleminmax(this, 'sp50')" onmouseover="highlight('sp50')" onmouseout="removeHighlight('sp50')">-</span>	<span class="key">class</span> Publisher <span id="sp50">{
+<span class="number">  52      </span>	<span class="key">public</span>:
+<span class="number">  53      </span>		Publisher();
+<span class="number">  54      </span>		~Publisher();
+<span class="number">  55      </span>		<span class="key">bool</span> ProcessCommandLineArgs(<span class="key">int</span> argc, <span class="key">char</span>** argv);
+<span class="number">  56      </span>		<span class="key">bool</span> CopyStylesAndScripts();
+<span class="number">  57      </span>		<span class="key">bool</span> PerformDependencyAnalysis();
+<span class="number">  58      </span>		<span class="key">void</span> SetAnalysisDB(Databases::NoSQLDB&ltstring&gt& database);
+<span class="number">  59      </span>		<span class="key">void</span> ProcessFiles();
+<span class="number">  60      </span>		<span class="key">void</span> CreateMainPage();
+<span class="number">  61      </span>		<span class="key">void</span> OpenMainPage();
+<span class="number">  62      </span>		const string& OutputDirectory() const;
+<span class="number">  63      </span>
+<span class="number">  64      </span>		<span class="key">void</span> PrintProgess(<span class="key">bool</span> print=<span class="key">true</span>);
+<span class="number">  65      </span>
+<span class="number">  66      </span>	<span class="key">private</span>:
+<span class="number">  67      </span>		<span class="comment">// data</span>
+<span class="number">  68      </span>		Scanner::Toker toker;
+<span class="number">  69    </span><span class="minmax" onclick="toggleminmax(this, 'sp68')" onmouseover="highlight('sp68')" onmouseout="removeHighlight('sp68')">-</span>		vector&ltstring&gt keyWords = <span id="sp68">{ <span class="str">"Asm"</span>, <span class="str">"auto"</span>, <span class="str">"bool"</span>, <span class="str">"break"</span>, <span class="str">"case"</span>, <span class="str">"catch"</span>, <span class="str">"char"</span>, <span class="str">"class"</span>, <span class="str">"const_cast"</span>,
+<span class="number">  70      </span>			<span class="str">"continue"</span>, <span class="str">"default"</span>, <span class="str">"delete"</span>, <span class="str">"do"</span>, <span class="str">"double"</span>, <span class="str">"else"</span>, <span class="str">"enum"</span>, <span class="str">"dynamic_cast"</span>, <span class="str">"extern"</span>, <span class="str">"false"</span>, <span class="str">"float"</span>,
+<span class="number">  71      </span>			<span class="str">"for"</span>, <span class="str">"union"</span>, <span class="str">"unsigned"</span>, <span class="str">"using"</span>, <span class="str">"friend"</span>, <span class="str">"goto"</span>, <span class="str">"if"</span>, <span class="str">"inline"</span>, <span class="str">"int"</span>, <span class="str">"long"</span>, <span class="str">"mutable"</span>, <span class="str">"virtual"</span>,
+<span class="number">  72      </span>			<span class="str">"namespace"</span>, <span class="str">"new"</span>, <span class="str">"operator"</span>, <span class="str">"private"</span>, <span class="str">"protected"</span>, <span class="str">"public"</span>, <span class="str">"register"</span>, <span class="str">"void"</span>, <span class="str">"reinterpret_cast"</span>,
+<span class="number">  73      </span>			<span class="str">"return"</span>, <span class="str">"short"</span>, <span class="str">"signed"</span>, <span class="str">"sizeof"</span>, <span class="str">"static"</span>, <span class="str">"static_cast"</span>, <span class="str">"volatile"</span>, <span class="str">"struct"</span>, <span class="str">"switch"</span>, <span class="str">"template"</span>,
+<span class="number">  74      </span>			<span class="str">"this"</span>, <span class="str">"throw"</span>, <span class="str">"true"</span>, <span class="str">"try"</span>, <span class="str">"typedef"</span>, <span class="str">"typeid"</span>, <span class="str">"unsigned"</span>, <span class="str">"wchar_t"</span>, <span class="str">"while"</span>, <span class="str">"typename"</span> }</span>;
+<span class="number">  75      </span>		<span class="key">int</span> argc;
+<span class="number">  76      </span>		<span class="key">char</span>** argv;
+<span class="number">  77      </span>		string outputFolder;
+<span class="number">  78      </span>		Databases::NoSQLDB&ltstring&gt db;
+<span class="number">  79      </span>
+<span class="number">  80      </span>		<span class="key">bool</span> showProgress;
+<span class="number">  81      </span>
+<span class="number">  82      </span>		<span class="comment">// functions </span>
+<span class="number">  83      </span>		<span class="key">void</span> ConvertToHTML(string& FilePath);
+<span class="number">  84      </span>		string PrepareHeading(string& FilePath);
+<span class="number">  85      </span>		<span class="key">void</span> ProcessToken(string& tok);
+<span class="number">  86      </span>		<span class="key">void</span> FilterHTMLChars(string& tok);
+<span class="number">  87      </span>		string FinalizeLines(string& tok, <span class="key">int</span>& counter);
+<span class="number">  88      </span>
+<span class="number">  89      </span>		<span class="comment">// accessory function </span>
+<span class="number">  90      </span>		<span class="key">template</span>&lt<span class="key">typename</span> T&gt <span class="key">bool</span> contains(vector&ltT&gt& vec, T& data);
+<span class="number">  91      </span>	}</span>;
+<span class="number">  92      </span>
+<span class="number">  93      </span>	<span class="comment">// -----&lt return true/false indicating whether or not vector contains some data &gt-----------</span>
+<span class="number">  94      </span>	<span class="key">template</span>&lt<span class="key">typename</span> T&gt
+<span class="number">  95    </span><span class="minmax" onclick="toggleminmax(this, 'sp94')" onmouseover="highlight('sp94')" onmouseout="removeHighlight('sp94')">-</span>	<span class="key">inline</span> <span class="key">bool</span> Publisher::contains(vector&ltT&gt& vec, T& data) <span id="sp94">{
+<span class="number">  96      </span>		<span class="key">for</span> (T vItem : vec) <span class="key">if</span> (vItem == data) <span class="key">return</span> <span class="key">true</span>;
+<span class="number">  97      </span>		<span class="key">return</span> <span class="key">false</span>;
+<span class="number">  98      </span>	}</span>
+<span class="number">  99      </span>
+<span class="number">  100     </span>}</span>
+
+</pre>
+  </body>
+</html>

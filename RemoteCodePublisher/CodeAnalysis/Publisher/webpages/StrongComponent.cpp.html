@@ -1,0 +1,93 @@
+<html>
+  <head>
+     <link rel="stylesheet" type="text/css" href="resources/light.css"/>
+     <script src="resources/scripts.js"></script>
+     <button class="Fixed" onclick="toggleStyle(this)">Dark Theme</button>
+  </head>
+  <body>
+   <h3>StrongComponent.cpp</h3>
+   <hr/>
+   <div class = "indent">
+     <h4>Dependencies:</h4>
+     <div><a href="Element.h.html">Element.h</a></div>
+     <div><a href="StrongComponent.h.html">StrongComponent.h</a></div>
+   </div>
+   <hr/>
+<pre><span class="number">  1       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  2       </span><span class="comment">// StrongComponent.cpp - Test stub for StrongComponent.h           //</span>
+<span class="number">  3       </span><span class="comment">// Ver 1.0                                                         //</span>
+<span class="number">  4       </span><span class="comment">// Application: Project #2 - Dependency Analysis - CSE-687         //</span>
+<span class="number">  5       </span><span class="comment">// Platform:    Dell Inspiron 5520, Win 10, Visual Studio 2015     //</span>
+<span class="number">  6       </span><span class="comment">// Author:      Ammar Salman, EECS, Syracuse University            //</span>
+<span class="number">  7       </span><span class="comment">//              (313) 788-4694  hoplite.90@hotmail.com             //</span>
+<span class="number">  8       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  9       </span>
+<span class="number">  10      </span>
+<span class="number">  11      </span><span class="directive">#ifdef</span> TEST_SCOMPONENT
+<span class="number">  12      </span>
+<span class="number">  13      </span><span class="directive">#include</span> <span class="str">"StrongComponent.h"</span>
+<span class="number">  14      </span><span class="directive">#include</span> <span class="str">"Element.h"</span>
+<span class="number">  15      </span>
+<span class="number">  16      </span><span class="comment">// The input structure looks like this:</span>
+<span class="number">  17      </span><span class="comment">// [pack1] &lt=&gt [pack2]</span>
+<span class="number">  18      </span><span class="comment">//    ^        |</span>
+<span class="number">  19      </span><span class="comment">//    |   &lt----- </span>
+<span class="number">  20      </span><span class="comment">// [pack3] --&gt [pack4] &lt=&gt [pack5]</span>
+<span class="number">  21      </span>
+<span class="number">  22    </span><span class="minmax" onclick="toggleminmax(this, 'sp21')" onmouseover="highlight('sp21')" onmouseout="removeHighlight('sp21')">-</span><span class="key">int</span> main() <span id="sp21">{
+<span class="number">  23      </span>	<span class="key">using</span> <span class="key">namespace</span> Utilities;
+<span class="number">  24      </span>	<span class="comment">//generate multiple elements </span>
+<span class="number">  25      </span>	Element&ltstring&gt el;
+<span class="number">  26      </span>	el.SetKey(<span class="str">"pack1"</span>);
+<span class="number">  27      </span>	el.AddChild(<span class="str">"pack2"</span>);
+<span class="number">  28      </span>	el.AddChild(<span class="str">"pack3"</span>);
+<span class="number">  29      </span>
+<span class="number">  30      </span>	Element&ltstring&gt el2;
+<span class="number">  31      </span>	el2.SetKey(<span class="str">"pack2"</span>);
+<span class="number">  32      </span>	el2.AddChild(<span class="str">"pack1"</span>);
+<span class="number">  33      </span>	el2.AddChild(<span class="str">"pack3"</span>);
+<span class="number">  34      </span>
+<span class="number">  35      </span>	Element&ltstring&gt el3;
+<span class="number">  36      </span>	el3.SetKey(<span class="str">"pack3"</span>);
+<span class="number">  37      </span>	el3.AddChild(<span class="str">"pack1"</span>);
+<span class="number">  38      </span>	el3.AddChild(<span class="str">"pack4"</span>);
+<span class="number">  39      </span>	
+<span class="number">  40      </span>	Element&ltstring&gt el4;
+<span class="number">  41      </span>	el4.SetKey(<span class="str">"pack4"</span>);
+<span class="number">  42      </span>	el4.AddChild(<span class="str">"pack5"</span>);
+<span class="number">  43      </span>
+<span class="number">  44      </span>	Element&ltstring&gt el5;
+<span class="number">  45      </span>	el5.SetKey(<span class="str">"pack5"</span>);
+<span class="number">  46      </span>	el5.AddChild(<span class="str">"pack4"</span>);
+<span class="number">  47      </span>
+<span class="number">  48      </span>	<span class="comment">// populate the db</span>
+<span class="number">  49      </span>	NoSQLDB&ltstring&gt db;
+<span class="number">  50      </span>	db.AddEntry(el.GetKey(), el);
+<span class="number">  51      </span>	db.AddEntry(el2.GetKey(), el2);
+<span class="number">  52      </span>	db.AddEntry(el3.GetKey(), el3);
+<span class="number">  53      </span>	db.AddEntry(el4.GetKey(), el4);
+<span class="number">  54      </span>	db.AddEntry(el5.GetKey(), el5);
+<span class="number">  55      </span>
+<span class="number">  56      </span>	<span class="comment">// start strong componenet analysis</span>
+<span class="number">  57      </span>	StrongComponent sc;
+<span class="number">  58      </span>	sc.processNoSqlDb(db);
+<span class="number">  59      </span>	sc.extractStrongComponents();
+<span class="number">  60      </span>
+<span class="number">  61      </span>	NoSQLDB&lt<span class="key">int</span>&gt sComponents = sc.StrongestComponents_NOSQLDB();
+<span class="number">  62      </span>
+<span class="number">  63      </span>	cout &lt&lt <span class="str">"\n  All Strong Components:\n"</span>;
+<span class="number">  64      </span>	cout &lt&lt sComponents.ToString();
+<span class="number">  65      </span>	cout &lt&lt <span class="str">"\n\n  Strongest Component:\n"</span>;
+<span class="number">  66      </span>	cout &lt&lt sc.StrongestComponent_El().ToString();
+<span class="number">  67      </span>	cout &lt&lt endl;
+<span class="number">  68      </span>
+<span class="number">  69      </span>	cout &lt&lt <span class="str">"\n  Storing strong components to file: StrongComponents.xml"</span>;
+<span class="number">  70      </span>	sComponents.StoreXML(<span class="str">"StrongComponents.xml"</span>);
+<span class="number">  71      </span>}</span>
+<span class="number">  72      </span>
+<span class="number">  73      </span><span class="directive">#endif</span>
+<span class="number">  74      </span>
+
+</pre>
+  </body>
+</html>

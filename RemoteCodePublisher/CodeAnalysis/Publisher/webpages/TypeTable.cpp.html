@@ -1,0 +1,324 @@
+<html>
+  <head>
+     <link rel="stylesheet" type="text/css" href="resources/light.css"/>
+     <script src="resources/scripts.js"></script>
+     <button class="Fixed" onclick="toggleStyle(this)">Dark Theme</button>
+  </head>
+  <body>
+   <h3>TypeTable.cpp</h3>
+   <hr/>
+   <div class = "indent">
+     <h4>Dependencies:</h4>
+     <div><a href="TypeTable.h.html">TypeTable.h</a></div>
+   </div>
+   <hr/>
+<pre><span class="number">  1       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  2       </span><span class="comment">// TypeTable.cpp - implements TypeTable.h and has test stub        //</span>
+<span class="number">  3       </span><span class="comment">// Ver 1.0                                                         //</span>
+<span class="number">  4       </span><span class="comment">// Application: Project #2 - Dependency Analysis - CSE-687         //</span>
+<span class="number">  5       </span><span class="comment">// Platform:    Dell Inspiron 5520, Win 10, Visual Studio 2015     //</span>
+<span class="number">  6       </span><span class="comment">// Author:      Ammar Salman, EECS, Syracuse University            //</span>
+<span class="number">  7       </span><span class="comment">//              (313) 788-4694  hoplite.90@hotmail.com             //</span>
+<span class="number">  8       </span><span class="comment">/////////////////////////////////////////////////////////////////////</span>
+<span class="number">  9       </span>
+<span class="number">  10      </span>
+<span class="number">  11      </span><span class="directive">#include</span> <span class="str">&ltvector&gt</span>
+<span class="number">  12      </span><span class="directive">#include</span> <span class="str">&ltunordered_map&gt</span>
+<span class="number">  13      </span><span class="directive">#include</span> <span class="str">&ltstring&gt</span>
+<span class="number">  14      </span><span class="directive">#include</span> <span class="str">&ltexception&gt</span>
+<span class="number">  15      </span><span class="directive">#include</span> <span class="str">&ltiostream&gt</span>
+<span class="number">  16      </span><span class="directive">#include</span> <span class="str">&ltiomanip&gt</span>
+<span class="number">  17      </span>
+<span class="number">  18      </span><span class="directive">#include</span> <span class="str">"TypeTable.h"</span>
+<span class="number">  19      </span>
+<span class="number">  20      </span><span class="directive">#include</span> <span class="str">"..\CodeAnalyzer\Tokenizer\Tokenizer.h"</span>
+<span class="number">  21      </span><span class="directive">#include</span> <span class="str">"..\CodeAnalyzer\FileSystem\FileSystem.h"</span>
+<span class="number">  22      </span>
+<span class="number">  23      </span><span class="key">using</span> <span class="key">namespace</span> std;
+<span class="number">  24      </span><span class="key">using</span> <span class="key">namespace</span> CodeAnalysis;
+<span class="number">  25      </span>
+<span class="number">  26    </span><span class="minmax" onclick="toggleminmax(this, 'sp25')" onmouseover="highlight('sp25')" onmouseout="removeHighlight('sp25')">-</span><span class="key">namespace</span> DependencyAnalysis <span id="sp25">{
+<span class="number">  27    </span><span class="minmax" onclick="toggleminmax(this, 'sp26')" onmouseover="highlight('sp26')" onmouseout="removeHighlight('sp26')">-</span>	TypeTable::TypeTable() <span id="sp26">{
+<span class="number">  28      </span>		
+<span class="number">  29      </span>	}</span>
+<span class="number">  30      </span>
+<span class="number">  31      </span>	<span class="comment">// -----&lt Copy Constructor &gt--------------------------------------------------------</span>
+<span class="number">  32    </span><span class="minmax" onclick="toggleminmax(this, 'sp31')" onmouseover="highlight('sp31')" onmouseout="removeHighlight('sp31')">-</span>	TypeTable::TypeTable(const TypeTable & tt) <span id="sp31">{
+<span class="number">  33      </span>		CodeRepository = tt.CodeRepository;
+<span class="number">  34      </span>		GlobalScopeNode = tt.GlobalScopeNode;
+<span class="number">  35      </span>		IncludedLibraries = tt.IncludedLibraries;
+<span class="number">  36      </span>		DefinedTypes = tt.DefinedTypes;
+<span class="number">  37      </span>		UsedTypes = tt.UsedTypes;
+<span class="number">  38      </span>	}</span>
+<span class="number">  39      </span>
+<span class="number">  40    </span><span class="minmax" onclick="toggleminmax(this, 'sp39')" onmouseover="highlight('sp39')" onmouseout="removeHighlight('sp39')">-</span>	TypeTable::~TypeTable() <span id="sp39">{
+<span class="number">  41      </span>	}</span>
+<span class="number">  42      </span>
+<span class="number">  43      </span>	<span class="comment">// -----&lt Extract Defined Types function &gt-------------------------------------------</span>
+<span class="number">  44    </span><span class="minmax" onclick="toggleminmax(this, 'sp43')" onmouseover="highlight('sp43')" onmouseout="removeHighlight('sp43')">-</span>	<span id="sp43"><span class="comment">/* extracts types defined within files */</span></span>
+<span class="number">  45    </span><span class="minmax" onclick="toggleminmax(this, 'sp44')" onmouseover="highlight('sp44')" onmouseout="removeHighlight('sp44')">-</span>	<span class="key">void</span> TypeTable::ExtractDefinedTypes(<span class="key">int</span> argc, <span class="key">char</span>** argv) <span id="sp44">{
+<span class="number">  46      </span>		FileList.clear();
+<span class="number">  47      </span>		mapKeys.clear();
+<span class="number">  48      </span>		qName.clear();
+<span class="number">  49      </span>		CodeAnalysisExecutive CodeAnalyzer;
+<span class="number">  50    </span><span class="minmax" onclick="toggleminmax(this, 'sp49')" onmouseover="highlight('sp49')" onmouseout="removeHighlight('sp49')">-</span>		<span class="key">if</span> (!CodeAnalyzer.ProcessCommandLine(argc, argv)) <span id="sp49">{
+<span class="number">  51      </span>			cout &lt&lt <span class="str">"\n  Could not parse command line arguments"</span>;
+<span class="number">  52      </span>			<span class="key">return</span>;
+<span class="number">  53      </span>		}</span>
+<span class="number">  54    </span><span class="minmax" onclick="toggleminmax(this, 'sp53')" onmouseover="highlight('sp53')" onmouseout="removeHighlight('sp53')">-</span>		<span class="key">try</span> <span id="sp53">{
+<span class="number">  55      </span>			CodeAnalyzer.getSourceFiles();
+<span class="number">  56      </span>			CodeAnalyzer.processSourceCode(<span class="key">true</span>);
+<span class="number">  57      </span>			CodeRepository = Repository::getInstance();
+<span class="number">  58      </span>			GlobalScopeNode = CodeRepository-&gtgetGlobalScope();
+<span class="number">  59      </span>			UpdateFileList(CodeAnalyzer.fileMap());
+<span class="number">  60      </span>			DoAction(GlobalScopeNode);
+<span class="number">  61      </span>			<span class="comment">//TreeWalk(GlobalScopeNode, true);</span>
+<span class="number">  62      </span>		}</span>
+<span class="number">  63    </span><span class="minmax" onclick="toggleminmax(this, 'sp62')" onmouseover="highlight('sp62')" onmouseout="removeHighlight('sp62')">-</span>		<span class="key">catch</span> (exception& ex) <span id="sp62">{
+<span class="number">  64      </span>			cout &lt&lt <span class="str">"\n  Code Analyzer failed. Details: "</span> &lt&lt ex.what();
+<span class="number">  65      </span>		}</span>
+<span class="number">  66      </span>	}</span>
+<span class="number">  67      </span>
+<span class="number">  68      </span>	<span class="comment">// -----&lt Extract Used Types function &gt-----------------------------------------------</span>
+<span class="number">  69    </span><span class="minmax" onclick="toggleminmax(this, 'sp68')" onmouseover="highlight('sp68')" onmouseout="removeHighlight('sp68')">-</span>	<span id="sp68"><span class="comment">/* uses tokenizer to extract all types used within a file*/</span></span>
+<span class="number">  70    </span><span class="minmax" onclick="toggleminmax(this, 'sp69')" onmouseover="highlight('sp69')" onmouseout="removeHighlight('sp69')">-</span>	<span class="key">void</span> TypeTable::ExtractUsedTypes() <span id="sp69">{
+<span class="number">  71    </span><span class="minmax" onclick="toggleminmax(this, 'sp70')" onmouseover="highlight('sp70')" onmouseout="removeHighlight('sp70')">-</span>		<span class="key">for</span> (<span class="key">auto</span> file : FileList) <span id="sp70">{
+<span class="number">  72      </span>			ifstream in(file);
+<span class="number">  73      </span>			<span class="key">if</span> (!in.good()) <span class="key">continue</span>;
+<span class="number">  74    </span><span class="minmax" onclick="toggleminmax(this, 'sp73')" onmouseover="highlight('sp73')" onmouseout="removeHighlight('sp73')">-</span>			<span class="key">try</span> <span id="sp73">{
+<span class="number">  75      </span>				Scanner::Toker toker;
+<span class="number">  76      </span>				toker.returnComments(<span class="key">false</span>);
+<span class="number">  77      </span>				toker.attach(&in);
+<span class="number">  78    </span><span class="minmax" onclick="toggleminmax(this, 'sp77')" onmouseover="highlight('sp77')" onmouseout="removeHighlight('sp77')">-</span>				<span class="key">do</span> <span id="sp77">{
+<span class="number">  79      </span>					string tok = toker.getTok();
+<span class="number">  80      </span>					<span class="key">if</span> (isValidToken(tok))
+<span class="number">  81      </span>						UsedTypes[file].insert(tok);
+<span class="number">  82      </span>				}</span> <span class="key">while</span> (in.good());
+<span class="number">  83      </span>
+<span class="number">  84      </span>				<span class="key">for</span> (<span class="key">auto</span> type : DefinedTypes[file])
+<span class="number">  85      </span>					UsedTypes[file].erase(type.name);
+<span class="number">  86      </span>			}</span>
+<span class="number">  87    </span><span class="minmax" onclick="toggleminmax(this, 'sp86')" onmouseover="highlight('sp86')" onmouseout="removeHighlight('sp86')">-</span>			<span class="key">catch</span> (exception &ex) <span id="sp86">{
+<span class="number">  88      </span>				cout &lt&lt <span class="str">"\n  Tokenizer failed. Details: "</span> &lt&lt ex.what();
+<span class="number">  89      </span>			}</span>
+<span class="number">  90      </span>		}</span>
+<span class="number">  91      </span>
+<span class="number">  92      </span>	}</span>
+<span class="number">  93      </span>
+<span class="number">  94      </span>
+<span class="number">  95      </span>	<span class="comment">// -----&lt Print function &gt--------------------------------------------------------------</span>
+<span class="number">  96    </span><span class="minmax" onclick="toggleminmax(this, 'sp95')" onmouseover="highlight('sp95')" onmouseout="removeHighlight('sp95')">-</span>	<span class="key">void</span> TypeTable::Print() <span id="sp95">{
+<span class="number">  97      </span>		cout &lt&lt <span class="str">"\n\n  Defined Types:"</span>;
+<span class="number">  98    </span><span class="minmax" onclick="toggleminmax(this, 'sp97')" onmouseover="highlight('sp97')" onmouseout="removeHighlight('sp97')">-</span>		<span class="key">for</span> (<span class="key">auto</span> it = DefinedTypes.begin(); it != DefinedTypes.end(); ++it) <span id="sp97">{
+<span class="number">  99      </span>			cout &lt&lt <span class="str">"\n    "</span> &lt&lt it-&gtfirst &lt&lt <span class="str">":"</span>;
+<span class="number">  100   </span><span class="minmax" onclick="toggleminmax(this, 'sp99')" onmouseover="highlight('sp99')" onmouseout="removeHighlight('sp99')">-</span>			<span class="key">for</span> (<span class="key">auto</span> val : it-&gtsecond) <span id="sp99">{
+<span class="number">  101     </span>				cout &lt&lt <span class="str">"\n        "</span> &lt&lt setw(10) &lt&lt left &lt&lt val.type 
+<span class="number">  102     </span>					&lt&lt setw(30) &lt&lt left &lt&lt val.name &lt&lt <span class="str">" - Qualified Name - "</span>;
+<span class="number">  103     </span>				<span class="key">for</span> (<span class="key">auto</span> name : val.qualifiedName) cout &lt&lt <span class="str">"::"</span> &lt&lt name;
+<span class="number">  104     </span>			}</span>
+<span class="number">  105     </span>			cout &lt&lt endl;
+<span class="number">  106     </span>		}</span>
+<span class="number">  107     </span>
+<span class="number">  108     </span>		cout &lt&lt <span class="str">"\n\n  Used Types: "</span>;
+<span class="number">  109   </span><span class="minmax" onclick="toggleminmax(this, 'sp108')" onmouseover="highlight('sp108')" onmouseout="removeHighlight('sp108')">-</span>		<span class="key">for</span> (<span class="key">auto</span> it = UsedTypes.begin(); it != UsedTypes.end(); ++it) <span id="sp108">{
+<span class="number">  110     </span>			cout &lt&lt <span class="str">"\n    "</span> &lt&lt it-&gtfirst &lt&lt <span class="str">":"</span>;
+<span class="number">  111     </span>			size_t i = 0;
+<span class="number">  112     </span>			cout &lt&lt <span class="str">"\n"</span> &lt&lt setw(10) &lt&lt <span class="str">""</span>;
+<span class="number">  113   </span><span class="minmax" onclick="toggleminmax(this, 'sp112')" onmouseover="highlight('sp112')" onmouseout="removeHighlight('sp112')">-</span>			<span class="key">for</span> (<span class="key">auto</span> val : it-&gtsecond) <span id="sp112">{
+<span class="number">  114   </span><span class="minmax" onclick="toggleminmax(this, 'sp113')" onmouseover="highlight('sp113')" onmouseout="removeHighlight('sp113')">-</span>				<span class="key">if</span> (i - 80 &lt 10 || 80 - i &lt 10) <span id="sp113">{
+<span class="number">  115     </span>						cout &lt&lt <span class="str">"\n"</span> &lt&lt setw(10) &lt&lt <span class="str">""</span>;
+<span class="number">  116     </span>						i = 0;
+<span class="number">  117     </span>					}</span>
+<span class="number">  118     </span>					cout &lt&lt <span class="str">" "</span> &lt&lt val;
+<span class="number">  119     </span>					i += val.length();
+<span class="number">  120     </span>			}</span>
+<span class="number">  121     </span>			cout &lt&lt <span class="str">"\n"</span>;
+<span class="number">  122     </span>		}</span>
+<span class="number">  123     </span>
+<span class="number">  124     </span>		cout &lt&lt <span class="str">"\n\n  Included Libraries: "</span>;
+<span class="number">  125   </span><span class="minmax" onclick="toggleminmax(this, 'sp124')" onmouseover="highlight('sp124')" onmouseout="removeHighlight('sp124')">-</span>		<span class="key">for</span> (<span class="key">auto</span> it : IncludedLibraries) <span id="sp124">{
+<span class="number">  126     </span>			cout &lt&lt <span class="str">"\n    "</span> &lt&lt it.first &lt&lt <span class="str">":"</span>;
+<span class="number">  127     </span>			<span class="key">for</span> (<span class="key">auto</span> val : it.second)
+<span class="number">  128     </span>				cout &lt&lt <span class="str">"\n        "</span> &lt&lt val;
+<span class="number">  129     </span>			cout &lt&lt <span class="str">"\n"</span>;
+<span class="number">  130     </span>		}</span>
+<span class="number">  131     </span>	}</span>
+<span class="number">  132     </span>
+<span class="number">  133     </span>	<span class="comment">// -----&lt Update FileList function &gt--------------------------------------------------------</span>
+<span class="number">  134   </span><span class="minmax" onclick="toggleminmax(this, 'sp133')" onmouseover="highlight('sp133')" onmouseout="removeHighlight('sp133')">-</span>	<span id="sp133"><span class="comment">/* takes FileMap from CodeAnalyzer and builds file list to process later for used types*/</span></span>
+<span class="number">  135   </span><span class="minmax" onclick="toggleminmax(this, 'sp134')" onmouseover="highlight('sp134')" onmouseout="removeHighlight('sp134')">-</span>	<span class="key">void</span> TypeTable::UpdateFileList(const CodeAnalysisExecutive::FileMap & fileMap) <span id="sp134">{
+<span class="number">  136     </span>		FileList.clear();
+<span class="number">  137   </span><span class="minmax" onclick="toggleminmax(this, 'sp136')" onmouseover="highlight('sp136')" onmouseout="removeHighlight('sp136')">-</span>		<span class="key">for</span> (<span class="key">auto</span> vec : fileMap) <span id="sp136">{
+<span class="number">  138     </span>			FileList.reserve(vec.second.size());
+<span class="number">  139     </span>			FileList.insert(FileList.begin(), vec.second.begin(), vec.second.end());
+<span class="number">  140     </span>		}</span>
+<span class="number">  141     </span>	}</span>
+<span class="number">  142     </span>
+<span class="number">  143     </span>	<span class="comment">// -----&lt DoAction function &gt----------------------------------------------------------------</span>
+<span class="number">  144   </span><span class="minmax" onclick="toggleminmax(this, 'sp143')" onmouseover="highlight('sp143')" onmouseout="removeHighlight('sp143')">-</span>	<span id="sp143"><span class="comment">/* recursive function that performs DFS through the tree and records everything */</span></span>
+<span class="number">  145   </span><span class="minmax" onclick="toggleminmax(this, 'sp144')" onmouseover="highlight('sp144')" onmouseout="removeHighlight('sp144')">-</span>	<span class="key">void</span> TypeTable::DoAction(ASTNode * node) <span id="sp144">{
+<span class="number">  146     </span>		<span class="key">if</span> (node-&gttype() == <span class="str">"namespace"</span> || node-&gttype() == <span class="str">"class"</span> || node-&gttype() == <span class="str">"struct"</span>)
+<span class="number">  147     </span>			ManageContainer(node);
+<span class="number">  148     </span>		<span class="key">else</span> <span class="key">if</span> (node-&gttype() == <span class="str">"enum"</span> || node-&gttype() == <span class="str">"function"</span>)
+<span class="number">  149     </span>			ManageFunction_Enum(node);
+<span class="number">  150     </span>	}</span>
+<span class="number">  151     </span>
+<span class="number">  152     </span>	<span class="comment">// -----&lt Manage Container function &gt--------------------------------------------------------</span>
+<span class="number">  153   </span><span class="minmax" onclick="toggleminmax(this, 'sp152')" onmouseover="highlight('sp152')" onmouseout="removeHighlight('sp152')">-</span>	<span id="sp152"><span class="comment">/* takes namespace/class/struct node and searches its declarations then goes to children*/</span></span>
+<span class="number">  154   </span><span class="minmax" onclick="toggleminmax(this, 'sp153')" onmouseover="highlight('sp153')" onmouseout="removeHighlight('sp153')">-</span>	<span class="key">void</span> TypeTable::ManageContainer(ASTNode * node) <span id="sp153">{
+<span class="number">  155     </span>		ManageStatements(node-&gtstatements());
+<span class="number">  156     </span>
+<span class="number">  157   </span><span class="minmax" onclick="toggleminmax(this, 'sp156')" onmouseover="highlight('sp156')" onmouseout="removeHighlight('sp156')">-</span>		<span class="key">if</span> (node-&gtname() == <span class="str">"Global Namespace"</span>) <span id="sp156">{
+<span class="number">  158     </span>			<span class="key">for</span> (<span class="key">auto</span> dec : node-&gtdecl())
+<span class="number">  159     </span>				ManageDeclaration(dec);
+<span class="number">  160     </span>
+<span class="number">  161     </span>			size_t size = node-&gtchildren().size();
+<span class="number">  162     </span>			<span class="key">for</span> (size_t i = 0; i &lt size; i++)
+<span class="number">  163     </span>				DoAction(node-&gtchildren()[i]);
+<span class="number">  164     </span>			<span class="key">return</span>;
+<span class="number">  165     </span>		}</span>
+<span class="number">  166     </span>
+<span class="number">  167     </span>		mapKeys.insert(node-&gtpath());
+<span class="number">  168     </span>		qName.push_back(node-&gtname());
+<span class="number">  169     </span>		
+<span class="number">  170     </span>		TypeValue tv;
+<span class="number">  171     </span>		tv.name = node-&gtname();
+<span class="number">  172     </span>		tv.type = node-&gttype();
+<span class="number">  173     </span>		<span class="key">if</span> (qName.size() &gt 2) tv.pNamespace = qName[qName.size() - 2];
+<span class="number">  174     </span>		<span class="key">for</span> (<span class="key">auto</span> name : qName) tv.qualifiedName.push_back(name);
+<span class="number">  175     </span>
+<span class="number">  176     </span>		<span class="key">for</span> (<span class="key">auto</span> key : mapKeys) DefinedTypes[key].push_back(tv);
+<span class="number">  177     </span>
+<span class="number">  178     </span>		<span class="key">for</span> (<span class="key">auto</span> dec : node-&gtdecl())
+<span class="number">  179     </span>			ManageDeclaration(dec);
+<span class="number">  180     </span>
+<span class="number">  181     </span>		size_t size = node-&gtchildren().size();
+<span class="number">  182     </span>		<span class="key">for</span> (size_t i = 0; i &lt size; i++)
+<span class="number">  183     </span>			DoAction(node-&gtchildren()[i]);
+<span class="number">  184     </span>
+<span class="number">  185     </span>		qName.pop_back();
+<span class="number">  186     </span>		mapKeys.erase(node-&gtpath());
+<span class="number">  187     </span>	}</span>
+<span class="number">  188     </span>
+<span class="number">  189     </span>	<span class="comment">// -----&lt Manage Function function &gt--------------------------------------------------------</span>
+<span class="number">  190   </span><span class="minmax" onclick="toggleminmax(this, 'sp189')" onmouseover="highlight('sp189')" onmouseout="removeHighlight('sp189')">-</span>	<span class="key">void</span> TypeTable::ManageFunction_Enum(ASTNode * node) <span id="sp189">{
+<span class="number">  191     </span>		TypeValue tv;
+<span class="number">  192     </span>		tv.name = node-&gtname();
+<span class="number">  193     </span>		tv.type = node-&gttype();
+<span class="number">  194     </span>		<span class="key">if</span> (qName.size() &gt 0) tv.pNamespace = qName[qName.size() - 1];
+<span class="number">  195     </span>		<span class="key">for</span> (<span class="key">auto</span> name : qName) tv.qualifiedName.push_back(name);
+<span class="number">  196     </span>		tv.qualifiedName.push_back(node-&gtname());
+<span class="number">  197     </span>		<span class="key">bool</span> partOfClass = <span class="key">true</span>;
+<span class="number">  198   </span><span class="minmax" onclick="toggleminmax(this, 'sp197')" onmouseover="highlight('sp197')" onmouseout="removeHighlight('sp197')">-</span>		<span class="key">for</span> (<span class="key">auto</span> key : mapKeys) <span id="sp197">{
+<span class="number">  199     </span>			DefinedTypes[key].push_back(tv);
+<span class="number">  200     </span>			<span class="key">if</span> (key == node-&gtpath()) partOfClass = <span class="key">false</span>;
+<span class="number">  201     </span>		}</span>
+<span class="number">  202     </span>		<span class="key">if</span> (partOfClass) DefinedTypes[node-&gtpath()].push_back(tv);
+<span class="number">  203     </span>	}</span>
+<span class="number">  204     </span>
+<span class="number">  205     </span>
+<span class="number">  206     </span>	<span class="comment">// -----&lt Manage Declaration function &gt-----------------------------------------------------</span>
+<span class="number">  207   </span><span class="minmax" onclick="toggleminmax(this, 'sp206')" onmouseover="highlight('sp206')" onmouseout="removeHighlight('sp206')">-</span>	<span id="sp206"><span class="comment">/* takes declaration node and considers only typedefs and using declarations*/</span></span>
+<span class="number">  208   </span><span class="minmax" onclick="toggleminmax(this, 'sp207')" onmouseover="highlight('sp207')" onmouseout="removeHighlight('sp207')">-</span>	<span class="key">void</span> TypeTable::ManageDeclaration(DeclarationNode& node) <span id="sp207">{
+<span class="number">  209     </span>		<span class="comment">// handle typedefs, it is extremely hard to handle all types of typedefs</span>
+<span class="number">  210     </span>		<span class="comment">// Therefore I considered the simplest form.</span>
+<span class="number">  211   </span><span class="minmax" onclick="toggleminmax(this, 'sp210')" onmouseover="highlight('sp210')" onmouseout="removeHighlight('sp210')">-</span>		<span class="key">if</span> (node.declType() == DeclType::typedefDecl)<span id="sp210">{ 
+<span class="number">  212     </span>			TypeValue tv;
+<span class="number">  213     </span>			tv.name = (*node.pTc())[node.pTc()-&gtlength() - 2];
+<span class="number">  214     </span>			tv.type = <span class="str">"typedef"</span>;
+<span class="number">  215     </span>			<span class="key">if</span> (qName.size() &gt 0) tv.pNamespace = qName[qName.size() - 1];
+<span class="number">  216     </span>			<span class="key">for</span> (<span class="key">auto</span> name : qName) tv.qualifiedName.push_back(name);
+<span class="number">  217     </span>			tv.qualifiedName.push_back(tv.name);
+<span class="number">  218     </span>			<span class="key">for</span> (<span class="key">auto</span> key : mapKeys) DefinedTypes[key].push_back(tv);
+<span class="number">  219     </span>		}</span>
+<span class="number">  220     </span>
+<span class="number">  221     </span>		<span class="comment">// handle using declarations, they can either be on a whole namespace</span>
+<span class="number">  222     </span>		<span class="comment">// or part of a namespace, or aliases. Either way, they will be added</span>
+<span class="number">  223   </span><span class="minmax" onclick="toggleminmax(this, 'sp222')" onmouseover="highlight('sp222')" onmouseout="removeHighlight('sp222')">-</span>		<span class="key">else</span> <span class="key">if</span> (node.declType() == DeclType::usingDecl)<span id="sp222">{ 
+<span class="number">  224     </span>			size_t index;
+<span class="number">  225     </span>			
+<span class="number">  226     </span>			<span class="comment">// in case of : using namespace blablabla</span>
+<span class="number">  227     </span>			<span class="key">if</span> ((index = node.pTc()-&gtfind(<span class="str">"namespace"</span>)) != node.pTc()-&gtlength())
+<span class="number">  228     </span>				UsedTypes[node.path()].insert((*node.pTc())[index + 1]);
+<span class="number">  229     </span>
+<span class="number">  230     </span>			<span class="comment">// in case of (parts of / nested) namespaces: using std::string</span>
+<span class="number">  231   </span><span class="minmax" onclick="toggleminmax(this, 'sp230')" onmouseover="highlight('sp230')" onmouseout="removeHighlight('sp230')">-</span>			<span class="key">if</span> ((index = node.pTc()-&gtfind(<span class="str">"::"</span>)) != node.pTc()-&gtlength()) <span id="sp230">{
+<span class="number">  232   </span><span class="minmax" onclick="toggleminmax(this, 'sp231')" onmouseover="highlight('sp231')" onmouseout="removeHighlight('sp231')">-</span>				<span class="key">while</span> (index &lt node.pTc()-&gtlength()) <span id="sp231">{
+<span class="number">  233     </span>					UsedTypes[node.path()].insert((*node.pTc())[index-1]);
+<span class="number">  234     </span>					index = node.pTc()-&gtfind(<span class="str">"::"</span>, index + 2);
+<span class="number">  235     </span>				}</span>
+<span class="number">  236     </span>				UsedTypes[node.path()].insert((*node.pTc())[node.pTc()-&gtlength() - 2]);
+<span class="number">  237     </span>			}</span>
+<span class="number">  238     </span>
+<span class="number">  239     </span>			<span class="comment">// for aliases, take everything between "using" and "=" as the alias name</span>
+<span class="number">  240   </span><span class="minmax" onclick="toggleminmax(this, 'sp239')" onmouseover="highlight('sp239')" onmouseout="removeHighlight('sp239')">-</span>			<span class="key">if</span> ((index = node.pTc()-&gtfind(<span class="str">"="</span>)) != node.pTc()-&gtlength()) <span id="sp239">{
+<span class="number">  241     </span>				string temp;
+<span class="number">  242     </span>				<span class="key">for</span> (size_t i = 1; i &lt index; i++)
+<span class="number">  243     </span>					temp += (*node.pTc())[i];
+<span class="number">  244     </span>				TypeValue tv;
+<span class="number">  245     </span>				tv.name = temp;
+<span class="number">  246     </span>				tv.type = <span class="str">"alias"</span>;
+<span class="number">  247     </span>				<span class="key">if</span> (qName.size() &gt 0) tv.pNamespace = qName[qName.size() - 1];
+<span class="number">  248     </span>				<span class="key">for</span> (<span class="key">auto</span> name : qName) tv.qualifiedName.push_back(name);
+<span class="number">  249     </span>				tv.qualifiedName.push_back(tv.name);
+<span class="number">  250     </span>				<span class="key">for</span> (<span class="key">auto</span> key : mapKeys) DefinedTypes[key].push_back(tv);
+<span class="number">  251     </span>			}</span>
+<span class="number">  252     </span>		}</span>
+<span class="number">  253     </span>	}</span>
+<span class="number">  254     </span>
+<span class="number">  255     </span>	<span class="comment">// -----&lt Manage statements function &gt--------------------------------------------------------</span>
+<span class="number">  256   </span><span class="minmax" onclick="toggleminmax(this, 'sp255')" onmouseover="highlight('sp255')" onmouseout="removeHighlight('sp255')">-</span>	<span id="sp255"><span class="comment">/* used to find the included libraries per file */</span></span>
+<span class="number">  257   </span><span class="minmax" onclick="toggleminmax(this, 'sp256')" onmouseover="highlight('sp256')" onmouseout="removeHighlight('sp256')">-</span>	<span class="key">void</span> TypeTable::ManageStatements(vector&ltpair&ltScanner::ITokCollection*, string&gt&gt& statements) <span id="sp256">{
+<span class="number">  258   </span><span class="minmax" onclick="toggleminmax(this, 'sp257')" onmouseover="highlight('sp257')" onmouseout="removeHighlight('sp257')">-</span>		<span class="key">for</span> (<span class="key">auto</span> statement : statements) <span id="sp257">{
+<span class="number">  259   </span><span class="minmax" onclick="toggleminmax(this, 'sp258')" onmouseover="highlight('sp258')" onmouseout="removeHighlight('sp258')">-</span>			<span class="key">if</span> ((*statement.first)[1] == <span class="str">"include"</span> && (*statement.first)[2][0] == <span class="str">'\"'</span>) <span id="sp258">{
+<span class="number">  260     </span>				string path = (*statement.first)[2];
+<span class="number">  261     </span>				path = path.substr(1);
+<span class="number">  262     </span>				path = path.substr(0, path.length() - 1);
+<span class="number">  263     </span>				FileSystem::Directory::setCurrentDirectory(statement.second.substr(0,statement.second.find_last_of(<span class="str">'\\'</span>)));
+<span class="number">  264     </span>				path = FileSystem::Path::getFullFileSpec(path);
+<span class="number">  265     </span>				IncludedLibraries[statement.second].push_back(path);
+<span class="number">  266     </span>			}</span>
+<span class="number">  267     </span>		}</span>
+<span class="number">  268     </span>	}</span>
+<span class="number">  269     </span>
+<span class="number">  270     </span>
+<span class="number">  271     </span>
+<span class="number">  272     </span>	<span class="comment">// -----&lt is Valid Token function &gt---------------------------------------------------</span>
+<span class="number">  273   </span><span class="minmax" onclick="toggleminmax(this, 'sp272')" onmouseover="highlight('sp272')" onmouseout="removeHighlight('sp272')">-</span>	<span id="sp272"><span class="comment">/* checks whether to accept token or not */</span></span>
+<span class="number">  274   </span><span class="minmax" onclick="toggleminmax(this, 'sp273')" onmouseover="highlight('sp273')" onmouseout="removeHighlight('sp273')">-</span>	<span class="key">bool</span> TypeTable::isValidToken(string& tok) <span id="sp273">{
+<span class="number">  275     </span>		<span class="key">if</span> (tok[0] == <span class="str">'\"'</span> || tok[0] == <span class="str">'\''</span>) <span class="key">return</span> <span class="key">false</span>;
+<span class="number">  276     </span>		vector&ltstring&gt IgnoredTokens =
+<span class="number">  277   </span><span class="minmax" onclick="toggleminmax(this, 'sp276')" onmouseover="highlight('sp276')" onmouseout="removeHighlight('sp276')">-</span>		<span id="sp276">{
+<span class="number">  278     </span>			<span class="str">"\n"</span>, <span class="str">"&lt"</span>, <span class="str">"&gt"</span>, <span class="str">"{"</span>, <span class="str">"}"</span>, <span class="str">"["</span>, <span class="str">"]"</span>, <span class="str">"("</span>, <span class="str">")"</span>, <span class="str">":"</span>, <span class="str">";"</span>, <span class="str">" = "</span>, <span class="str">" + "</span>, <span class="str">" - "</span>,
+<span class="number">  279     </span>			<span class="str">"*"</span>, <span class="str">"."</span>, <span class="str">","</span>, <span class="str">"@"</span>,<span class="str">"&lt&lt"</span>, <span class="str">"&gt&gt"</span>, <span class="str">"::"</span>, <span class="str">"++"</span>, <span class="str">"--"</span>, <span class="str">"=="</span>, <span class="str">"+="</span>, <span class="str">"-="</span>, <span class="str">"*="</span>, <span class="str">"/="</span>,
+<span class="number">  280     </span>			<span class="str">"!="</span>, <span class="str">"&"</span>, <span class="str">"!"</span>, <span class="str">"+"</span>, <span class="str">"-"</span>, <span class="str">"="</span>, <span class="str">"|"</span>, <span class="str">"||"</span>, <span class="str">"~"</span>, <span class="str">"#"</span>
+<span class="number">  281     </span>		}</span>;
+<span class="number">  282     </span>
+<span class="number">  283   </span><span class="minmax" onclick="toggleminmax(this, 'sp282')" onmouseover="highlight('sp282')" onmouseout="removeHighlight('sp282')">-</span>		<span class="key">for</span> (<span class="key">auto</span> token : IgnoredTokens) <span id="sp282">{
+<span class="number">  284     </span>			<span class="key">if</span> (tok == token) 
+<span class="number">  285     </span>				<span class="key">return</span> <span class="key">false</span>;
+<span class="number">  286     </span>		}</span>
+<span class="number">  287     </span>		<span class="key">return</span> <span class="key">true</span>;
+<span class="number">  288     </span>	}</span>
+<span class="number">  289     </span>
+<span class="number">  290     </span>}</span>
+<span class="number">  291     </span>
+<span class="number">  292     </span><span class="directive">#ifdef</span> TEST_TYPETABLE
+<span class="number">  293   </span><span class="minmax" onclick="toggleminmax(this, 'sp292')" onmouseover="highlight('sp292')" onmouseout="removeHighlight('sp292')">-</span><span class="key">int</span> main(<span class="key">int</span> argc, <span class="key">char</span>** argv) <span id="sp292">{
+<span class="number">  294     </span>	<span class="key">using</span> <span class="key">namespace</span> DependencyAnalysis;
+<span class="number">  295   </span><span class="minmax" onclick="toggleminmax(this, 'sp294')" onmouseover="highlight('sp294')" onmouseout="removeHighlight('sp294')">-</span>	<span class="key">try</span> <span id="sp294">{
+<span class="number">  296     </span>		DependencyAnalysis::TypeTable tb;
+<span class="number">  297     </span>		tb.ExtractDefinedTypes(argc, argv);
+<span class="number">  298     </span>		tb.ExtractUsedTypes();
+<span class="number">  299     </span>		tb.Print();
+<span class="number">  300     </span>	}</span>
+<span class="number">  301   </span><span class="minmax" onclick="toggleminmax(this, 'sp300')" onmouseover="highlight('sp300')" onmouseout="removeHighlight('sp300')">-</span>	<span class="key">catch</span> (exception& ex) <span id="sp300">{
+<span class="number">  302     </span>		std::cout &lt&lt <span class="str">"\n  Type Table failed. Details: "</span> &lt&lt ex.what();
+<span class="number">  303     </span>	}</span>
+<span class="number">  304     </span>	<span class="key">return</span> 0;
+<span class="number">  305     </span>}</span>
+<span class="number">  306     </span><span class="directive">#endif</span>
+
+</pre>
+  </body>
+</html>

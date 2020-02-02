@@ -1,0 +1,15 @@
+<Database>
+<Element>
+	<Key>component1</Key>
+	<Name>Strong Component #1</Name>
+	<Category>Strong Component</Category>
+	<Description>Children are the component vertices. Data is the size</Description>
+	<TimeDate>2017/06/03  22:26:02</TimeDate>
+	<Children>
+		<Child>D:\Academic\Ammar\PhD at Syracuse University\2016-2017\Spring - 2017\CSE-687 OOD\Project2\Submit\Submit-Ammar-Salman-DependencyAnalysis\TypeTable\TypeTable.cpp</Child>
+		<Child>D:\Academic\Ammar\PhD at Syracuse University\2016-2017\Spring - 2017\CSE-687 OOD\Project2\Submit\Submit-Ammar-Salman-DependencyAnalysis\TypeTable\TypeTable.h</Child>
+	</Children>
+	<Data>2
+	</Data>
+</Element>
+</Database>

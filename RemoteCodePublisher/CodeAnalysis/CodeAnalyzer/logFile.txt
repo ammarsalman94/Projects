@@ -1,0 +1,69 @@
+
+                                      CodeAnalysis - Version 1.4
+    ==============================================================================================
+     Sat Mar  4 22:32:21 2017
+     Path: "C:\Users\hopli\Documents\Visual Studio 2015\Projects\DependencyAnalysis\CodeAnalyzer"
+     Args: *.h, *.cpp, *.cs, /a, /r, /f
+                                                                               
+
+                          Functions Exceeding Metric Limits and Public Data
+    ==============================================================================================
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+         ActionsAndRules.h    function                             doTest     987      74      10
+       ConfigureParser.cpp    function                              Build      89     105       3
+   Cpp11-BlockingQueue.cpp    function                               main      37      52       3
+             Executive.cpp    function                  processSourceCode     365      95       8
+            FileSystem.cpp    function                               main     769     438      31
+        GrammarHelpers.cpp    function              isFirstArgDeclaration     164      54       2
+        GrammarHelpers.cpp    function                               main     594      59      17
+                Parser.cpp    function                               main      89      55       8
+            ScopeStack.cpp    function                               main      54      75       1
+             Tokenizer.cpp    function                          nextState     192      81      14
+             Tokenizer.cpp    function                               main     666      79       7
+                Window.cpp    function                    getUserSettings     104      57       4
+                Window.cpp    function                 setUpDisplaysPanel     501      53       1
+                Window.cpp    function              createDisplayModeView     566      54       1
+                Window.cpp    function                    browseForFolder     701      52       5
+                Window.cpp    function                  browseForFolderEx     760      54       6
+
+              public data: Parser.h : 107 - class IRule
+                static const bool Continue = true ; 
+              public data: Parser.h : 108 - class IRule
+                static const bool Stop = false ; 
+              public data: Program.cs : 11 - class Program
+                public int aPublicDataMember = 3 ; 
+              public data: Tokenizer.cpp : 34 - struct Context
+                std :: string token ; 
+              public data: Tokenizer.cpp : 35 - struct Context
+                std :: istream * _pIn ; 
+              public data: Utilities.h : 56 - class test
+                std :: vector < std :: string > publicVector ; 
+              public data: Window.h : 102 - struct Settings
+                bool h ; 
+              public data: Window.h : 102 - struct Settings
+                bool cpp ; 
+              public data: Window.h : 102 - struct Settings
+                bool cs ; 
+              public data: Window.h : 103 - struct Settings
+                bool upatt ; 
+              public data: Window.h : 104 - struct Settings
+                bool cl ; 
+              public data: Window.h : 105 - struct Settings
+                bool metrics ; 
+              public data: Window.h : 106 - struct Settings
+                bool ast ; 
+              public data: Window.h : 107 - struct Settings
+                bool slocs ; 
+              public data: Window.h : 108 - struct Settings
+                bool logfile ; 
+              public data: Window.h : 109 - struct Settings
+                bool rslt ; 
+              public data: Window.h : 110 - struct Settings
+                bool demo ; 
+              public data: Window.h : 111 - struct Settings
+                bool dbug ; 
+
+
+    searched   108 dirs
+   processed    45 files

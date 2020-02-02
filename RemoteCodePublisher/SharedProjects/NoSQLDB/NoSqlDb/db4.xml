@@ -1,0 +1,14 @@
+<Database>
+<Element>
+	<Key>key1</Key>
+	<Name>Obada</Name>
+	<Category>Games</Category>
+	<Description>My description</Description>
+	<TimeDate>2017/27/01  21:47:27</TimeDate>
+	<Children>
+	</Children>
+	<Data>This is life
+Are you kidding me?
+	</Data>
+</Element>
+</Database>

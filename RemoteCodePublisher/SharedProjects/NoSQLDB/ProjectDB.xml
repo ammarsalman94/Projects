@@ -1,0 +1,92 @@
+<Database>
+<Element>
+	<Key>Element_H</Key>
+	<Name>Element.h</Key>
+	<Category>NoSQLDB</Category>
+	<Description>Template class providing key/value pair</Description>
+	<TimeDate>2017/28/01  16:30:00</TimeDate>
+	<Children> 
+		<Child>NoSQLDB_H</Child>
+		<Child>Entry_CPP</Child>
+		<Child>TestExec_CPP</Child>
+	</Children>
+	<Data>Element</Data>
+</Element>
+
+<Element>
+	<Key>NoSQLDB_H</Key>
+	<Name>NoSQLDB.h</Key>
+	<Category>NoSQLDB</Category>
+	<Description>Template class providing No-SQL based database</Description>
+	<TimeDate>2017/31/01  01:15:00</TimeDate>
+	<Children>
+		<Child>Entry_CPP</Child>
+		<Child>TestExec_CPP</Child>
+	</Children>
+	<Data>NoSQLDB</Data>
+</Element>
+
+<Element>
+	<Key>RegExp_H</Key>
+	<Name>RegularExpressions.h</Key>
+	<Category>NoSQLDB</Category>
+	<Description>Header for class that provides regular expression extraction</Description>
+	<TimeDate>2017/29/01 03:16:19</TimeDate>
+	<Children>
+		<Child>RegExp_CPP</Child>
+		<Child>NoSQLDB_H</Child>
+	</Children>
+	<Data>RegulatExpression(string text) ...</Data>
+</Element>
+
+<Element>
+	<Key>RegExp_CPP</Key>
+	<Name>RegularExpressions.cpp</Key>
+	<Category>NoSQLDB</Category>
+	<Description>Source implementation for Regular Expressions</Description>
+	<TimeDate>2017/29/01 04:10:00</TimeDate>
+	<Children>
+	</Children>
+	<Data>ProcessQuery(string text) ...</Data>
+</Element>
+
+<Element>
+	<Key>StrHelper_H</Key>
+	<Name>SrHelper.h</Key>
+	<Category>Utilities</Category>
+	<Description>String helper methods for managing strings</Description>
+	<TimeDate>2017/25/01 12:00:00</TimeDate>
+	<Children>
+		<Child>NoSQLDB_H</Child>
+		<Child>Entry_CPP</Child>
+		<Child>TestExec_CPP</Child>
+	</Children>
+	<Data>trim(string)</Data>
+</Element>
+
+<Element>
+	<Key>XmlDocument_H</Key>
+	<Name>XmlDocument.h</Key>
+	<Category>Utilities</Category>
+	<Description>Header for class that manages XML documents</Description>
+	<TimeDate>2017/25/01 12:00:00</TimeDate>
+	<Children>
+		<Child>Element_H</Child>
+		<Child>NoSQLDB_H</Child>
+		<Child>XmlDocument_CPP</Child>
+	</Children>
+	<Data>children() .. </Data>
+	
+	<Element>
+	<Key>XmlDocument_CPP</Key>
+	<Name>XmlDocument.cpp</Key>
+	<Category>Utilities</Category>
+	<Description>Class implementation for XmlDocument_H</Description>
+	<TimeDate>2017/25/01 12:00:00</TimeDate>
+	<Children>
+	</Children>
+	<Data>children(string) ...</Data>
+</Element>
+</Element>
+
+</Database>

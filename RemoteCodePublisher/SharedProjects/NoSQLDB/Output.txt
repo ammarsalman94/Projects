@@ -1,0 +1,446 @@
+
+ Starting Test Executive to demonstrate all requirements:
+
+
+  Requirement #1: Implemented using C++ using facilities of standard C++ & VS15
+ ===============================================================================
+
+  Demonstrating Requirement #2: implements template class providing key/value paid
+ ==================================================================================
+
+
+  Testing Element<string>
+ -------------------------
+
+  Printing element:
+              Key : key1
+             Name : element1
+         Category : C++
+      Description : example element
+      Date & Time : 2017/02/02  20:01:10
+         Children : key2 key3 
+             Data : i love c++
+
+
+  Printing element to XML:
+
+<Element>
+	<Key>key1</Key>
+	<Name>element1</Name>
+	<Category>C++</Category>
+	<Description>example element</Description>
+	<TimeDate>2017/02/02  20:01:10</TimeDate>
+	<Children>
+		<Child>key2</Child>
+		<Child>key3</Child>
+	</Children>
+	<Data>i love c++
+	</Data>
+</Element>
+
+  Testing Element<vector<int>>
+ ------------------------------
+
+  Printing element:
+              Key : key2
+             Name : element1
+         Category : C++
+      Description : example element
+      Date & Time : 2017/02/02  20:01:10
+         Children : key5 
+             Data : 0 1 2 3 4 5 6 7 8 9
+
+
+
+  Printing element to XML:
+
+<Element>
+	<Key>key2</Key>
+	<Name>element1</Name>
+	<Category>C++</Category>
+	<Description>example element</Description>
+	<TimeDate>2017/02/02  20:01:10</TimeDate>
+	<Children>
+		<Child>key5</Child>
+	</Children>
+	<Data>0 1 2 3 4 5 6 7 8 9
+
+	</Data>
+</Element>
+
+
+  Demonstrating Requirement #3: supports addition/deletion of key/value pairs
+ =============================================================================
+
+  Testing Addition/Deletion of Key/Value Pairs
+ ----------------------------------------------
+
+  Adding first element to database
+  Adding second element to database
+  Database content:
+  Database:
+    Record:
+              Key : key1
+             Name : element
+         Category : C++
+      Description : example element
+      Date & Time : 2017/02/02  20:01:10
+         Children : key6 key3 
+             Data : i love c++
+
+    Record:
+              Key : key2
+             Name : element
+         Category : C++
+      Description : example element
+      Date & Time : 2017/02/02  20:01:10
+         Children : key6 key3 
+             Data : i love c++
+
+
+
+  Deleting element with key1 from the database
+  Database content:
+  Database:
+    Record:
+              Key : key2
+             Name : element
+         Category : C++
+      Description : example element
+      Date & Time : 2017/02/02  20:01:10
+         Children : key6 key3 
+             Data : i love c++
+
+
+
+
+  Demonstrating Requirement #4: support all editings of a value element
+ =======================================================================
+
+  Testing editing functions on value element
+ --------------------------------------------
+
+  Contents of element with key = 'key':
+              Key : key
+             Name : element
+         Category : C++
+      Description : example element
+      Date & Time : 2017/02/02  20:01:10
+         Children : key6 key3 
+             Data : i love c++
+
+
+  Adding child relation 'key4' to 'key'
+  Removing child relation 'key3' from 'key'
+  Changing name to 'Jack Sparrow'
+  Changing category to 'Pirate'
+  Changing description to 'The best pirate ever'
+
+  Contents of element with key = 'key':
+              Key : key
+             Name : Jack Sparrow
+         Category : Pirate
+      Description : The best pirate ever
+      Date & Time : 2017/02/02  20:01:10
+         Children : key6 key4 
+             Data : i love c++
+
+
+
+  Demonstrating Requirement #5: support persist to XML and import from XML
+ ==========================================================================
+
+  Testing database persistance
+ ------------------------------
+
+  Creating simple database
+  Database contents:
+  Database:
+    Record:
+              Key : key1
+             Name : element
+         Category : C++
+      Description : example element
+      Date & Time : 2017/02/02  20:01:10
+         Children : key6 key3 
+             Data : i love c++
+
+    Record:
+              Key : key2
+             Name : element
+         Category : C++
+      Description : example element
+      Date & Time : 2017/02/02  20:01:10
+         Children : key6 key3 
+             Data : i love c++
+
+
+
+  Exporting from database to 'simpleDB.xml'
+  Importing from 'simpleDB.xml' to database2
+  Database2 contents:
+  Database:
+    Record:
+              Key : key1
+             Name : element
+         Category : C++
+      Description : example element
+      Date & Time : 2017/02/02  20:01:10
+         Children : key6 key3 
+             Data : i love c++
+
+    Record:
+              Key : key2
+             Name : element
+         Category : C++
+      Description : example element
+      Date & Time : 2017/02/02  20:01:10
+         Children : key6 key3 
+             Data : i love c++
+
+
+
+
+  Demonstrating Requirement #6: support automatic persistance
+ =============================================================
+
+  Testing automatic database persistance
+ ----------------------------------------
+
+  Turning on time based automatic persistance every 2 seconds
+  Adding element to database
+  Database content:
+  Database:
+    Record:
+              Key : key1
+             Name : element
+         Category : C++
+      Description : example element
+      Date & Time : 2017/02/02  20:01:10
+         Children : key6 key3 
+             Data : i love c++
+
+
+  Sleeping for 2 seconds
+  Turning off time based automatic persistance
+
+  Importing auto-saved XML to new database
+  Imported database content:
+  Database:
+    Record:
+              Key : key1
+             Name : element
+         Category : C++
+      Description : example element
+      Date & Time : 2017/02/02  20:01:10
+         Children : key6 key3 
+             Data : i love c++
+
+
+
+  Turning on writes based automatic save (persist every write)
+  Adding element to database
+
+  Importing auto-saved XML to new database
+  Imported database content:
+  Database:
+    Record:
+              Key : key1
+             Name : element
+         Category : C++
+      Description : example element
+      Date & Time : 2017/02/02  20:01:10
+         Children : key6 key3 
+             Data : i love c++
+
+    Record:
+              Key : key2
+             Name : element
+         Category : C++
+      Description : example element
+      Date & Time : 2017/02/02  20:01:12
+         Children : key6 key3 
+             Data : i love c++
+
+
+
+
+  Demonstrating Requirement #7: support queries
+ ===============================================
+
+  Testing different queries on attached XML
+ -------------------------------------------
+
+  Database content:
+  Database:
+    Record:
+              Key : Element_H
+             Name : Element.h
+         Category : NoSQLDB
+      Description : Template class providing key/value pair
+      Date & Time : 2017/28/01  16:30:00
+         Children : NoSQLDB_H Entry_CPP TestExec_CPP 
+             Data : Element
+
+    Record:
+              Key : NoSQLDB_H
+             Name : NoSQLDB.h
+         Category : NoSQLDB
+      Description : Template class providing No-SQL based database
+      Date & Time : 2017/31/01  01:15:00
+         Children : Entry_CPP TestExec_CPP 
+             Data : NoSQLDB
+
+    Record:
+              Key : StrHelper_H
+             Name : SrHelper.h
+         Category : Utilities
+      Description : String helper methods for managing strings
+      Date & Time : 2017/25/01 12:00:00
+         Children : NoSQLDB_H Entry_CPP TestExec_CPP 
+             Data : trim(string)
+
+    Record:
+              Key : RegExp_H
+             Name : RegularExpressions.h
+         Category : NoSQLDB
+      Description : Header for class that provides regular expression extraction
+      Date & Time : 2017/29/01 03:16:19
+         Children : RegExp_CPP NoSQLDB_H 
+             Data : RegulatExpression(string text) ...
+
+    Record:
+              Key : RegExp_CPP
+             Name : RegularExpressions.cpp
+         Category : NoSQLDB
+      Description : Source implementation for Regular Expressions
+      Date & Time : 2017/29/01 04:10:00
+         Children : 
+             Data : ProcessQuery(string text) ...
+
+    Record:
+              Key : XmlDocument_H
+             Name : XmlDocument.h
+         Category : Utilities
+      Description : Header for class that manages XML documents
+      Date & Time : 2017/25/01 12:00:00
+         Children : Element_H NoSQLDB_H XmlDocument_CPP 
+             Data : children() ..
+
+    Record:
+              Key : XmlDocument_CPP
+             Name : XmlDocument.cpp
+         Category : Utilities
+      Description : Class implementation for XmlDocument_H
+      Date & Time : 2017/25/01 12:00:00
+         Children : 
+             Data : children(string) ...
+
+
+
+  Getting the value of key = 'Element_H' :
+  Retreived element content:
+              Key : Element_H
+             Name : Element.h
+         Category : NoSQLDB
+      Description : Template class providing key/value pair
+      Date & Time : 2017/28/01  16:30:00
+         Children : NoSQLDB_H Entry_CPP TestExec_CPP 
+             Data : Element
+
+
+  Getting the children of key = 'StrHelper_H' :
+  Retreived children: 
+		NoSQLDB_H
+		Entry_CPP
+		TestExec_CPP
+
+  Getting keys matching pattern (invalid pattern specified, return all keys): 
+  Retreived keys: 
+		Element_H
+		NoSQLDB_H
+		StrHelper_H
+		RegExp_H
+		RegExp_CPP
+		XmlDocument_H
+		XmlDocument_CPP
+
+  Getting keys containing '.H' in their name: 
+  Retreived keys: 
+		           Element_H : Element.h
+		           NoSQLDB_H : NoSQLDB.h
+		         StrHelper_H : SrHelper.h
+		            RegExp_H : RegularExpressions.h
+		       XmlDocument_H : XmlDocument.h
+
+  Getting keys containing 'iliti' in their category: 
+  Retreived keys: 
+		         StrHelper_H : Utilities
+		       XmlDocument_H : Utilities
+		     XmlDocument_CPP : Utilities
+
+  Getting keys containing 'ele' in their string data: 
+  Retreived keys: 
+		           Element_H : Element
+
+  Getting keys created during (2017/25/01 to 2017/02/02): 
+  Retreived keys: 
+		           Element_H : 2017/28/01  16:30:00
+		           NoSQLDB_H : 2017/31/01  01:15:00
+		         StrHelper_H : 2017/25/01 12:00:00
+		            RegExp_H : 2017/29/01 03:16:19
+		          RegExp_CPP : 2017/29/01 04:10:00
+		       XmlDocument_H : 2017/25/01 12:00:00
+		     XmlDocument_CPP : 2017/25/01 12:00:00
+
+
+  Demonstrating Requirements #8 & #9: support compound queries of (AND/OR) types
+ ================================================================================
+
+  Note: making a double query on an earlier query is equivalent to ANDing
+  two queries. In symbols: Query1(Query2Result) = Query1 AND Query2.
+  A union between two query results is in fact the OR operation between two
+  queries. In symbols: Query1Result UNION Query2Result = Query1 OR Query2
+
+
+  Testing compound queries on attached XML
+ ------------------------------------------
+
+
+  Getting keys with name='Element.h' AND category='NoSQLDB' AND data='ele'
+  Retreived keys: Element_H 
+
+  Getting keys with name='NoSQLDB.h' OR category='Utilities' OR data='ele'
+  Retreived keys: Element_H NoSQLDB_H StrHelper_H XmlDocument_CPP XmlDocument_H 
+
+
+  Requirement #10: submitted with XML file that describes the project
+ =====================================================================
+
+  Requirement #11: accompanied with Test Executive to demonstrate requirements
+ ==============================================================================
+
+  Demonstrating Bonus Requirement #12: support regular expression queries
+ =========================================================================
+
+  Testing regular expression queries on attached XML
+ ----------------------------------------------------
+
+
+  Executing query "get category='NoSQLDB' and (name='Elememt.h' or timedate='2017/25/01,2017/02/02')"
+  Retreived keys: Element_H NoSQLDB_H RegExp_CPP RegExp_H 
+
+  Executing query "add key='dummy' name='dummy' category='dummy' description='dummy' data='dummy'"
+  Displaying added item:
+              Key : dummy
+             Name : dummy
+         Category : dummy
+      Description : dummy
+      Date & Time : 2017/02/02  20:01:12
+         Children : 
+             Data : dummy
+
+
+  Executing query "delete name='dummy'"
+  Deleted key: dummy 
+

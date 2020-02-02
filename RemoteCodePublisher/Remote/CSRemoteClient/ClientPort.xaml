@@ -1,0 +1,16 @@
+﻿<Window x:Class="CSRemoteClient.ClientPort"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CSRemoteClient"
+        mc:Ignorable="d"
+        Title="ClientPort" Height="70" Width="225" ResizeMode="NoResize">
+    <Grid>
+    <DockPanel>
+      <Label TabIndex="-1" Content="Port:"/>
+      <TextBox Name="txtPort" TabIndex="0" Text="{Binding Port}" Margin="5"  Width="100" KeyUp="TextBox_KeyUp" GotFocus="txtPort_GotFocus" GotKeyboardFocus="txtPort_GotKeyboardFocus" GotMouseCapture="txtPort_GotMouseCapture"/>
+      <Button TabIndex="1" Margin="5" Content="Set" Click="Button_Click"/>
+    </DockPanel>
+    </Grid>
+</Window>
