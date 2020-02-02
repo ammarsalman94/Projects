@@ -1,0 +1,6 @@
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\TestHarness\ChildAppDomain\bin\Debug\ChildAppDomain.dll.config
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\TestHarness\ChildAppDomain\bin\Debug\ChildAppDomain.dll
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\TestHarness\ChildAppDomain\bin\Debug\ChildAppDomain.pdb
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\TestHarness\ChildAppDomain\obj\Debug\ChildAppDomain.csprojResolveAssemblyReference.cache
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\TestHarness\ChildAppDomain\obj\Debug\ChildAppDomain.dll
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\TestHarness\ChildAppDomain\obj\Debug\ChildAppDomain.pdb

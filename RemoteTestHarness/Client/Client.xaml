@@ -1,0 +1,105 @@
+﻿<Window x:Class="Client.ClientGUI"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client"
+        mc:Ignorable="d"
+        Title="Client Window" Height="500" Width="700" MinHeight="400" MinWidth="700">
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="28"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*" MinHeight="200"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*" MinHeight="200"/>
+		</Grid.RowDefinitions>
+
+		<DockPanel Grid.Row="0">
+			<Menu DockPanel.Dock="Top">
+				<MenuItem Header="_File">
+					<MenuItem Header="_Exit" Name="ExitMenuItem" Click="ExitMenuItem_Click"/>
+				</MenuItem>
+				<MenuItem Header="_Communication">
+					<MenuItem Header="_Connect To Repository (ports)" Name="ConnectRep" Click="ConnectRep_Click"/>
+					<MenuItem Header="_Connect To Repository (links)" Name="LnkConnRep" Click="LnkConnRep_Click"/>
+				</MenuItem>
+			</Menu>
+		</DockPanel>
+		
+		<Grid Grid.Row="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="150"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="120"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Content="Author Name:"/>
+			<TextBox Grid.Column="1" Margin="5,5,5,2" Name="txtAuthor"/>
+			<Label Grid.Column="2" Content="Date:"/>
+			<DatePicker Grid.Column="3" Margin="5,5,5,2" Name="testDate"/>
+			<Button Grid.Column="4" Margin="5,5,5,2" Name="btnGetResults" Content="Get Results" Click="btnGetResults_Click"/>
+		</Grid>
+
+		<Separator Grid.Row="2" HorizontalContentAlignment="Stretch"/>
+
+		<Grid Grid.Row="3">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" MinWidth="300"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*" MinWidth="380"/>
+			</Grid.ColumnDefinitions>
+			
+			
+			<Grid Grid.Row="0" Grid.Column="0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="100"/>
+					<ColumnDefinition Width="120"/>
+				</Grid.ColumnDefinitions>
+				<Label Grid.Column="0" Content="Files To Send:"/>
+				<Button Grid.Column="1" Margin="5,5,5,5" Name="btnAddFiles" 
+								Content="Add Files" Click="btnAddFiles_Click"/>
+				<Button Grid.Column="2" Margin="5,5,5,5" Content="Send Files" 
+							Name="btnSendFiles" Click="btnSendFiles_Click"/>
+			</Grid>
+			
+			<Grid Grid.Row="0" Grid.Column="2">
+				
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="120"/>
+				</Grid.ColumnDefinitions>
+				<Label Grid.Column="0" Content="Repository Files: (Double Click to Download)"/>
+				<Button Grid.Column="1" Margin="5,5,5,5" Content="Get Files" 
+							Name="btnGetFiles" Click="btnGetFiles_Click"/>
+			</Grid>
+
+			<ListBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,5" Name="lstBoxFilesToSend"/>
+			<ListBox Grid.Row="1" Grid.Column="2" Margin="5,5,5,5" Name="lstBoxRepFiles"
+							 MouseDoubleClick="lstBoxRepFiles_MouseDoubleClick"/>
+			<GridSplitter Grid.Column="1" Grid.RowSpan="3" Width="5"
+										HorizontalAlignment="Stretch"/>
+		</Grid>
+
+		<GridSplitter Grid.Row="4" Height="5" HorizontalAlignment="Stretch"/>
+
+		<Grid Grid.Row="5">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<Label Grid.Row="0" Content="Received Messages: (Double Click to See Details)"/>
+			<ListBox Grid.Row="1" Margin="5,5,5,5" Name="lstBoxMsgs" MouseDoubleClick="lstBoxMsgs_MouseDoubleClick"/>
+		</Grid>
+		
+	</Grid>
+</Window>

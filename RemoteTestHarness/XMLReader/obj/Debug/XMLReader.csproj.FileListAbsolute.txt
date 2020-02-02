@@ -1,0 +1,8 @@
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\TestHarness\XMLReader\bin\Debug\XMLReader.dll.config
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\TestHarness\XMLReader\bin\Debug\XMLReader.dll
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\TestHarness\XMLReader\bin\Debug\XMLReader.pdb
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\TestHarness\XMLReader\bin\Debug\Queue.dll
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\TestHarness\XMLReader\bin\Debug\Queue.pdb
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\TestHarness\XMLReader\obj\Debug\XMLReader.csprojResolveAssemblyReference.cache
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\TestHarness\XMLReader\obj\Debug\XMLReader.dll
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\TestHarness\XMLReader\obj\Debug\XMLReader.pdb

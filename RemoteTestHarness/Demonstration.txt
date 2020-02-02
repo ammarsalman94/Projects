@@ -1,0 +1,92 @@
+
+     STARTING TEST EXECUTIVE TO DEMONSTRATE REQUIREMENTS   
+ ===========================================================
+
+  Requirement #1: Implemented in C# .. Done
+ -------------------------------------------
+
+
+  Starting Repository
+ =====================
+
+ Reporitory Started
+
+  Starting Test Harness
+ =======================
+
+ Test Harness Started
+
+  Starting Clients "Ammar Salman" & "Odai Salman"
+ =================================================
+
+  Requirement #2: Test requests in form of XML and libraries in form of DLL .. Done
+ -----------------------------------------------------------------------------------
+  Clients are sending:
+    Requests: test1.xml, test2.xml, test3.xml
+    Libraries: TestLibrary1.dll, TestLibrary2.dll and TestLibrary3.dll
+
+  Requirement #3: file validation before testing .. Done
+ --------------------------------------------------------
+  Test request 'test2.xml' specifies 'foo.dll' library which does not exist.
+  Sending client a message indicating that library does not exist
+  Please check Client Ammar Salman messages for more details
+
+  Requirement #4: enqueuing tests and executing them concurrently .. Done
+ -------------------------------------------------------------------------
+  Please refer to TestHarness.xaml.cs:Method:TestFiles for more details
+  Also refer to Remote TestHarness window which shows concurrent processing
+
+  Requirement #5: each test driver derives from ITest .. Done
+ -------------------------------------------------------------
+  Please look at TestAllDomain.cs: 'ITest Interface' region implementation
+
+  Requirement #6: Slightly different implementation but serves same purpose
+ ---------------------------------------------------------------------------
+  I have discussed it with the professor and Clients only send files to
+  the repository which in turn sends the requests to the  Test Harness.
+  Please refer to the attached 'Brief Summary.txt' for further details
+
+  Requirement #7: Test Harness should send its results .. Done
+ --------------------------------------------------------------
+  Please check the repository window for the received result file from Test Harness. Then check the client where the detailed log is present
+
+  Requirement #8: Storing the results collaborativly
+ ----------------------------------------------------
+  Test Harness and Repository both have records for the test result
+  Please refer to Repository Window and Test Harness storage for details
+
+  Requirement #9: support for client queries
+ --------------------------------------------
+  Clients already posted get result requests. Check their GUIs 
+
+  Requirement #10: All communication should be implementaed using WCF .. Done
+ -----------------------------------------------------------------------------
+  Please refer to CommunicationInterfaces.Interfaces.cs for details
+
+  Requirement #11: Clients should have GUI. Repository & Test Harness may have GUI .. You can see them!
+ -------------------------------------------------------------------------------------------------------
+
+  Requirement #12: Shall include means for test time execution .. Done
+ ----------------------------------------------------------------------
+  Check Clients' results messages that specify the time elapsed for each test request
+
+  Requirement #13: includes Test Exective .. This is it!
+ --------------------------------------------------------
+
+  Requirement #14: includes brief summary
+ -----------------------------------------
+  Check solution for 'Biref Summary.txt'
+
+
+Demonstrating extra work: I  designed  the  system in a way  that when some  client  disconnects
+  and the repository had a message for that client it will not discard the message. Instead, the
+  repository will block the message until the client is  connected  again.  However, even if the
+  client connected on another address the repository will send the  blocked  messages on the new
+  address. The same concept applies to files.
+
+  Starting Client 'Salman Salman'. This client sends test request (test.xml) ...
+  Shutting down client 'Salman Salman'
+  Waiting before launching 'Salman Salman' again .. 
+  Starting client 'Salman Salman' again ..
+  Please check client 'Salman Salman' received messages
+

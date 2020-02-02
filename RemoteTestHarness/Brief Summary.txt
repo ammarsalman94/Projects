@@ -1,0 +1,54 @@
+Author:				Ammar Salman - assalman@syr.edu - (313)-788-4694
+Subject:			Project #4 - Remote Test Harness - Brief Summary
+Course:				CSE-681 - Software Modelling & Analysis
+Instructor:		Dr. Jim Fawcett
+
+This project was done according to the plan developed in Project #3 (Remote TestHarness OCD).
+The plan in the OCD was to have no communication between the Clients and the Test Harness.
+The flow was:
+	1. Client selects test request in form of XML file.
+	2. Client checks the file and if it seems valid it will send it to the repository. 
+			Otherwise a message will appear saying 'Bad XML'
+	3. Repository receives and parses the XML. If any error was found (like bad XML or
+			 missing Libraries) it will send the Client message of type Invalid Request.
+	4. If the XML was good the Repository forwards the request to the Test Harness.
+	5. Test Harness processes the request and produces the suitable log and sends it
+			back to the Repository along with a message telling forward this result.
+	6. Repository receives the file and the message and forwards it to the Client.
+	7. Client receives the message and can view the log inside the GUI.
+
+It was done like that for the following reasons:
+	1. To spare the Test Harness from any communication other than the repository.
+	2. Improve Test Harness performance as it does not test XML validity.
+	3. Decrease the communication needed if client sent the request to the test
+			harness as it will first need to check with the repository and then 
+			process request or send the client message that there are missing files.
+			Also, the test harness only needs to send results once and to repository.
+
+Extra addition: I have implemented extra feature for the program. It ensures that
+	any message from the repository gets delivered to its destination even if the 
+	destination disconnected. When the destination connects back the repository will
+	send it the pending messages. This is the flow:
+	1. Client connects to repository and sends its ClientName in a message notifier.
+	2. Repository adds/updates ClientName and its Host Address in a dictionary. 
+	3. The Repository checks if there are any blocked messages to that ClientName. 
+	4. If there are blocked messages unblock them and try sending them to the 
+			last recorded Client Host Address received.
+	
+Notes: 
+	1. There are three dummy library files named:
+			TestLibrary1.dll
+			TestLibrary2.dll
+			TestLibrary3.dll
+		 Those files are attached with demonstration in order to show processing.
+		 They are just loops with different sleeping times and print outs.
+	2. There are four test requests in form of XML files:
+			test1.xml
+			test2.xml
+			test3.xml
+			test4.xml
+		 The file test2.xml specifies invalid request while the other three are valid.
+	3. There are three BAT files in 'BAT Files' directory:
+			a. build.bat: builds the solution and shows detailed build log.
+			b. demonstrate.bat: launches 'Test Executive.exe' only.
+			c. run.bat: starts the three processes for normal use.

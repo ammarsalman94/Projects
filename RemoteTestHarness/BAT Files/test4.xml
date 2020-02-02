@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<testRequest name="Test4">
+  <author>Salman Salman</author>
+  <test name="TestLibrary3">
+    <testDriver>TestLibrary3.dll</testDriver>
+  </test>
+</testRequest>

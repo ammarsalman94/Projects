@@ -1,0 +1,6 @@
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\TestAppDomain\bin\Debug\ChildAppDomain.dll.config
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\TestAppDomain\bin\Debug\ChildAppDomain.dll
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\TestAppDomain\bin\Debug\ChildAppDomain.pdb
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\TestAppDomain\obj\Debug\TesterAppDomain.csprojResolveAssemblyReference.cache
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\TestAppDomain\obj\Debug\ChildAppDomain.dll
+C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\TestAppDomain\obj\Debug\ChildAppDomain.pdb

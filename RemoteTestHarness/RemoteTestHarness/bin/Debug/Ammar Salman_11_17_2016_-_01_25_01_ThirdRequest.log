@@ -1,0 +1,34 @@
+Author: Ammar Salman
+Tests:
+	"Third Test"
+		Test Drivers:
+			TestHarnessTestLibrary.dll
+		Libraries:
+
+Results:
+	Third Test:
+		Test Result for TestHarnessTestLibrary : Passed
+
+
+Third Test:
+
+Test Result for TestHarnessTestLibrary : Passed
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+----------<   Testing Class TestHarnessTestLibrary.Test1 >----------
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+
+
+  ---< Testing Void Test() >---
+
+  Output:
+	
+	  Void Test()  TestHarnessTestLibrary.Test1
+	  Simulating work
+	  Done working
+  Test Succeeded
+
+
+
+Elapsed Time: 16 seconds

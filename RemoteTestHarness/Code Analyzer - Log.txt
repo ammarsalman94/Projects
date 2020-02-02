@@ -1,0 +1,484 @@
+
+                                             CodeAnalysis
+    ==============================================================================================
+     Thu Nov 17 23:28:43 2016
+     Path: "C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness"
+     Args: *.h, *.cpp, *.cs, /s, /a, /m, /r, /f
+
+                                                                               
+        36 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\A_TestExecutive\Properties\AssemblyInfo.cs
+       166 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\A_TestExecutive\TestExecutive.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\A_TestExecutive\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\A_TestExecutive\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\A_TestExecutive\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+        99 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\BlockingQueue\BlockingQueue.cs
+        36 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\BlockingQueue\Properties\AssemblyInfo.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\BlockingQueue\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\BlockingQueue\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\BlockingQueue\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+        17 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\App.xaml.cs
+       622 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\Client.xaml.cs
+        51 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\ClientLogin.xaml.cs
+        69 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\MessageView.xaml.cs
+        36 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\Properties\AssemblyInfo.cs
+        71 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\Properties\Resources.Designer.cs
+        30 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\Properties\Settings.Designer.cs
+        70 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\obj\Debug\App.g.i.cs
+       264 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\obj\Debug\Client.g.i.cs
+        75 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\obj\Debug\ClientLogin.g.i.cs
+        13 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\obj\Debug\Client_Content.g.i.cs
+       184 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\obj\Debug\MainWindow.g.i.cs
+        89 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\obj\Debug\MessageView.g.i.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Client\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+       161 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\CommInterfaces\Interfaces.cs
+        36 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\CommInterfaces\Properties\AssemblyInfo.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\CommInterfaces\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\CommInterfaces\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\CommInterfaces\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+        36 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Receiver\Properties\AssemblyInfo.cs
+       267 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Receiver\Receiver.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Receiver\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Receiver\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Receiver\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+        17 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\RemoteTestHarness\App.xaml.cs
+        36 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\RemoteTestHarness\Properties\AssemblyInfo.cs
+        71 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\RemoteTestHarness\Properties\Resources.Designer.cs
+        30 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\RemoteTestHarness\Properties\Settings.Designer.cs
+       555 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\RemoteTestHarness\TestHarness.xaml.cs
+        70 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\RemoteTestHarness\obj\Debug\App.g.i.cs
+        75 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\RemoteTestHarness\obj\Debug\ClientLogin.g.i.cs
+       184 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\RemoteTestHarness\obj\Debug\MainWindow.g.i.cs
+        13 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\RemoteTestHarness\obj\Debug\RemoteTestHarness_Content.g.i.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\RemoteTestHarness\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\RemoteTestHarness\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\RemoteTestHarness\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+       184 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\RemoteTestHarness\obj\Debug\TestHarness.g.i.cs
+        17 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Repository\App.xaml.cs
+        69 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Repository\MessageView.xaml.cs
+        36 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Repository\Properties\AssemblyInfo.cs
+        71 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Repository\Properties\Resources.Designer.cs
+        30 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Repository\Properties\Settings.Designer.cs
+       523 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Repository\Repository.xaml.cs
+        70 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Repository\obj\Debug\App.g.i.cs
+       184 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Repository\obj\Debug\MainWindow.g.i.cs
+        89 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Repository\obj\Debug\MessageView.g.i.cs
+       241 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Repository\obj\Debug\Repository.g.i.cs
+        13 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Repository\obj\Debug\Repository_Content.g.i.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Repository\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Repository\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Repository\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+        36 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Sender\Properties\AssemblyInfo.cs
+       288 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Sender\Sender.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Sender\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Sender\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\Sender\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+        43 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\TestAppDomain\ITest.cs
+        36 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\TestAppDomain\Properties\AssemblyInfo.cs
+       267 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\TestAppDomain\TestAppDomain.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\TestAppDomain\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\TestAppDomain\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\TestAppDomain\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+        36 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\XMLReader\Properties\AssemblyInfo.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\XMLReader\XMLReader.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\XMLReader\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\XMLReader\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+       197 : C:\Users\Ammar\Documents\Visual Studio 2015\Projects\RemoteTestHarness\XMLReader\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+
+      Total line count = 11819
+
+
+
+           Code Metrics - Start Line, Size (lines/code), and Complexity (number of scopes)
+    ==============================================================================================
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+                             namespace                   Global Namespace       1       1     517
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+                App.g.i.cs   namespace                             Client      35      35       4
+                App.g.i.cs       class                                App      41      29       3
+                App.g.i.cs    function       DebuggerNonUserCodeAttribute      48       8       1
+                App.g.i.cs    function                 STAThreadAttribute      63       5       1
+                App.g.i.cs   namespace                  RemoteTestHarness      35      35       4
+                App.g.i.cs       class                                App      41      29       3
+                App.g.i.cs    function       DebuggerNonUserCodeAttribute      48       8       1
+                App.g.i.cs    function                 STAThreadAttribute      63       5       1
+                App.g.i.cs   namespace                         Repository      35      35       4
+                App.g.i.cs       class                                App      41      29       3
+                App.g.i.cs    function       DebuggerNonUserCodeAttribute      48       8       1
+                App.g.i.cs    function                 STAThreadAttribute      63       5       1
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+               App.xaml.cs   namespace                             Client       9      10       2
+               App.xaml.cs       class                                App      13       6       1
+               App.xaml.cs   namespace                  RemoteTestHarness      10       8       2
+               App.xaml.cs       class                                App      15       3       1
+               App.xaml.cs   namespace                         Repository      10       8       2
+               App.xaml.cs       class                                App      15       3       1
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+          BlockingQueue.cs   namespace                      BlockingQueue      41      59      19
+          BlockingQueue.cs       class                          BlockingQ      43      38       8
+          BlockingQueue.cs    function                          BlockingQ      48       3       1
+          BlockingQueue.cs    function                                enQ      56      11       4
+          BlockingQueue.cs    function                               lock      57       9       3
+          BlockingQueue.cs    function                                deQ      70       8       2
+          BlockingQueue.cs    function                               lock      71       6       1
+          BlockingQueue.cs       class                            Program      82      18      10
+          BlockingQueue.cs    function                               Main      85      12       9
+          BlockingQueue.cs      lambda                             (()=>{      89       1       1
+          BlockingQueue.cs      lambda                             (()=>{      90       1       2
+          BlockingQueue.cs      lambda                             (()=>{      91       1       2
+          BlockingQueue.cs      lambda                             (()=>{      92       1       2
+          BlockingQueue.cs      lambda                             (()=>{      93       1       1
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+             Client.g.i.cs   namespace                             Client      35     229       6
+             Client.g.i.cs       class                          ClientGUI      41     223       5
+             Client.g.i.cs    function       DebuggerNonUserCodeAttribute     146      13       2
+             Client.g.i.cs    function       DebuggerNonUserCodeAttribute     166      96       2
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+            Client.xaml.cs   namespace                             Client      57     566      88
+            Client.xaml.cs       class                          ClientGUI      59     547      84
+            Client.xaml.cs    function                          ClientGUI     100       6       1
+            Client.xaml.cs    function                   InitializeClient     107      45       3
+            Client.xaml.cs    function               CreateSenderChannels     162      40       5
+            Client.xaml.cs    function               CreateSenderChannels     206      38       5
+            Client.xaml.cs    function              ProcessResultsMessage     247       6       1
+            Client.xaml.cs    function             ProcessFileListMessage     256      17       5
+            Client.xaml.cs      lambda                             (()=>{     259       1       1
+            Client.xaml.cs    function                    ProcessNSendXML     276      17       3
+            Client.xaml.cs    function                        SendLibrary     296      10       3
+            Client.xaml.cs    function                    ReceiveMessages     315      36       8
+            Client.xaml.cs      lambda                   (newAction(()=>{     323       2       1
+            Client.xaml.cs      lambda                   (newAction(()=>{     329       1       1
+            Client.xaml.cs      lambda                   (newAction(()=>{     333       2       1
+            Client.xaml.cs      lambda                   (newAction(()=>{     339       2       1
+            Client.xaml.cs      lambda                   (newAction(()=>{     344       2       1
+            Client.xaml.cs    function                       SendMessages     353      14       4
+            Client.xaml.cs    function                       PrepareFiles     370      41       9
+            Client.xaml.cs      lambda                             (()=>{     372       4       1
+            Client.xaml.cs      lambda                             (()=>{     380       3       1
+            Client.xaml.cs      lambda                             (()=>{     385       1       1
+            Client.xaml.cs      lambda                             (()=>{     401       1       1
+            Client.xaml.cs      lambda                             (()=>{     405       4       1
+            Client.xaml.cs    function                      DownloadFiles     413      11       4
+            Client.xaml.cs    function                btnGetResults_Click     430      19       2
+            Client.xaml.cs    function                  btnAddFiles_Click     450      11       2
+            Client.xaml.cs    function                 btnSendFiles_Click     462       7       2
+            Client.xaml.cs    function                  btnGetFiles_Click     470       7       1
+            Client.xaml.cs    function                   ConnectRep_Click     478      39       7
+            Client.xaml.cs    function                              Label     488       1       1
+            Client.xaml.cs    function                            TextBox     490       1       1
+            Client.xaml.cs    function                              Label     492       1       1
+            Client.xaml.cs    function                            TextBox     494       1       1
+            Client.xaml.cs    function                             Button     497       1       1
+            Client.xaml.cs      lambda                       (send,ex)=>{     499       5       1
+            Client.xaml.cs    function                   LnkConnRep_Click     518      35       7
+            Client.xaml.cs    function                              Label     527       1       1
+            Client.xaml.cs    function                            TextBox     529       2       1
+            Client.xaml.cs    function                              Label     532       1       1
+            Client.xaml.cs    function                            TextBox     534       2       1
+            Client.xaml.cs    function                             Button     537       1       1
+            Client.xaml.cs      lambda                       (send,ex)=>{     539       2       1
+            Client.xaml.cs    function                        Demonstrate     559       8       1
+            Client.xaml.cs    function                 ExitMenuItem_Click     568       3       1
+            Client.xaml.cs    function                          OnClosing     572       9       4
+            Client.xaml.cs    function                        PostMessage     572       1       1
+            Client.xaml.cs    function                                enQ     573       1       1
+            Client.xaml.cs    function                                enQ     574       1       1
+            Client.xaml.cs    function    lstBoxRepFiles_MouseDoubleClick     582       9       2
+            Client.xaml.cs    function        lstBoxMsgs_MouseDoubleClick     592       7       2
+            Client.xaml.cs       class                   ExtensionMethods     608      13       3
+            Client.xaml.cs    function                       PerformClick     609       3       1
+            Client.xaml.cs    function                              Title     613       6       1
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+        ClientLogin.g.i.cs   namespace                             Client      35      77       6
+        ClientLogin.g.i.cs       class                        ClientLogin      41      71       5
+        ClientLogin.g.i.cs    function       DebuggerNonUserCodeAttribute      66      13       2
+        ClientLogin.g.i.cs    function       DebuggerNonUserCodeAttribute      86      24       2
+        ClientLogin.g.i.cs   namespace                  RemoteTestHarness      35      40       5
+        ClientLogin.g.i.cs       class                        ClientLogin      41      34       4
+        ClientLogin.g.i.cs    function       DebuggerNonUserCodeAttribute      50      13       2
+        ClientLogin.g.i.cs    function       DebuggerNonUserCodeAttribute      70       3       1
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+       ClientLogin.xaml.cs   namespace                             Client       6      46      11
+       ClientLogin.xaml.cs       class                        ClientLogin      10      42      10
+       ClientLogin.xaml.cs    function                        ClientLogin      11      24       5
+       ClientLogin.xaml.cs    function                       Button_Click      36       9       3
+       ClientLogin.xaml.cs    function                  txtClient_KeyDown      46       4       1
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+                  ITest.cs   namespace                  RemoteTestHarness      38       6       2
+                  ITest.cs   interface                              ITest      40       4       1
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+             Interfaces.cs   namespace                      Communication      45     117      15
+             Interfaces.cs   interface                              IComm      48      10       1
+             Interfaces.cs   interface                     IStreamService      60      11       1
+             Interfaces.cs       class                            Message      74      59       7
+             Interfaces.cs       class                FileTransferMessage     135      27       5
+             Interfaces.cs    function                      MessageHeader     137       2       1
+             Interfaces.cs    function                      MessageHeader     141       2       1
+             Interfaces.cs    function                  MessageBodyMember     145       2       1
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+         MainWindow.g.i.cs   namespace                             Client      35      99       6
+         MainWindow.g.i.cs       class                          ClientGUI      41      93       5
+         MainWindow.g.i.cs    function       DebuggerNonUserCodeAttribute      82      13       2
+         MainWindow.g.i.cs    function       DebuggerNonUserCodeAttribute     102      30       2
+         MainWindow.g.i.cs   namespace                  RemoteTestHarness      35      40       5
+         MainWindow.g.i.cs       class                        TestHarness      41      34       4
+         MainWindow.g.i.cs    function       DebuggerNonUserCodeAttribute      50      13       2
+         MainWindow.g.i.cs    function       DebuggerNonUserCodeAttribute      70       3       1
+         MainWindow.g.i.cs   namespace                         Repository      35     149       6
+         MainWindow.g.i.cs       class                         MainWindow      41     143       5
+         MainWindow.g.i.cs    function       DebuggerNonUserCodeAttribute     114      13       2
+         MainWindow.g.i.cs    function       DebuggerNonUserCodeAttribute     134      48       2
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+        MessageView.g.i.cs   namespace                             Client      35      54       6
+        MessageView.g.i.cs       class                        MessageView      41      48       5
+        MessageView.g.i.cs    function       DebuggerNonUserCodeAttribute      58      13       2
+        MessageView.g.i.cs    function       DebuggerNonUserCodeAttribute      78       9       2
+        MessageView.g.i.cs   namespace                         Repository      35      54       6
+        MessageView.g.i.cs       class                        MessageView      41      48       5
+        MessageView.g.i.cs    function       DebuggerNonUserCodeAttribute      58      13       2
+        MessageView.g.i.cs    function       DebuggerNonUserCodeAttribute      78       9       2
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+       MessageView.xaml.cs   namespace                             Client      42      49       6
+       MessageView.xaml.cs       class                        MessageView      46      45       5
+       MessageView.xaml.cs    function                        MessageView      47      42       4
+       MessageView.xaml.cs   namespace                         Repository      41      29       3
+       MessageView.xaml.cs       class                        MessageView      45      25       2
+       MessageView.xaml.cs    function                        MessageView      46      22       1
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+               Receiver.cs   namespace                      Communication      55     213      29
+               Receiver.cs       class                           Receiver      58     210      28
+               Receiver.cs    function                           Receiver      78      12       1
+               Receiver.cs    function                       GetFilesPath      90       2       1
+               Receiver.cs    function                     GetResultsPath      91       2       1
+               Receiver.cs    function                       SetFilesPath      92       2       1
+               Receiver.cs    function                     SetResultsPath      93       2       1
+               Receiver.cs    function                     CreateCommHost     101       8       1
+               Receiver.cs    function                   CreateStreamHost     113      10       1
+               Receiver.cs    function                         GetMessage     130       3       1
+               Receiver.cs    function                  OperationBehavior     138       3       1
+               Receiver.cs    function                         UploadFile     146      35       4
+               Receiver.cs    function                              using     169      10       2
+               Receiver.cs    function                       DownloadFile     183      29       6
+               Receiver.cs    function                         ThreadProc     221      21       3
+               Receiver.cs    function                               Main     245      18       1
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+         Repository.g.i.cs   namespace                         Repository      35     206       6
+         Repository.g.i.cs       class                      RepositoryGUI      41     200       5
+         Repository.g.i.cs    function       DebuggerNonUserCodeAttribute     138      13       2
+         Repository.g.i.cs    function       DebuggerNonUserCodeAttribute     158      81       2
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+        Repository.xaml.cs   namespace                         Repository      56     468      64
+        Repository.xaml.cs       class                      RepositoryGUI      58     447      60
+        Repository.xaml.cs    function                      RepositoryGUI     106      33       1
+        Repository.xaml.cs    function                LibSearchRepository     147      12       4
+        Repository.xaml.cs    function                             Select     151       1       1
+        Repository.xaml.cs    function                ResSearchRepository     161      12       4
+        Repository.xaml.cs    function                             Select     165       1       1
+        Repository.xaml.cs    function                       SendFileList     176      13       1
+        Repository.xaml.cs    function              ProcessXMLTestRequest     192      43       7
+        Repository.xaml.cs      lambda                             (()=>{     192       1       1
+        Repository.xaml.cs    function                         SendResult     238      48       7
+        Repository.xaml.cs    function                        ThreadStart     239      44       6
+        Repository.xaml.cs    function                      ForwardResult     290      32       4
+        Repository.xaml.cs    function                SendBlockedMessages     325       7       2
+        Repository.xaml.cs    function                   SendBlockedFiles     335      19       5
+        Repository.xaml.cs    function                        ThreadStart     338      13       4
+        Repository.xaml.cs    function                    ReceiveMessages     363      42       5
+        Repository.xaml.cs      lambda                   (newAction(()=>{     394       1       1
+        Repository.xaml.cs      lambda                   (newAction(()=>{     400       1       1
+        Repository.xaml.cs    function                       SendMessages     407      23       5
+        Repository.xaml.cs    function            btnCreateChannels_Click     436      18       5
+        Repository.xaml.cs    function                 SetFilesPath_Click     455       7       1
+        Repository.xaml.cs    function               SetResultsPath_Click     463       7       1
+        Repository.xaml.cs    function          btnRefreshLibraries_Click     471       3       1
+        Repository.xaml.cs    function            btnRefreshResults_Click     475       3       1
+        Repository.xaml.cs    function                 ExitMenuItem_Click     484       3       1
+        Repository.xaml.cs    function                          OnClosing     488       7       3
+        Repository.xaml.cs    function                        PostMessage     488       1       1
+        Repository.xaml.cs    function                                enQ     489       1       1
+        Repository.xaml.cs    function    lstBoxMessages_MouseDoubleClick     496       4       1
+        Repository.xaml.cs       class                   ExtensionMethods     508      13       3
+        Repository.xaml.cs    function                       PerformClick     509       3       1
+        Repository.xaml.cs    function                              Title     513       6       1
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+     Resources.Designer.cs   namespace                             Client      12      60       9
+     Resources.Designer.cs       class                          Resources      26      46       8
+     Resources.Designer.cs    function           SuppressMessageAttribute      34       2       1
+     Resources.Designer.cs    function           EditorBrowsableAttribute      42      11       3
+     Resources.Designer.cs    function           EditorBrowsableAttribute      60      10       3
+     Resources.Designer.cs   namespace                  RemoteTestHarness      12      60       9
+     Resources.Designer.cs       class                          Resources      26      46       8
+     Resources.Designer.cs    function           SuppressMessageAttribute      34       2       1
+     Resources.Designer.cs    function           EditorBrowsableAttribute      42      11       3
+     Resources.Designer.cs    function           EditorBrowsableAttribute      60      10       3
+     Resources.Designer.cs   namespace                         Repository      12      60       9
+     Resources.Designer.cs       class                          Resources      26      46       8
+     Resources.Designer.cs    function           SuppressMessageAttribute      34       2       1
+     Resources.Designer.cs    function           EditorBrowsableAttribute      42      11       3
+     Resources.Designer.cs    function           EditorBrowsableAttribute      60      10       3
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+                 Sender.cs   namespace                      Communication      49     240      34
+                 Sender.cs       class                             Sender      51     238      33
+                 Sender.cs    function                             Sender      68       4       1
+                 Sender.cs    function                  CreateCommChannel      80       5       1
+                 Sender.cs    function             CreateStreamingChannel      90      11       1
+                 Sender.cs    function                        PostMessage     108       7       2
+                 Sender.cs    function                         UploadFile     122      16       3
+                 Sender.cs    function                              using     128       9       1
+                 Sender.cs    function                       DownloadFile     142      36       7
+                 Sender.cs    function                              using     164       9       2
+                 Sender.cs    function                    DownloadLibrary     181      30       7
+                 Sender.cs    function                               lock     187      23       5
+                 Sender.cs    function                              using     196       9       2
+                 Sender.cs    function                  CommChannelExists     219       3       1
+                 Sender.cs    function                StreamChannelExists     226       3       1
+                 Sender.cs    function                               Main     235      49       6
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+      Settings.Designer.cs   namespace                             Client      12      19       4
+      Settings.Designer.cs       class                           Settings      18      13       3
+      Settings.Designer.cs   namespace                  RemoteTestHarness      12      19       4
+      Settings.Designer.cs       class                           Settings      18      13       3
+      Settings.Designer.cs   namespace                         Repository      12      19       4
+      Settings.Designer.cs       class                           Settings      18      13       3
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+          TestAppDomain.cs   namespace                  RemoteTestHarness      42     226      31
+          TestAppDomain.cs       class                      TestAppDomain      43     207      27
+          TestAppDomain.cs    function                      TestAppDomain      65       2       1
+          TestAppDomain.cs    function                      TestAppDomain      68       2       1
+          TestAppDomain.cs    function                               test      76       2       1
+          TestAppDomain.cs    function                             getLog      82       7       1
+          TestAppDomain.cs    function                            execute      98      16       2
+          TestAppDomain.cs    function                           testType     120      34       4
+          TestAppDomain.cs    function                   testConstructors     158      25       4
+          TestAppDomain.cs    function                        testMethods     189      22       4
+          TestAppDomain.cs    function                 generateParameters     216      13       5
+          TestAppDomain.cs    function                               Main     236      10       2
+          TestAppDomain.cs       class                         ExtensionM     253      13       3
+          TestAppDomain.cs    function                              title     254       6       1
+          TestAppDomain.cs    function                             passed     260       4       1
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+          TestExecutive.cs   namespace                    A_TestExecutive      40     127       8
+          TestExecutive.cs       class                      TestExecutive      41     119       5
+          TestExecutive.cs    function                            Startup      49      31       1
+          TestExecutive.cs    function                               Demo      82      48       1
+          TestExecutive.cs    function                          DemoExtra     132      17       1
+          TestExecutive.cs    function                               Main     151       6       1
+          TestExecutive.cs       class                               Exts     160       7       2
+          TestExecutive.cs    function                              Title     161       4       1
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+        TestHarness.g.i.cs   namespace                  RemoteTestHarness      35     149       6
+        TestHarness.g.i.cs       class                        TestHarness      41     143       5
+        TestHarness.g.i.cs    function       DebuggerNonUserCodeAttribute     114      13       2
+        TestHarness.g.i.cs    function       DebuggerNonUserCodeAttribute     134      48       2
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+       TestHarness.xaml.cs   namespace                  RemoteTestHarness      53     503      70
+       TestHarness.xaml.cs       class                        TestHarness      55     483      66
+       TestHarness.xaml.cs    function                        TestHarness      92      11       1
+       TestHarness.xaml.cs    function                       InitializeTH     105      43       5
+       TestHarness.xaml.cs    function                  InitializeThreads     150       8       3
+       TestHarness.xaml.cs    function                             Thread     151       1       1
+       TestHarness.xaml.cs    function                    ReceiveMessages     167      15       3
+       TestHarness.xaml.cs    function                       SendMessages     184      13       4
+       TestHarness.xaml.cs    function                 ProcessTestRequest     199      50       5
+       TestHarness.xaml.cs      lambda                   (newAction(()=>{     214       2       1
+       TestHarness.xaml.cs      lambda                   (newAction(()=>{     244       2       1
+       TestHarness.xaml.cs    function                 PrepareTestRequest     258       7       2
+       TestHarness.xaml.cs      lambda                   (newAction(()=>{     261       1       1
+       TestHarness.xaml.cs    function                  DownloadTestFiles     270      20       5
+       TestHarness.xaml.cs      lambda                   (newAction(()=>{     284       4       1
+       TestHarness.xaml.cs    function                    DeleteTestFiles     293      10       3
+       TestHarness.xaml.cs      lambda                   (newAction(()=>{     298       3       1
+       TestHarness.xaml.cs    function                          TestFiles     308      22       3
+       TestHarness.xaml.cs    function              PrepareResultsMessage     335       9       1
+       TestHarness.xaml.cs    function               CreateSenderChannels     354      31       5
+       TestHarness.xaml.cs    function               CreateSenderChannels     389      29       5
+       TestHarness.xaml.cs    function                  btnExitItem_Click     427       3       1
+       TestHarness.xaml.cs    function                btnConnectRep_Click     433      39       7
+       TestHarness.xaml.cs    function                              Label     443       1       1
+       TestHarness.xaml.cs    function                            TextBox     445       1       1
+       TestHarness.xaml.cs    function                              Label     447       1       1
+       TestHarness.xaml.cs    function                            TextBox     449       1       1
+       TestHarness.xaml.cs    function                             Button     451       1       1
+       TestHarness.xaml.cs      lambda                       (send,ex)=>{     453       6       1
+       TestHarness.xaml.cs    function          btnConnRepAddresses_Click     475      39       7
+       TestHarness.xaml.cs    function                              Label     484       1       1
+       TestHarness.xaml.cs    function                            TextBox     487       3       1
+       TestHarness.xaml.cs    function                              Label     491       1       1
+       TestHarness.xaml.cs    function                            TextBox     494       3       1
+       TestHarness.xaml.cs    function                             Button     498       1       1
+       TestHarness.xaml.cs      lambda                       (send,ex)=>{     500       2       1
+       TestHarness.xaml.cs    function                          OnClosing     523      10       4
+       TestHarness.xaml.cs    function                        PostMessage     523       1       1
+       TestHarness.xaml.cs    function                                enQ     524       1       1
+       TestHarness.xaml.cs    function                                enQ     525       1       1
+       TestHarness.xaml.cs       class                   ExtensionMethods     540      13       3
+       TestHarness.xaml.cs    function                       PerformClick     541       3       1
+       TestHarness.xaml.cs    function                              Title     545       6       1
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+              XMLReader.cs   namespace                      XMLProcessing      46     152      21
+              XMLReader.cs       class                          XMLReader      48     150      20
+              XMLReader.cs    function                          XMLReader      69       5       1
+              XMLReader.cs    function                     ProcessXMLFile      80      38       6
+              XMLReader.cs    function                   ProcessXMLString     122      30       4
+              XMLReader.cs    function                               Main     158      36       3
+
+                          Functions Exceeding Metric Limits and Public Data
+    ==============================================================================================
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+             Client.g.i.cs    function       DebuggerNonUserCodeAttribute     166      96       2
+         Repository.g.i.cs    function       DebuggerNonUserCodeAttribute     158      81       2
+
+
+
+    searched    91 dirs
+   processed    79 files

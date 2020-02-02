@@ -1,0 +1,10 @@
+﻿<testRequest name= "Test1">
+  <author>Ammar Salman</author>
+  <test name="TestLibrary1">
+    <testDriver>TestLibrary1.dll</testDriver>
+    <library>TestLibrary2.dll</library>
+  </test>
+  <test name="TestLibrary2">
+    <testDriver>TestLibrary3.dll</testDriver>
+  </test>
+</testRequest>

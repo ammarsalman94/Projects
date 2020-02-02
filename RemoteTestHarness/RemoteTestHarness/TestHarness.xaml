@@ -1,0 +1,67 @@
+﻿<Window x:Class="RemoteTestHarness.TestHarness"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RemoteTestHarness"
+        mc:Ignorable="d"
+        Title="Test Harness" Height="550" Width="650" MinHeight="530" MinWidth="550">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*" MinHeight="230"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*" MinHeight="230"/>
+		</Grid.RowDefinitions>
+		<DockPanel Grid.Row="0">
+			<Menu>
+				<MenuItem Header="_File">
+					<MenuItem Header="_Exit" Name="btnExitItem" Click="btnExitItem_Click"/>
+				</MenuItem>
+				<MenuItem Header="_Communication">
+					<MenuItem Header="_Connect to Repository (Ports)" Name="btnConnectRep" Click="btnConnectRep_Click"/>
+					<MenuItem Header="_Connect to Repository (Addresses)" Name="btnConnRepAddresses" Click="btnConnRepAddresses_Click"/>
+				</MenuItem>
+			</Menu>
+		</DockPanel>
+
+		<Grid Grid.Row="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" MinWidth="250"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*" MinWidth="250"/>
+			</Grid.ColumnDefinitions>
+
+			<Label Grid.Row="0" Grid.Column="0" Content="Pending Tests (Queue):"/>
+			<Label Grid.Row="0" Grid.Column="2" Name="lblRunningTests" Content="Running Tests:"/>
+			<GridSplitter Grid.Column="1" Width="5" Grid.RowSpan="2" HorizontalAlignment="Stretch"/>
+			<ListBox Grid.Row="1" Grid.Column="0" Name="lstBoxPendingTests" Margin="5,5,5,5"/>
+			<ListBox Grid.Row="1" Grid.Column="2" Name="lstBoxRunningTests" Margin="5,5,5,5"/>
+		</Grid>
+
+		<GridSplitter Grid.Row="2" Height="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+
+		<Grid Grid.Row="3">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" MinWidth="250"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*" MinWidth="250"/>
+			</Grid.ColumnDefinitions>
+
+			<Label Grid.Row="0" Grid.Column="0" Content="Temporary Storage:"/>
+			<Label Grid.Row="0" Grid.Column="2" Content="Finished Tests:"/>
+			<GridSplitter Grid.Column="1" Grid.RowSpan="2" Width="5" HorizontalAlignment="Stretch"/>
+			<ListBox Grid.Row="1" Grid.Column="0" Name="lstBoxTempFiles" Margin="5,5,5,5"/>
+			<ListBox Grid.Row="1" Grid.Column="2" Name="lstBoxFinishedTests" Margin="5,5,5,5"/>
+		</Grid>
+
+	</Grid>
+</Window>

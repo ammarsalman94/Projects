@@ -1,0 +1,34 @@
+Author: Ammar Salman
+Tests:
+	"First Test"
+		Test Drivers:
+			TestHarnessTestLibrary.dll
+		Libraries:
+
+Results:
+	First Test:
+		Test Result for TestHarnessTestLibrary : Passed
+
+
+First Test:
+
+Test Result for TestHarnessTestLibrary : Passed
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+----------<   Testing Class TestHarnessTestLibrary.Test1 >----------
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+
+
+  ---< Testing Void Test() >---
+
+  Output:
+	
+	  Void Test()  TestHarnessTestLibrary.Test1
+	  Simulating work
+	  Done working
+  Test Succeeded
+
+
+
+Elapsed Time: 15 seconds

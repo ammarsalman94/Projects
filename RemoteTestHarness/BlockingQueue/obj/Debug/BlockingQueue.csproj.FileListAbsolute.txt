@@ -1,0 +1,6 @@
+C:\Users\Ammar\documents\visual studio 2015\Projects\Training\BlockingQueue\bin\Debug\BlockingQueue.exe.config
+C:\Users\Ammar\documents\visual studio 2015\Projects\Training\BlockingQueue\bin\Debug\BlockingQueue.exe
+C:\Users\Ammar\documents\visual studio 2015\Projects\Training\BlockingQueue\bin\Debug\BlockingQueue.pdb
+C:\Users\Ammar\documents\visual studio 2015\Projects\Training\BlockingQueue\obj\Debug\BlockingQueue.csprojResolveAssemblyReference.cache
+C:\Users\Ammar\documents\visual studio 2015\Projects\Training\BlockingQueue\obj\Debug\BlockingQueue.exe
+C:\Users\Ammar\documents\visual studio 2015\Projects\Training\BlockingQueue\obj\Debug\BlockingQueue.pdb

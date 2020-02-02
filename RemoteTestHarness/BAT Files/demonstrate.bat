@@ -1,0 +1,2 @@
+START "" ".\Test Executive"
+EXIT
